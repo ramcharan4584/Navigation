@@ -15,12 +15,23 @@ function searchLocation() {
         result.innerHTML = "No data found. Try another search.";
     }
 }
-function toggleProfile() {
-  const card = document.getElementById("profileCard");
+function openLogin() {
+  alert("Login page coming soon 🚀");
+}
 
-  if (card.style.display === "block") {
-    card.style.display = "none";
+function openProfile() {
+  alert("Profile page coming soon 👤");
+}
+
+function openSearch() {
+  let query = prompt("Enter search (example: IT Lab):");
+
+  if (query === "it lab") {
+    alert("IT Lab → B Block → 2nd Floor");
   } else {
-    card.style.display = "block";
+    alert("No result found for: " + query);
   }
+}
+function openLogin() {
+  alert("Login page coming soon 🚀");
 }

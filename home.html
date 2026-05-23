@@ -10,7 +10,6 @@
     
     <h1>LIVE SERVER TEST</h1>
     <nav class="navbar">
-    <div class="logo">Student Portal</div>
 
     <ul class="nav-links">
     <li><a href="#">Home</a></li>
@@ -20,17 +19,23 @@
     </ul>
 
   <div class="profile-section">
-    <button class="profile-btn" onclick="toggleProfile()">👤 Profile</button>
   </div>
 </nav>
-<div id="profileCard" class="profile-card">
-  <h2>Student Profile</h2>
-  <p>Name: Your Name</p>
-  <p>Roll No: XXXXX</p>
-  <p>Branch: IT</p>
-  <p>Year: 2nd Year</p>
-</div>
+<div class="navbar">
+  <h2 class="logo">Student Portal</h2>
 
+  <div class="nav-right">
+    <button class="profile-btn" onclick="openProfile()">👤</button>
+  </div>
+</div>
+<!-- NAVBAR -->
+<div class="navbar">
+  <div class="nav-buttons">
+    <button class="login-btn" onclick="openLogin()">
+  Login
+</button>
+  </div>
+</div>
     <!-- Header -->
     <header>
         <h1>College Navigation System</h1>
