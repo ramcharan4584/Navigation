@@ -113,3 +113,32 @@ window.addEventListener("load", () => {
     document.querySelector(".login-box").style.transform =
         "translateY(0px)";
 });
+  const firebaseConfig = {
+    apiKey: "AIzaSyD_7Cp155ILuZlzdVRk4-pdj9RGlztmkhM",
+  authDomain: "student-portal-1baed.firebaseapp.com",
+  projectId: "student-portal-1baed",
+  storageBucket: "student-portal-1baed.firebasestorage.app",
+  messagingSenderId: "1017420453175",
+  appId: "1:1017420453175:web:5c9c44f5a68a3e4d5476b2",
+  measurementId: "G-T8PCR4Q06B"
+  };
+
+  firebase.initializeApp(firebaseConfig);
+  const auth = firebase.auth();
+// ✅ GOOGLE LOGIN FUNCTION (PASTE HERE ↓↓↓)
+window.googleLogin = function () {
+    const provider = new firebase.auth.GoogleAuthProvider();
+
+    auth.signInWithPopup(provider)
+        .then((result) => {
+            const user = result.user;
+            console.log("User logged in:", user.displayName);
+            alert("Welcome " + user.displayName);
+
+            // optional redirect
+            // window.location.href = "dashboard.html";
+        })
+        .catch((error) => {
+            console.log("Login error:", error);
+        });
+};
