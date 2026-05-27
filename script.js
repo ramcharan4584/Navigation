@@ -35,3 +35,81 @@ function openSearch() {
 function openLogin() {
   alert("Login page coming soon 🚀");
 }
+
+// PASSWORD SHOW / HIDE
+const togglePassword = document.getElementById("togglePassword");
+const password = document.getElementById("password");
+
+togglePassword.addEventListener("click", () => {
+
+    const type =
+        password.getAttribute("type") === "password"
+            ? "text"
+            : "password";
+
+    password.setAttribute("type", type);
+
+    // Change icon
+    togglePassword.classList.toggle("fa-eye");
+    togglePassword.classList.toggle("fa-eye-slash");
+});
+
+
+// SIGN IN BUTTON ANIMATION
+const signInBtn = document.querySelector(".signin-btn");
+
+signInBtn.addEventListener("click", () => {
+
+    const email =
+        document.querySelector('input[type="email"]').value;
+
+    const passwordValue =
+        document.getElementById("password").value;
+
+    // Validation
+    if (email === "" || passwordValue === "") {
+        alert("Please fill all fields!");
+        return;
+    }
+
+    // Button loading effect
+    signInBtn.innerHTML = "Signing In...";
+    signInBtn.style.opacity = "0.8";
+
+    setTimeout(() => {
+        signInBtn.innerHTML = "✓ Login Successful";
+        signInBtn.style.background = "green";
+
+        setTimeout(() => {
+            signInBtn.innerHTML = "Sign in";
+            signInBtn.style.background = "#6c4ccf";
+            signInBtn.style.opacity = "1";
+        }, 2000);
+
+    }, 1500);
+});
+
+
+// INPUT FOCUS EFFECT
+const inputs = document.querySelectorAll("input");
+
+inputs.forEach(input => {
+    input.addEventListener("focus", () => {
+        input.style.border = "2px solid #6c4ccf";
+        input.style.boxShadow =
+            "0 0 10px rgba(108,76,207,0.3)";
+    });
+
+    input.addEventListener("blur", () => {
+        input.style.border = "1px solid #ddd";
+        input.style.boxShadow = "none";
+    });
+});
+
+
+// FADE-IN ANIMATION
+window.addEventListener("load", () => {
+    document.querySelector(".login-box").style.opacity = "1";
+    document.querySelector(".login-box").style.transform =
+        "translateY(0px)";
+});
