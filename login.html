@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Portal Login</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+
+<body>
+
+    <div class="container">
+
+        <!-- LEFT SIDE -->
+        <div class="left-section">
+
+            <div class="logo">
+                🎓 Student Portal
+            </div>
+
+            <div class="login-box">
+
+                <h1>Welcome Back</h1>
+
+                <!-- Email -->
+                <label>Email Address</label>
+                <input type="email" placeholder="Enter your email">
+
+                <!-- Password -->
+                <label>Password</label>
+
+                <div class="password-box">
+                    <input
+                        type="password"
+                        id="password"
+                        placeholder="Enter your password"
+    >
+                    <i
+                        class="fa-solid fa-eye"
+                        id="togglePassword"
+                    ></i>
+                </div>
+
+                <!-- Forgot Password -->
+                <div class="options">
+                    <a href="#">Forgot password?</a>
+                </div>
+
+                <!-- Sign In -->
+                <button class="signin-btn">
+                    Sign In
+                </button>
+                <button class="google-btn">
+                    <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" />
+                        Sign in with Google
+                </button>
+
+                <!-- Sign Up -->
+                <p class="signup-text">
+                    Don't have an account?
+                    <a href="#">Sign Up</a>
+                </p>
+            </div>
+
+        </div>
+        
+
+        <!-- RIGHT SIDE -->
+        <div class="right-section">
+            <div class="right-content">
+            </div>
+        </div>
+<!-- your page content -->
+
+</div>
+
+<!-- Firebase scripts (IMPORTANT: before script.js) -->
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+
+<!-- your main JS -->
+<script src="script.js"></script>
+
+</body>
+</html>
