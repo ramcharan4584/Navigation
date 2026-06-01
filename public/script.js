@@ -1,73 +1,4 @@
-// PASSWORD SHOW / HIDE
-const togglePassword = document.getElementById("togglePassword");
-const password = document.getElementById("password");
-
-togglePassword.addEventListener("click", () => {
-
-    const type =
-        password.getAttribute("type") === "password"
-            ? "text"
-            : "password";
-
-    password.setAttribute("type", type);
-
-    // Change icon
-    togglePassword.classList.toggle("fa-eye");
-    togglePassword.classList.toggle("fa-eye-slash");
-});
-
-
-// SIGN IN BUTTON ANIMATION
-const signInBtn = document.querySelector(".signin-btn");
-
-signInBtn.addEventListener("click", () => {
-
-    const email =
-        document.querySelector('input[type="email"]').value;
-
-    const passwordValue =
-        document.getElementById("password").value;
-
-    // Validation
-    if (email === "" || passwordValue === "") {
-        alert("Please fill all fields!");
-        return;
-    }
-
-    // Button loading effect
-    signInBtn.innerHTML = "Signing In...";
-    signInBtn.style.opacity = "0.8";
-
-    setTimeout(() => {
-        signInBtn.innerHTML = "✓ Login Successful";
-        signInBtn.style.background = "green";
-
-        setTimeout(() => {
-            signInBtn.innerHTML = "Sign in";
-            signInBtn.style.background = "#6c4ccf";
-            signInBtn.style.opacity = "1";
-        }, 2000);
-
-    }, 1500);
-});
-
-
-// INPUT FOCUS EFFECT
-const inputs = document.querySelectorAll("input");
-
-inputs.forEach(input => {
-    input.addEventListener("focus", () => {
-        input.style.border = "2px solid #6c4ccf";
-        input.style.boxShadow =
-            "0 0 10px rgba(108,76,207,0.3)";
-    });
-
-    input.addEventListener("blur", () => {
-        input.style.border = "1px solid #ddd";
-        input.style.boxShadow = "none";
-    });
-});
-// FIREBASE CONFIG (ONLY ONCE)
+// FIREBASE CONFIG
 const firebaseConfig = {
   apiKey: "AIzaSyD_7Cp155ILuZlzdVRk4-pdj9RGlztmkhM",
   authDomain: "student-portal-1baed.firebaseapp.com",
@@ -82,60 +13,113 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 
+window.addEventListener("DOMContentLoaded", () => {
+  // PASSWORD SHOW / HIDE
+  const togglePassword = document.getElementById("togglePassword");
+  const password = document.getElementById("password");
+
+  togglePassword.addEventListener("click", () => {
+    const type = password.type === "password" ? "text" : "password";
+    password.type = type;
+
+    togglePassword.classList.toggle("fa-eye");
+    togglePassword.classList.toggle("fa-eye-slash");
+  });
+
+  // SIGN IN BUTTON
+  const signInBtn = document.querySelector(".signin-btn");
+
+  signInBtn.addEventListener("click", () => {
+  const email = document.querySelector('input[type="email"]').value;
+  const passwordValue = document.getElementById("password").value;
+
+  if (email === "" || passwordValue === "") {
+    alert("Please fill all fields!");
+    return;
+  }
+
+  auth.signInWithEmailAndPassword(email, passwordValue)
+    .then(() => {
+      alert("Login successful!");
+      window.location.href = "dashboard.html";
+    })
+    .catch((error) => {
+      alert(error.message);
+    });
+});
+
+  // INPUT FOCUS EFFECT
+  const inputs = document.querySelectorAll("input");
+
+  inputs.forEach(input => {
+    input.addEventListener("focus", () => {
+      input.style.border = "2px solid #6c4ccf";
+      input.style.boxShadow = "0 0 10px rgba(108,76,207,0.3)";
+    });
+
+    input.addEventListener("blur", () => {
+      input.style.border = "1px solid #ddd";
+      input.style.boxShadow = "none";
+    });
+  });
+});
+
 // FADE-IN ANIMATION
 window.addEventListener("load", () => {
-    document.querySelector(".login-box").style.opacity = "1";
-    document.querySelector(".login-box").style.transform = "translateY(0px)";
+  const box = document.querySelector(".login-box");
+  box.style.opacity = "1";
+  box.style.transform = "translateY(0px)";
 });
+
 // GOOGLE LOGIN FUNCTION
-window.googleLogin = function () {
-    const provider = new firebase.auth.GoogleAuthProvider();
+function googleLogin() {
+  const provider = new firebase.auth.GoogleAuthProvider();
 
-    auth.signInWithPopup(provider)
-        .then((userCredential) => {
-    window.location.href = "home.html";
-})
-        .catch((error) => {
-            console.log("Login error:", error);
-        });
-};
-// ================= PASSWORD TOGGLE =================
-window.addEventListener("DOMContentLoaded", () => {
-
-    const togglePassword = document.getElementById("togglePassword");
-    const password = document.getElementById("password");
-
-    togglePassword.addEventListener("click", () => {
-
-        const type = password.type === "password" ? "text" : "password";
-        password.type = type;
-
-        togglePassword.classList.toggle("fa-eye");
-        togglePassword.classList.toggle("fa-eye-slash");
+  auth.signInWithPopup(provider)
+    .then((result) => {
+      alert("Google login successful!");
+      window.location.href = "dashboard.html";
+    })
+    .catch((error) => {
+      console.log(error);
+      alert(error.message);
     });
-});
+}
+function showSignup() {
+  document.querySelector(".signin-btn").style.display = "none";
+  document.querySelector(".google-btn").style.display = "none";
+  document.querySelector(".options").style.display = "none";
+  document.getElementById("signupBox").style.display = "block";
+}
 
+function hideSignup() {
+  document.querySelector(".signin-btn").style.display = "block";
+  document.querySelector(".google-btn").style.display = "flex";
+  document.querySelector(".options").style.display = "block";
+  document.getElementById("signupBox").style.display = "none";
+}
 
-// ================= INPUT EFFECT =================
-window.addEventListener("DOMContentLoaded", () => {
+function registerUser() {
+  const name = document.getElementById("signupName").value;
+  const email = document.getElementById("signupEmail").value;
+  const password = document.getElementById("signupPassword").value;
 
-    const inputs = document.querySelectorAll("input");
+  if (name === "" || email === "" || password === "") {
+    alert("Please fill all registration details!");
+    return;
+  }
 
-    inputs.forEach(input => {
-        input.addEventListener("focus", () => {
-            input.style.border = "2px solid #6c4ccf";
-        });
-
-        input.addEventListener("blur", () => {
-            input.style.border = "1px solid #ddd";
-        });
+  auth.createUserWithEmailAndPassword(email, password)
+    .then((userCredential) => {
+      return userCredential.user.updateProfile({
+        displayName: name
+      });
+    })
+    .then(() => {
+      alert("Registration successful! You can now login.");
+      hideSignup();
+    })
+    .catch((error) => {
+      alert(error.message);
     });
-});
-
-
-// ================= FADE IN =================
-window.addEventListener("load", () => {
-    const box = document.querySelector(".login-box");
-    box.style.opacity = "1";
-    box.style.transform = "translateY(0px)";
-});
+}

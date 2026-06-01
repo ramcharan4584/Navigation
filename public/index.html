@@ -64,8 +64,25 @@
                 <!-- Sign Up -->
                 <p class="signup-text">
                     Don't have an account?
-                    <a href="#">Sign Up</a>
+                    <a href="#" onclick="showSignup()">Sign Up</a>
                 </p>
+
+                <div class="signup-box" id="signupBox" style="display: none;">
+    <h2>Create Account</h2>
+
+    <input type="text" id="signupName" placeholder="Enter full name">
+    <input type="email" id="signupEmail" placeholder="Enter email">
+    <input type="password" id="signupPassword" placeholder="Create password">
+
+    <button class="signin-btn" onclick="registerUser()">
+        Register
+    </button>
+
+    <p class="signup-text">
+        Already have an account?
+        <a href="#" onclick="hideSignup()">Login</a>
+    </p>
+</div>
             </div>
 
         </div>

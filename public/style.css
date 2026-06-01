@@ -366,3 +366,15 @@ input {
     transform: translateY(40px);
     transition: all 0.8s ease;
 }
+.signup-box {
+    margin-top: 20px;
+}
+
+.signup-box h2 {
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.signup-box input {
+    margin-bottom: 15px;
+}
