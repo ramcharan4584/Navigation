@@ -49,7 +49,7 @@
 
                 <!-- Forgot Password -->
                 <div class="options">
-                    <a href="#">Forgot password?</a>
+                    <a href="#" onclick="forgotPassword()">Forgot password?</a>
                 </div>
 
                 <!-- Sign In -->
@@ -68,11 +68,14 @@
                 </p>
 
                 <div class="signup-box" id="signupBox" style="display: none;">
-    <h2>Create Account</h2>
+                    <h2>Create Account</h2>
 
-    <input type="text" id="signupName" placeholder="Enter full name">
-    <input type="email" id="signupEmail" placeholder="Enter email">
-    <input type="password" id="signupPassword" placeholder="Create password">
+                    <input type="text" id="signupName" placeholder="Enter full name">
+                    <input type="email" id="signupEmail" placeholder="Enter email">
+                    <div class="password-box">
+                    <input type="password" id="signupPassword" placeholder="Create password">
+                    <i class="fa-solid fa-eye" id="toggleSignupPassword"></i>
+                </div>
 
     <button class="signin-btn" onclick="registerUser()">
         Register
@@ -82,7 +85,7 @@
         Already have an account?
         <a href="#" onclick="hideSignup()">Login</a>
     </p>
-</div>
+    </div>
             </div>
 
         </div>

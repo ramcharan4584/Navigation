@@ -1,0 +1,287 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+body {
+  display: flex;
+  min-height: 100vh;
+  background: #f4f6fb;
+}
+
+/* SIDEBAR */
+.sidebar {
+  width: 260px;
+  height: 100vh;
+
+  background: linear-gradient(
+    180deg,
+    #6c4ccf,
+    #4b2db5
+  );
+
+  padding: 25px 20px;
+
+  display: flex;
+  flex-direction: column;
+
+  position: fixed;
+  left: 0;
+  top: 0;
+
+  box-shadow: 4px 0 20px rgba(0,0,0,0.12);
+}
+
+/* LOGO */
+.sidebar h2 {
+  color: white;
+  font-size: 28px;
+  margin-bottom: 45px;
+
+  text-align: center;
+  letter-spacing: 1px;
+}
+
+/* SIDEBAR LINKS */
+.sidebar a {
+  text-decoration: none;
+  color: white;
+
+  padding: 15px 18px;
+  margin-bottom: 12px;
+
+  border-radius: 14px;
+
+  font-size: 16px;
+  font-weight: 500;
+
+  transition: all 0.3s ease;
+
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* HOVER EFFECT */
+.sidebar a:hover {
+  background: rgba(255,255,255,0.18);
+
+  transform: translateX(6px);
+}
+
+/* ACTIVE LINK */
+.sidebar a.active {
+  background: white;
+  color: #5b3fc0;
+}
+
+/* LOGOUT BUTTON */
+.sidebar button {
+  margin-top: auto;
+
+  padding: 14px;
+  border: none;
+  border-radius: 14px;
+
+  background: white;
+  color: #5b3fc0;
+
+  font-size: 16px;
+  font-weight: bold;
+
+  cursor: pointer;
+
+  transition: 0.3s;
+}
+
+/* LOGOUT HOVER */
+.sidebar button:hover {
+  background: #f3f3f3;
+
+  transform: scale(1.03);
+}
+
+.sidebar h2 {
+  margin-bottom: 40px;
+}
+
+.sidebar a {
+  display: block;
+  color: white;
+  text-decoration: none;
+  margin: 20px 0;
+  font-size: 16px;
+}
+
+.sidebar a:hover {
+  background: rgba(255,255,255,0.15);
+  padding: 10px;
+  border-radius: 8px;
+}
+
+.sidebar button {
+  margin-top: 40px;
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  background: white;
+  color: #5b3fc0;
+  cursor: pointer;
+}
+
+.main-content {
+  flex: 1;
+  padding: 30px;
+  margin-left: 260px;
+}
+
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 40px;
+}
+
+.profile {
+  width: 45px;
+  height: 45px;
+  background: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  font-size: 22px;
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 25px;
+}
+
+.card {
+  background: white;
+  padding: 30px;
+  border-radius: 18px;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.card:hover {
+  transform: translateY(-8px);
+}
+
+.card h3 {
+  color: #5b3fc0;
+  margin-bottom: 10px;
+}
+.student-card {
+  background: rgba(255,255,255,0.15);
+  padding: 20px;
+  border-radius: 18px;
+  text-align: center;
+  color: white;
+  margin-bottom: 25px;
+}
+
+.avatar {
+  width: 70px;
+  height: 70px;
+  background: white;
+  color: #5b3fc0;
+  border-radius: 50%;
+  margin: 0 auto 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+}
+
+.student-card h3 {
+  margin-bottom: 5px;
+}
+
+.student-card p {
+  font-size: 14px;
+  opacity: 0.9;
+}
+
+.quick-info {
+  color: white;
+  font-size: 14px;
+  line-height: 2;
+}
+
+.quick-info p {
+  background: rgba(255,255,255,0.12);
+  padding: 10px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+}
+/* MOBILE RESPONSIVE DESIGN */
+@media (max-width: 768px) {
+
+  body {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    position: relative;
+    width: 100%;
+    height: auto;
+    padding: 20px;
+  }
+
+  .sidebar h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+
+  .student-card {
+    padding: 15px;
+    margin-bottom: 15px;
+  }
+
+  .avatar {
+    width: 55px;
+    height: 55px;
+    font-size: 26px;
+  }
+
+  .quick-info {
+    font-size: 13px;
+  }
+
+  .sidebar button {
+    margin-top: 20px;
+  }
+
+  .main-content {
+    margin-left: 0;
+    padding: 20px;
+  }
+
+  .topbar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+
+  .topbar h1 {
+    font-size: 24px;
+  }
+
+  .cards {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+  .card {
+    padding: 22px;
+  }
+}

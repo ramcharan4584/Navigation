@@ -1,65 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>College Navigation System</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Dashboard</title>
+  <link rel="stylesheet" href="dashboard.css">
 </head>
-
 <body>
-    
-    <h1>LIVE SERVER TEST</h1>
-    <nav class="navbar">
 
-    <ul class="nav-links">
-    <li><a href="#">Home</a></li>
-    <li><a href="#">Dashboard</a></li>
-    <li><a href="#">Notices</a></li>
-    <li><a href="#">Timetable</a></li>
-    </ul>
+  <div class="sidebar">
+  <h2>🎓 Portal</h2>
 
-  <div class="profile-section">
+  <div class="student-card">
+    <div class="avatar">👤</div>
+    <h3>Student</h3>
+    <p>Welcome to Dashboard</p>
   </div>
-</nav>
-<div class="navbar">
-  <h2 class="logo">Student Portal</h2>
 
-  <div class="nav-right">
-    <button class="profile-btn" onclick="openProfile()">👤</button>
+  <div class="quick-info">
+    <p>📅 Academic Year: 2025-26</p>
+    <p>🏫 Department: IT</p>
+    <p>📌 Status: Active</p>
   </div>
+
+  <button onclick="logout()">Logout</button>
 </div>
-<!-- NAVBAR -->
-<div class="navbar">
-  <div class="nav-buttons">
-    <button class="login-btn" onclick="openLogin()">
-  Login
-</button>
-  </div>
-</div>
-    <!-- Header -->
-    <header>
-        <h1>College Navigation System</h1>
-        <p>Find Classrooms, Labs, and Departments Easily</p>
-    </header>
 
-    <!-- Search Section -->
-    <div class="search-box">
-        <input type="text" id="searchInput" placeholder="Search classroom / lab / block...">
-        <button onclick="searchLocation()">Search</button>
+  <div class="main-content">
+    <div class="topbar">
+      <h1>Welcome Student</h1>
+      <div class="profile">👤</div>
     </div>
 
-    <!-- Quick Links -->
-    <div class="menu">
-        <a href="#">Departments</a>
-        <a href="#">College Map</a>
-        <a href="#">About College</a>
-        <a href="#">Contact</a>
+    <div class="cards">
+      <div class="card">
+        <h3>College Navigation</h3>
+        <p>Find blocks, labs, classrooms and offices.</p>
+      </div>
+
+      <div class="card">
+        <h3>Lecture Cabins</h3>
+        <p>View faculty cabin locations.</p>
+      </div>
+
+      <div class="card">
+        <h3>Previous Papers</h3>
+        <p>Access previous year question papers.</p>
+      </div>
+
+      <div class="card">
+        <h3>Student Services</h3>
+        <p>Important student-related services.</p>
+      </div>
     </div>
+  </div>
 
-    <!-- Result Box -->
-    <div id="resultBox"></div>
-
-    <script src="script.js"></script>
-
+  <script src="dashboard.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
 </body>
 </html>

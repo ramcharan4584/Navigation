@@ -14,7 +14,8 @@ firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 
 window.addEventListener("DOMContentLoaded", () => {
-  // PASSWORD SHOW / HIDE
+
+  // LOGIN PASSWORD TOGGLE
   const togglePassword = document.getElementById("togglePassword");
   const password = document.getElementById("password");
 
@@ -24,6 +25,26 @@ window.addEventListener("DOMContentLoaded", () => {
 
     togglePassword.classList.toggle("fa-eye");
     togglePassword.classList.toggle("fa-eye-slash");
+  });
+
+  // SIGNUP PASSWORD TOGGLE
+  const toggleSignupPassword =
+    document.getElementById("toggleSignupPassword");
+
+  const signupPassword =
+    document.getElementById("signupPassword");
+
+  toggleSignupPassword.addEventListener("click", () => {
+
+    const type =
+      signupPassword.type === "password"
+        ? "text"
+        : "password";
+
+    signupPassword.type = type;
+
+    toggleSignupPassword.classList.toggle("fa-eye");
+    toggleSignupPassword.classList.toggle("fa-eye-slash");
   });
 
   // SIGN IN BUTTON
@@ -40,7 +61,6 @@ window.addEventListener("DOMContentLoaded", () => {
 
   auth.signInWithEmailAndPassword(email, passwordValue)
     .then(() => {
-      alert("Login successful!");
       window.location.href = "dashboard.html";
     })
     .catch((error) => {
@@ -77,7 +97,6 @@ function googleLogin() {
 
   auth.signInWithPopup(provider)
     .then((result) => {
-      alert("Google login successful!");
       window.location.href = "dashboard.html";
     })
     .catch((error) => {
@@ -118,6 +137,22 @@ function registerUser() {
     .then(() => {
       alert("Registration successful! You can now login.");
       hideSignup();
+    })
+    .catch((error) => {
+      alert(error.message);
+    });
+}
+function forgotPassword() {
+  const email = document.querySelector('input[type="email"]').value;
+
+  if (email === "") {
+    alert("Please enter your registered email first.");
+    return;
+  }
+
+  auth.sendPasswordResetEmail(email)
+    .then(() => {
+      alert("Password reset link sent to your email.");
     })
     .catch((error) => {
       alert(error.message);
