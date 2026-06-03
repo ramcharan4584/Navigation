@@ -24,28 +24,14 @@
   <i class="fa-solid fa-house"></i>
 </a>
  <div class="nav-links">
-    <a href="#">Explore SNIST <i class="fa-solid fa-chevron-down"></i></a>
-    <a href="#">Admissions <i class="fa-solid fa-chevron-down"></i></a>
     <a href="#">Academics <i class="fa-solid fa-chevron-down"></i></a>
     <a href="#">Examinations <i class="fa-solid fa-chevron-down"></i></a>
-    <a href="#">SNIST Placements <i class="fa-solid fa-chevron-down"></i></a>
-    <a href="#">Research & Innovation <i class="fa-solid fa-chevron-down"></i></a>
-    <a href="#">IQAC <i class="fa-solid fa-chevron-down"></i></a>
-    <a href="#">Student Life <i class="fa-solid fa-chevron-down"></i></a>
+    <a href="#">Timetable <i class="fa-solid fa-chevron-down"></i></a>
+    <a href="#">Student Events <i class="fa-solid fa-chevron-down"></i></a>
+    <a href="#">Student Clubs <i class="fa-solid fa-chevron-down"></i></a>
+    <a href="#">Notices <i class="fa-solid fa-chevron-down"></i></a>
   </div>
-
-
-  <div class="nav-icons">
-    <i class="fa-solid fa-magnifying-glass"
-      onclick="toggleSearch(event)"></i>
-
-    <i class="fa-solid fa-bars"
-      onclick="toggleSidebar(event)"></i>
-  </div>
-
-</div>
-
-  <!-- SEARCH BAR -->
+   <!-- SEARCH BAR -->
   <div class="search-box" id="searchBox">
     <input
       type="text"
@@ -55,6 +41,31 @@
     >
     <div class="search-results" id="searchResults"></div>
   </div>
+    <!-- DARKMODE AND PROFILE -->
+  <div class="nav-icons">
+    <i class="fa-solid fa-magnifying-glass"
+      onclick="toggleSearch(event)"></i>
+
+  <div class="nav-icons">
+  <div class="theme-switch" id="themeToggle" onclick="toggleTheme()">
+  <div class="switch-circle">
+    <i class="fa-solid fa-sun sun-icon"></i>
+    <i class="fa-solid fa-moon moon-icon"></i>
+  </div>
+  <span class="switch-text">LIGHT</span>
+</div>
+
+  <a href="profile.html" class="profile-pill">
+    <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="Profile">
+  </a>
+
+</div>
+  <!-- SIDEBAR TOGGLE -->
+  <i class="fa-solid fa-bars"
+      onclick="toggleSidebar(event)"></i>
+  </div>
+
+</div>
 
   <!-- SIDEBAR -->
 <div class="sidebar" id="sidebar">
@@ -64,10 +75,7 @@
     Home
   </a>
   <a href="#">
-    Explore SNIST
-  </a>
-  <a href="#">
-    Admissions
+    About SNIST
   </a>
   <a href="#">
     Academics
@@ -79,13 +87,13 @@
     SNIST Placements
   </a>
   <a href="#">
-    Research & Innovation
+    Timetable
   </a>
   <a href="#">
-    IQAC
+    Student Events
   </a>
   <a href="#">
-    Student Life
+    Students Clubs
   </a>
   <a href="#">
     Notices
@@ -105,11 +113,6 @@
     <button class="next" onclick="changeSlide(1)">❯</button>
   </div>
 
-  <!-- NEWS BAR -->
-  <div class="news-bar">
-    <span>Latest Notification & News</span>
-    <button>View More</button>
-  </div>
 
   <!-- CARDS -->
   <div class="main-content">

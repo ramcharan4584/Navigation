@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+  <title>Student Profile</title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="profile.css">
+
+  <!-- FONT AWESOME -->
+  <link rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+
+<body>
+
+  <div class="profile-page">
+
+    <!-- BACK BUTTON -->
+    <a href="dashboard.html" class="back-btn">
+      <i class="fa-solid fa-arrow-left"></i>
+      Back to Dashboard
+    </a>
+
+    <!-- PROFILE CARD -->
+    <div class="profile-card">
+
+      <!-- HEADER -->
+      <div class="profile-header">
+
+        <h1>Student Profile</h1>
+
+        <p>Manage your personal details</p>
+
+        <!-- PROFILE IMAGE -->
+        <div class="avatar">
+          <i class="fa-solid fa-user"></i>
+        </div>
+
+        <!-- UPLOAD BUTTON -->
+        <label for="profileUpload"
+               class="upload-btn">
+          Upload Profile Picture
+        </label>
+
+        <input type="file"
+               id="profileUpload"
+               accept="image/*">
+
+      </div>
+
+      <!-- PROFILE FORM -->
+      <div class="profile-info">
+
+        <div class="info-box">
+          <label>Full Name</label>
+          <input type="text"
+                 placeholder="Enter your full name">
+        </div>
+
+        <div class="info-box">
+          <label>Roll Number</label>
+          <input type="text"
+                 placeholder="Enter roll number">
+        </div>
+
+        <div class="info-box">
+          <label>Branch</label>
+          <input type="text"
+                 placeholder="Example: IT">
+        </div>
+
+        <div class="info-box">
+          <label>Current Year</label>
+          <input type="text"
+                 placeholder="Example: 2nd Year">
+        </div>
+
+        <div class="info-box">
+          <label>College Email</label>
+          <input type="email"
+                 placeholder="Enter college email">
+        </div>
+
+        <div class="info-box">
+          <label>Phone Number</label>
+          <input type="text"
+                 placeholder="Enter phone number">
+        </div>
+
+      </div>
+
+      <!-- SAVE BUTTON -->
+      <button class="save-btn">
+        Save Profile
+      </button>
+
+    </div>
+
+  </div>
+
+  <!-- DARK MODE -->
+  <script>
+    window.addEventListener("DOMContentLoaded", () => {
+
+      const savedTheme =
+        localStorage.getItem("theme");
+
+      if (savedTheme === "dark") {
+        document.body.classList.add("dark-mode");
+      }
+
+    });
+  </script>
+
+</body>
+</html>

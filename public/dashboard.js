@@ -150,3 +150,54 @@ function changeSlide(direction) {
 
   showSlide(currentSlide);
 }
+// APPLY SAVED THEME WHEN PAGE LOADS
+window.addEventListener("DOMContentLoaded", function () {
+  const savedTheme = localStorage.getItem("theme");
+  const switchText = document.querySelector(".switch-text");
+
+  if (savedTheme === "dark") {
+    document.body.classList.add("dark-mode");
+
+    if (switchText) {
+      switchText.textContent = "DARK";
+    }
+  } else {
+    document.body.classList.remove("dark-mode");
+
+    if (switchText) {
+      switchText.textContent = "LIGHT";
+    }
+  }
+});
+
+// TOGGLE DARK MODE
+function toggleTheme() {
+  const body = document.body;
+  const switchText = document.querySelector(".switch-text");
+
+  body.classList.toggle("dark-mode");
+
+  if (body.classList.contains("dark-mode")) {
+    localStorage.setItem("theme", "dark");
+
+    if (switchText) {
+      switchText.textContent = "DARK";
+    }
+  } else {
+    localStorage.setItem("theme", "light");
+
+    if (switchText) {
+      switchText.textContent = "LIGHT";
+    }
+  }
+}
+// LOAD PROFILE IMAGE
+const savedImage =
+  localStorage.getItem("profileImage");
+
+const navbarProfile =
+  document.getElementById("navbarProfile");
+
+if (savedImage && navbarProfile) {
+  navbarProfile.src = savedImage;
+}

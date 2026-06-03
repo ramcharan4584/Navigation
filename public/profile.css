@@ -1,0 +1,156 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+body {
+  min-height: 100vh;
+  background: #f4f6fb;
+}
+
+.profile-page {
+  padding: 30px;
+}
+
+.back-btn {
+  text-decoration: none;
+  color: #6c4ccf;
+  font-weight: bold;
+  font-size: 17px;
+}
+
+.profile-card {
+  max-width: 850px;
+  margin: 35px auto;
+  background: white;
+  padding: 35px;
+  border-radius: 22px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+.profile-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.profile-header h1 {
+  font-size: 32px;
+  color: #222;
+}
+
+.profile-header p {
+  color: gray;
+  margin: 8px 0 20px;
+}
+
+.avatar {
+  width: 95px;
+  height: 95px;
+  margin: 0 auto 18px;
+  background: linear-gradient(135deg, #7c3aed, #4f46e5);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 38px;
+}
+
+.upload-btn {
+  display: inline-block;
+  background: #6c4ccf;
+  color: white;
+  padding: 11px 22px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 15px;
+}
+
+#profileUpload {
+  display: none;
+}
+
+.profile-info {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 22px;
+}
+
+.info-box label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 7px;
+  font-size: 15px;
+}
+
+.info-box input {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  font-size: 15px;
+}
+
+.save-btn {
+  display: block;
+  width: 260px;
+  margin: 32px auto 0;
+  padding: 13px;
+  border: none;
+  border-radius: 12px;
+  background: #6c4ccf;
+  color: white;
+  font-size: 17px;
+  cursor: pointer;
+}
+
+.save-btn:hover,
+.upload-btn:hover {
+  background: #5b3fc0;
+}
+
+/* DARK MODE */
+body.dark-mode {
+  background: #111827;
+  color: white;
+}
+
+body.dark-mode .profile-card {
+  background: #1f2937;
+}
+
+body.dark-mode .profile-header h1,
+body.dark-mode .info-box label {
+  color: white;
+}
+
+body.dark-mode .profile-header p {
+  color: #d1d5db;
+}
+
+body.dark-mode .info-box input {
+  background: #111827;
+  color: white;
+  border: 1px solid #374151;
+}
+
+body.dark-mode .info-box input::placeholder {
+  color: #9ca3af;
+}
+
+@media (max-width: 768px) {
+  .profile-page {
+    padding: 20px;
+  }
+  .profile-card {
+    padding: 25px;
+  }
+  .profile-info {
+    grid-template-columns: 1fr;
+  }
+  .save-btn {
+    width: 100%;
+  }
+}
