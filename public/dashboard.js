@@ -21,9 +21,10 @@ function logout() {
   window.location.href = "index.html";
 }
 
-// CLOSE SIDEBAR WHEN CLICKING OUTSIDE
+/* CLOSE SIDEBAR AND SEARCH WHEN CLICKING OUTSIDE */
 document.addEventListener("click", function(event) {
   const sidebar = document.getElementById("sidebar");
+  const searchBox = document.getElementById("searchBox");
   const navIcons = document.querySelector(".nav-icons");
 
   if (
@@ -33,9 +34,17 @@ document.addEventListener("click", function(event) {
   ) {
     sidebar.classList.remove("active");
   }
+
+  if (
+    searchBox.classList.contains("active") &&
+    !searchBox.contains(event.target) &&
+    !navIcons.contains(event.target)
+  ) {
+    searchBox.classList.remove("active");
+  }
 });
 
-// SEARCH DATA
+/* SEARCH DATA */
 const collegeData = [
   {
     name: "IT Lab",
@@ -106,7 +115,7 @@ function searchCollege() {
   });
 }
 
-// SHOW STUDENT NAME
+/* SHOW STUDENT NAME */
 window.onload = function () {
   const studentName = localStorage.getItem("studentName");
 
@@ -115,14 +124,12 @@ window.onload = function () {
       `Welcome ${studentName} 👋`;
   }
 };
-// IMAGE SLIDER
-let currentSlide = 0;
 
-const slides =
-  document.querySelectorAll(".slide");
+/* IMAGE SLIDER */
+let currentSlide = 0;
+const slides = document.querySelectorAll(".slide");
 
 function showSlide(index) {
-
   slides.forEach(slide => {
     slide.classList.remove("active");
   });
@@ -131,7 +138,6 @@ function showSlide(index) {
 }
 
 function changeSlide(direction) {
-
   currentSlide += direction;
 
   if (currentSlide >= slides.length) {
@@ -144,20 +150,3 @@ function changeSlide(direction) {
 
   showSlide(currentSlide);
 }
-// CLOSE SEARCH BOX WHEN CLICKING OUTSIDE
-document.addEventListener("click", function(event) {
-
-  const searchBox =
-    document.getElementById("searchBox");
-
-  const searchIcon =
-    document.querySelector(".fa-magnifying-glass");
-
-  if (
-    searchBox.classList.contains("active") &&
-    !searchBox.contains(event.target) &&
-    !searchIcon.contains(event.target)
-  ) {
-    searchBox.classList.remove("active");
-  }
-});

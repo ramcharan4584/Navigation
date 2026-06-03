@@ -12,66 +12,98 @@
 
 <body>
 
-  <!-- TOP NAVBAR -->
-  <div class="navbar">
-    <h1 id="welcomeText">Welcome Student</h1>
+<!-- WELCOME -->
+<div class="welcome-line">
+  <h1 id="welcomeText">Welcome Student 👋</h1>
+</div>
 
-    <div class="nav-icons">
-      <i class="fa-solid fa-magnifying-glass" onclick="toggleSearch(event)"></i>
-      <i class="fa-solid fa-bars" onclick="toggleSidebar(event)"></i>
-    </div>
+<!-- NAVBAR -->
+<div class="navbar">
+
+  <a href="dashboard.html" class="home-icon">
+  <i class="fa-solid fa-house"></i>
+</a>
+ <div class="nav-links">
+    <a href="#">Explore SNIST <i class="fa-solid fa-chevron-down"></i></a>
+    <a href="#">Admissions <i class="fa-solid fa-chevron-down"></i></a>
+    <a href="#">Academics <i class="fa-solid fa-chevron-down"></i></a>
+    <a href="#">Examinations <i class="fa-solid fa-chevron-down"></i></a>
+    <a href="#">SNIST Placements <i class="fa-solid fa-chevron-down"></i></a>
+    <a href="#">Research & Innovation <i class="fa-solid fa-chevron-down"></i></a>
+    <a href="#">IQAC <i class="fa-solid fa-chevron-down"></i></a>
+    <a href="#">Student Life <i class="fa-solid fa-chevron-down"></i></a>
   </div>
+
+
+  <div class="nav-icons">
+    <i class="fa-solid fa-magnifying-glass"
+      onclick="toggleSearch(event)"></i>
+
+    <i class="fa-solid fa-bars"
+      onclick="toggleSidebar(event)"></i>
+  </div>
+
+</div>
 
   <!-- SEARCH BAR -->
   <div class="search-box" id="searchBox">
-  <input 
-    type="text" 
-    id="searchInput"
-    placeholder="Search classrooms, labs, faculty cabins, blocks..."
-    onkeyup="searchCollege()"
-  >
-
-  <div class="search-results" id="searchResults"></div>
-</div>
+    <input
+      type="text"
+      id="searchInput"
+      placeholder="Search classrooms, labs, cabins, blocks..."
+      onkeyup="searchCollege()"
+    >
+    <div class="search-results" id="searchResults"></div>
+  </div>
 
   <!-- SIDEBAR -->
-  <div class="sidebar" id="sidebar">
-    <h2>Contents</h2>
-    <a href="#">Dashboard</a>
-    <a href="#">College Navigation</a>
-    <a href="#">Lecture Cabins</a>
-    <a href="#">Previous Papers</a>
-    <a href="#">Student Services</a>
-    <a href="#" onclick="logout()">Logout</a>
-  </div>
+<div class="sidebar" id="sidebar">
+
+  <a href="dashboard.html">
+    <i class="fa-solid fa-house"></i>
+    Home
+  </a>
+  <a href="#">
+    Explore SNIST
+  </a>
+  <a href="#">
+    Admissions
+  </a>
+  <a href="#">
+    Academics
+  </a>
+  <a href="#">
+    Examinations
+  </a>
+  <a href="#">
+    SNIST Placements
+  </a>
+  <a href="#">
+    Research & Innovation
+  </a>
+  <a href="#">
+    IQAC
+  </a>
+  <a href="#">
+    Student Life
+  </a>
+  <a href="#">
+    Notices
+  </a>
+</div>
 
   <!-- IMAGE SLIDER -->
-<div class="slider">
+  <div class="slider">
+    <button class="prev" onclick="changeSlide(-1)">❮</button>
 
-  <button class="prev" onclick="changeSlide(-1)">
-    ❮
-  </button>
+    <div class="slides">
+      <img class="slide active" src="images/banner.jpg" alt="Banner 1">
+      <img class="slide" src="images/topview.jpg" alt="Banner 2">
+      <img class="slide" src="images/firstyearblock.jpg" alt="Banner 3">
+    </div>
 
-  <div class="slides">
-
-    <img class="slide active"
-      src="images/banner.jpg"
-      alt="Banner 1">
-
-    <img class="slide"
-      src="images/topview.jpg"
-      alt="Banner 2">
-    <img class="slide"
-      src="images/firstyearblock.jpg"
-      alt="Banner 3">
-
+    <button class="next" onclick="changeSlide(1)">❯</button>
   </div>
-
-  <button class="next" onclick="changeSlide(1)">
-    ❯
-  </button>
-
-</div>
 
   <!-- NEWS BAR -->
   <div class="news-bar">
@@ -79,10 +111,10 @@
     <button>View More</button>
   </div>
 
-  <!-- MAIN CONTENT -->
+  <!-- CARDS -->
   <div class="main-content">
-
     <div class="cards">
+
       <div class="card">
         <h3>College Navigation</h3>
         <p>Find blocks, labs, classrooms and offices.</p>
@@ -102,8 +134,8 @@
         <h3>Student Services</h3>
         <p>Important student-related services.</p>
       </div>
-    </div>
 
+    </div>
   </div>
 
   <script src="dashboard.js"></script>
