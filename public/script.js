@@ -96,13 +96,19 @@ function googleLogin() {
   const provider = new firebase.auth.GoogleAuthProvider();
 
   auth.signInWithPopup(provider)
-    .then((result) => {
-      window.location.href = "dashboard.html";
-    })
-    .catch((error) => {
-      console.log(error);
-      alert(error.message);
-    });
+.then((result) => {
+
+    const user = result.user;
+
+    // SAVE NAME
+    localStorage.setItem(
+      "studentName",
+      user.displayName
+    );
+
+    // OPEN DASHBOARD
+    window.location.href = "dashboard.html";
+});
 }
 function showSignup() {
   document.querySelector(".signin-btn").style.display = "none";

@@ -4,33 +4,83 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Student Dashboard</title>
+
   <link rel="stylesheet" href="dashboard.css">
+  <link rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
+
 <body>
 
-  <div class="sidebar">
-  <h2>🎓 Portal</h2>
+  <!-- TOP NAVBAR -->
+  <div class="navbar">
+    <h1 id="welcomeText">Welcome Student</h1>
 
-  <div class="student-card">
-    <div class="avatar">👤</div>
-    <h3>Student</h3>
-    <p>Welcome to Dashboard</p>
+    <div class="nav-icons">
+      <i class="fa-solid fa-magnifying-glass" onclick="toggleSearch(event)"></i>
+      <i class="fa-solid fa-bars" onclick="toggleSidebar(event)"></i>
+    </div>
   </div>
 
-  <div class="quick-info">
-    <p>📅 Academic Year: 2025-26</p>
-    <p>🏫 Department: IT</p>
-    <p>📌 Status: Active</p>
-  </div>
+  <!-- SEARCH BAR -->
+  <div class="search-box" id="searchBox">
+  <input 
+    type="text" 
+    id="searchInput"
+    placeholder="Search classrooms, labs, faculty cabins, blocks..."
+    onkeyup="searchCollege()"
+  >
 
-  <button onclick="logout()">Logout</button>
+  <div class="search-results" id="searchResults"></div>
 </div>
 
+  <!-- SIDEBAR -->
+  <div class="sidebar" id="sidebar">
+    <h2>Contents</h2>
+    <a href="#">Dashboard</a>
+    <a href="#">College Navigation</a>
+    <a href="#">Lecture Cabins</a>
+    <a href="#">Previous Papers</a>
+    <a href="#">Student Services</a>
+    <a href="#" onclick="logout()">Logout</a>
+  </div>
+
+  <!-- IMAGE SLIDER -->
+<div class="slider">
+
+  <button class="prev" onclick="changeSlide(-1)">
+    ❮
+  </button>
+
+  <div class="slides">
+
+    <img class="slide active"
+      src="images/banner.jpg"
+      alt="Banner 1">
+
+    <img class="slide"
+      src="images/topview.jpg"
+      alt="Banner 2">
+    <img class="slide"
+      src="images/firstyearblock.jpg"
+      alt="Banner 3">
+
+  </div>
+
+  <button class="next" onclick="changeSlide(1)">
+    ❯
+  </button>
+
+</div>
+
+  <!-- NEWS BAR -->
+  <div class="news-bar">
+    <span>Latest Notification & News</span>
+    <button>View More</button>
+  </div>
+
+  <!-- MAIN CONTENT -->
   <div class="main-content">
-    <div class="topbar">
-      <h1>Welcome Student</h1>
-      <div class="profile">👤</div>
-    </div>
 
     <div class="cards">
       <div class="card">
@@ -53,10 +103,9 @@
         <p>Important student-related services.</p>
       </div>
     </div>
+
   </div>
 
   <script src="dashboard.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
 </body>
 </html>
