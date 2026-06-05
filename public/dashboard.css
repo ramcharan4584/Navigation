@@ -235,111 +235,30 @@ body {
 .card p {
   font-size: 18px;
 }
-/* MOBILE VIEW */
-@media (max-width: 900px) {
+/* MINI DARK MODE SWITCH */
+.theme-switch {
+  width: 72px;
+  height: 28px;
 
-  .nav-links {
-    display: none !important;
-  }
+  border-radius: 20px;
 
-  .home-icon {
-    display: none !important;
-  }
+  background: #e5e7eb;
 
-  .navbar {
-    display: flex !important;
-    justify-content: flex-end !important;
-    align-items: center !important;
-    padding: 0 18px !important;
-  }
+  display: flex;
+  align-items: center;
 
-  .nav-icons {
-    margin-left: auto !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: flex-end !important;
-    gap: 14px !important;
-  }
+  padding: 2px;
 
-  #themeToggle {
-    display: inline-block !important;
-    order: 1 !important;
-  }
+  cursor: pointer;
 
-  .fa-magnifying-glass {
-    display: inline-block !important;
-    order: 2 !important;
-  }
+  position: relative;
 
-  .fa-bars {
-    display: inline-block !important;
-    order: 3 !important;
-  }
-
-  .sidebar {
-    display: block;
-    position: fixed;
-    top: 0;
-    right: -270px;
-    width: 260px;
-    height: 100vh;
-    background: #111827;
-    padding-top: 90px;
-    transition: 0.4s ease;
-    z-index: 3000;
-  }
-
-  .sidebar.active {
-    right: 0;
-  }
-
-  .sidebar h2 {
-    color: white;
-    text-align: center;
-    margin-bottom: 30px;
-  }
-
-  .sidebar a {
-    display: block;
-    color: white;
-    text-decoration: none;
-    padding: 17px 30px;
-    font-size: 16px;
-  }
-
-  .search-box {
-    width: 90%;
-    right: 5%;
-    top: 150px;
-  }
-
-  .welcome-line h1 {
-    font-size: 24px;
-  }
-
-  .slider {
-    width: calc(100% - 30px);
-    height: 230px;
-  }
-
-  .news-bar {
-    padding: 15px 20px;
-  }
-
-  .main-content {
-    padding: 30px 20px;
-  }
-
-  .cards {
-    grid-template-columns: 1fr;
-  }
+  transition: 0.3s;
 }
 /* PROFILE BUTTON */
 .profile-btn {
   text-decoration: none;
 }
-
-/* PROFILE AVATAR */
 /* PROFILE BUTTON */
 .profile-pill {
   width: 42px;
@@ -374,27 +293,6 @@ body {
 .profile-pill:hover {
   transform: scale(1.05);
 }
-/* MINI DARK MODE SWITCH */
-.theme-switch {
-  width: 72px;
-  height: 28px;
-
-  border-radius: 20px;
-
-  background: #e5e7eb;
-
-  display: flex;
-  align-items: center;
-
-  padding: 2px;
-
-  cursor: pointer;
-
-  position: relative;
-
-  transition: 0.3s;
-}
-
 /* ROUND BUTTON */
 .switch-circle {
   width: 24px;
@@ -510,4 +408,124 @@ body.dark-mode .slider {
 
 body.dark-mode .navbar {
   background: linear-gradient(90deg, #312e81, #6d28d9) !important;
+}
+/* MOBILE VIEW */
+@media (max-width: 900px) {
+
+  .nav-links {
+    display: none !important;
+  }
+
+  .home-icon {
+    display: none !important;
+  }
+
+  .navbar {
+    display: flex !important;
+    justify-content: flex-end !important;
+    align-items: center !important;
+    height: 60px;
+    padding: 0 18px !important;
+  }
+
+  .nav-icons {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  gap: 12px !important;
+}
+
+  .fa-magnifying-glass {
+    order: 1 !important;
+  }
+
+  .theme-switch,
+  #themeToggle {
+    order: 2 !important;
+  }
+
+  .profile-pill,
+  .profile-btn {
+    order: 3 !important;
+  }
+
+  .fa-bars {
+    display: inline-flex !important;
+  }
+
+  .sidebar {
+    display: block;
+    position: fixed;
+    top: 0;
+    right: -270px;
+    width: 260px;
+    height: 100vh;
+    background: #111827;
+    padding-top: 90px;
+    transition: 0.4s ease;
+    z-index: 3000;
+  }
+
+  .sidebar.active {
+    right: 0 !important;
+  }
+
+  .sidebar h2 {
+    color: white;
+    text-align: center;
+    margin-bottom: 30px;
+  }
+
+  .sidebar a {
+    display: block;
+    color: white;
+    text-decoration: none;
+    padding: 17px 30px;
+    font-size: 16px;
+  }
+
+  .search-box {
+    width: 90%;
+    right: 5%;
+    top: 145px;
+  }
+
+  .welcome-line {
+    padding: 28px;
+  }
+
+  .welcome-line h1 {
+    font-size: 32px !important;
+    line-height: 1.2;
+  }
+
+  .slider {
+    width: calc(100% - 28px);
+    height: 260px;
+    margin: 22px auto;
+    border-radius: 22px;
+  }
+
+  .main-content {
+    padding: 38px 26px;
+  }
+
+  .cards {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+
+  .card {
+    padding: 38px 30px;
+    border-radius: 22px;
+  }
+
+  .card h3 {
+    font-size: 30px;
+  }
+
+  .card p {
+    font-size: 22px;
+    line-height: 1.35;
+  }
 }
