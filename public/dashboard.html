@@ -6,32 +6,59 @@
   <title>Student Dashboard</title>
 
   <link rel="stylesheet" href="dashboard.css">
-  <link rel="stylesheet"
-  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 
 <body>
 
-<!-- WELCOME -->
-<div class="welcome-line">
-  <h1 id="welcomeText">Welcome Student 👋</h1>
-</div>
-
-<!-- NAVBAR -->
-<div class="navbar">
-
-  <a href="dashboard.html" class="home-icon">
-  <i class="fa-solid fa-house"></i>
-</a>
- <div class="nav-links">
-    <a href="#">Academics <i class="fa-solid fa-chevron-down"></i></a>
-    <a href="#">Examinations <i class="fa-solid fa-chevron-down"></i></a>
-    <a href="#">Timetable <i class="fa-solid fa-chevron-down"></i></a>
-    <a href="#">Student Events <i class="fa-solid fa-chevron-down"></i></a>
-    <a href="#">Student Clubs <i class="fa-solid fa-chevron-down"></i></a>
-    <a href="#">Notices <i class="fa-solid fa-chevron-down"></i></a>
+  <div class="welcome-line">
+    <h1 id="welcomeText">Hello Student</h1>
   </div>
-   <!-- SEARCH BAR -->
+
+  <div class="navbar">
+
+    <a href="dashboard.html" class="home-icon">
+      <i class="fa-solid fa-house"></i>
+    </a>
+
+    <div class="nav-links">
+      <a href="#">Academics <i class="fa-solid fa-chevron-down"></i></a>
+      <a href="#">Examinations <i class="fa-solid fa-chevron-down"></i></a>
+      <a href="#">Timetable <i class="fa-solid fa-chevron-down"></i></a>
+      <a href="#">Student Events <i class="fa-solid fa-chevron-down"></i></a>
+      <a href="#">Student Clubs <i class="fa-solid fa-chevron-down"></i></a>
+      <a href="#">Notices <i class="fa-solid fa-chevron-down"></i></a>
+    </div>
+
+    <div class="nav-icons">
+
+      <i class="fa-solid fa-magnifying-glass" onclick="toggleSearch(event)"></i>
+
+      <div class="theme-switch" onclick="toggleTheme()">
+        <div class="switch-circle">
+          <i class="fa-solid fa-sun sun-icon"></i>
+          <i class="fa-solid fa-moon moon-icon"></i>
+        </div>
+        <span class="switch-text">LIGHT</span>
+      </div>
+
+      <div class="profile-pill" onclick="toggleProfilePopup(event)">
+        <img id="navbarProfile" src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="Profile">
+      </div>
+
+      <i class="fa-solid fa-bars menu-icon" onclick="toggleSidebar(event)"></i>
+
+    </div>
+  </div>
+
+  <div class="profile-popup" id="profilePopup">
+    <img id="popupProfileImage" src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png">
+    <h3 id="popupStudentName">Student Name</h3>
+    <p id="popupStudentEmail">student@email.com</p>
+    <a href="profile.html">View Profile</a>
+    <button type="button" onclick="logout()">Logout</button>
+  </div>
+
   <div class="search-box" id="searchBox">
     <input
       type="text"
@@ -41,65 +68,19 @@
     >
     <div class="search-results" id="searchResults"></div>
   </div>
-    <!-- DARKMODE AND PROFILE -->
-  <div class="nav-icons">
-    <i class="fa-solid fa-magnifying-glass"
-      onclick="toggleSearch(event)"></i>
-      
-  <div class="theme-switch" id="themeToggle" onclick="toggleTheme()">
-  <div class="switch-circle">
-    <i class="fa-solid fa-sun sun-icon"></i>
-    <i class="fa-solid fa-moon moon-icon"></i>
-  </div>
-  <span class="switch-text">LIGHT</span>
-</div>
 
-  <a href="profile.html" class="profile-pill">
-    <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="Profile">
-  </a>
-
-</div>
-  <!-- SIDEBAR TOGGLE -->
-  <i class="fa-solid fa-bars"
-      onclick="toggleSidebar(event)"></i>
+  <div class="sidebar" id="sidebar">
+    <a href="dashboard.html"><i class="fa-solid fa-house"></i> Home</a>
+    <a href="#">About SNIST</a>
+    <a href="#">Academics</a>
+    <a href="#">Examinations</a>
+    <a href="#">SNIST Placements</a>
+    <a href="#">Timetable</a>
+    <a href="#">Student Events</a>
+    <a href="#">Students Clubs</a>
+    <a href="#">Notices</a>
   </div>
 
-</div>
-
-  <!-- SIDEBAR -->
-<div class="sidebar" id="sidebar">
-
-  <a href="dashboard.html">
-    <i class="fa-solid fa-house"></i>
-    Home
-  </a>
-  <a href="#">
-    About SNIST
-  </a>
-  <a href="#">
-    Academics
-  </a>
-  <a href="#">
-    Examinations
-  </a>
-  <a href="#">
-    SNIST Placements
-  </a>
-  <a href="#">
-    Timetable
-  </a>
-  <a href="#">
-    Student Events
-  </a>
-  <a href="#">
-    Students Clubs
-  </a>
-  <a href="#">
-    Notices
-  </a>
-</div>
-
-  <!-- IMAGE SLIDER -->
   <div class="slider">
     <button class="prev" onclick="changeSlide(-1)">❮</button>
 
@@ -112,11 +93,8 @@
     <button class="next" onclick="changeSlide(1)">❯</button>
   </div>
 
-
-  <!-- CARDS -->
   <div class="main-content">
     <div class="cards">
-
       <div class="card">
         <h3>College Navigation</h3>
         <p>Find blocks, labs, classrooms and offices.</p>
@@ -136,10 +114,9 @@
         <h3>Student Services</h3>
         <p>Important student-related services.</p>
       </div>
-
     </div>
   </div>
 
-  <script src="dashboard.js"></script>
+  <script type="module" src="dashboard.js"></script>
 </body>
 </html>
