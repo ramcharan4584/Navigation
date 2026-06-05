@@ -349,3 +349,40 @@ document.addEventListener("DOMContentLoaded", function () {
     if (navbarProfile) navbarProfile.src = profileImage;
   }
 });
+function toggleDropdown(event, menuId) {
+
+  event.preventDefault();
+  event.stopPropagation();
+
+  const menu = document.getElementById(menuId);
+
+  document.querySelectorAll(".mega-menu").forEach(item => {
+
+    if(item.id !== menuId){
+      item.classList.remove("active");
+    }
+
+  });
+
+  menu.classList.toggle("active");
+}
+
+window.toggleDropdown = toggleDropdown;
+
+/* CLICK OUTSIDE CLOSE */
+document.addEventListener("click", function () {
+
+  document.querySelectorAll(".mega-menu").forEach(menu => {
+    menu.classList.remove("active");
+  });
+
+});
+function toggleMobileMenu(menuId) {
+  const menu = document.getElementById(menuId);
+
+  if (!menu) return;
+
+  menu.classList.toggle("active");
+}
+
+window.toggleMobileMenu = toggleMobileMenu;
