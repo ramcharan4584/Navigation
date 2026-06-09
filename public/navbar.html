@@ -1,0 +1,146 @@
+<div class="navbar">
+
+  <a href="dashboard.html" class="home-icon">
+    <i class="fa-solid fa-house"></i>
+  </a>
+
+  <div class="nav-links">
+
+    <a href="about.html">About SNIST</a>
+
+    <a href="#">Examinations <i class="fa-solid fa-chevron-down"></i></a>
+
+    <div class="nav-dropdown">
+      <a href="#" onclick="toggleDropdown(event, 'departmentsMenu')">
+        Academics Timetable <i class="fa-solid fa-chevron-down"></i>
+      </a>
+
+      <div class="mega-menu academics-menu" id="departmentsMenu">
+        <div class="clubs-grid">
+          <p>Civil Engineering</p>
+          <p>Computer Science Engineering</p>
+          <p>CSE Artificial Intelligence And Machine Learning</p>
+          <p>CSE Internet Of Things</p>
+          <p>CSE Data Science</p>
+          <p>CSE Cyber Security</p>
+          <p>Electrical And Electronics Engineering</p>
+          <p>Electronics & Communication Engineering</p>
+          <p>Electronics And Computer Engineering</p>
+          <p>Information Technology</p>
+          <p>Mechanical Engineering</p>
+          <p>Science And Humanities</p>
+          <p>School of Management</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="nav-dropdown">
+      <a href="#" onclick="toggleDropdown(event, 'eventsMenu')">
+        Student Events <i class="fa-solid fa-chevron-down"></i>
+      </a>
+
+      <div class="mega-menu clubs-menu" id="eventsMenu">
+        <div class="clubs-grid">
+          <p>Rigolade</p>
+          <p>Excelsior MUN</p>
+          <p>WIE Confrencia</p>
+          <p>Dandiya Night</p>
+          <p>Annual Day</p>
+          <p>Orientation Day</p>
+          <p>Graduation Ceremony</p>
+          <p>Traditional Day</p>
+          <p>Adastra</p>
+          <p>SreeVision</p>
+          <p>Roboveda</p>
+          <p>Ashwatthama</p>
+          <p>Khelo Sreenidhi</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="nav-dropdown">
+      <a href="#" onclick="toggleDropdown(event, 'clubsMenu')">
+        Student Clubs <i class="fa-solid fa-chevron-down"></i>
+      </a>
+
+      <div class="mega-menu clubs-menu" id="clubsMenu">
+        <div class="clubs-grid">
+          <p>Civil Service Aspirants</p>
+          <p>ARDRA</p>
+          <p>IEEE</p>
+          <p>IEC</p>
+          <p>ISTE</p>
+          <p>Cyber Security</p>
+          <p>Robotics</p>
+          <p>SCF</p>
+          <p>Art’s Club</p>
+          <p>LIT Club</p>
+          <p>Sports</p>
+          <p>The Infinitix Club</p>
+          <p>Electronix</p>
+          <p>E-Sports Club</p>
+          <p>SAE</p>
+          <p>ICSQUARE</p>
+          <p>Tech Vision</p>
+          <p>AI Club</p>
+          <p>SPC</p>
+          <p>Cloud Community Club</p>
+          <p>ECA</p>
+          <p>SDC Club</p>
+          <p>Bachpan Prayas</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="nav-icons">
+
+    <i class="fa-solid fa-magnifying-glass" onclick="toggleSearch(event)"></i>
+
+    <div class="theme-switch" onclick="toggleTheme()">
+      <div class="switch-circle">
+        <i class="fa-solid fa-sun sun-icon"></i>
+        <i class="fa-solid fa-moon moon-icon"></i>
+      </div>
+      <span class="switch-text">LIGHT</span>
+    </div>
+
+    <div class="profile-pill" onclick="toggleProfilePopup(event)">
+      <img id="navbarProfile" src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="Profile">
+      <i class="fa-solid fa-bars menu-icon" onclick="toggleSidebar(event)"></i>
+    </div>
+
+  </div>
+
+</div>
+
+<div class="profile-popup" id="profilePopup">
+  <img id="popupProfileImage" src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png">
+  <h3 id="popupStudentName">Student Name</h3>
+  <p id="popupStudentEmail">student@email.com</p>
+  <a href="profile.html">View Profile</a>
+  <button type="button" onclick="logout()">Logout</button>
+</div>
+
+<div class="search-box" id="searchBox">
+  <input
+    type="text"
+    id="searchInput"
+    placeholder="Search classrooms, labs, cabins, blocks..."
+    onkeyup="searchCollege()"
+  >
+  <div class="search-results" id="searchResults"></div>
+</div>
+<!-- MOBILE SIDEBAR -->
+
+  <div class="sidebar" id="sidebar">
+    <a href="dashboard.html"><i class="fa-solid fa-house"></i> Home</a>
+    <a href="about.html">
+      About SNIST
+   </a>
+<a href="departments.html">Academics Timetable</a>
+<a href="student-events.html">Student Events</a>
+<a href="student-clubs.html">Student Clubs</a>
+
+</div>

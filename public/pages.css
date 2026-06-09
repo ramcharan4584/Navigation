@@ -31,41 +31,30 @@ body{
 
 .content-grid{
   display:grid;
-
   grid-template-columns:
   repeat(auto-fit,minmax(280px,1fr));
-
   gap:28px;
 }
 
 .item-card{
   background:white;
-
   padding:28px;
-
   border-radius:18px;
-
   font-size:18px;
   font-weight:600;
-
   box-shadow:
   0 8px 25px rgba(0,0,0,0.08);
-
   transition:0.25s ease;
-
   cursor:pointer;
 }
 
 .item-card:hover{
   transform:translateY(-6px);
-
   background:#ede9fe;
-
   color:#4B2CB3;
 }
 
 @media(max-width:768px){
-
   body{
     padding:20px;
   }
