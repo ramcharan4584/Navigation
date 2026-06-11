@@ -11,6 +11,110 @@ fetch("navbar.html")
    .getElementById("searchBox")
    .classList.toggle("active");
 }
+function initializeNavbar() {
+  const savedTheme = localStorage.getItem("theme");
+  if(savedTheme === "dark"){
+    document.body.classList.add("dark-mode");
+    const switchText = document.querySelector(".switch-text");
+    if(switchText){
+      switchText.textContent = "DARK";
+    }
+  }
+}
+
+/* SIDEBAR */
+function toggleSidebar(event){
+  event.preventDefault();
+  event.stopPropagation();
+  const sidebar = document.getElementById("sidebar");
+  if(sidebar){
+    sidebar.classList.toggle("active");
+  }
+}
+window.toggleSidebar = toggleSidebar;
+
+/* THEME */
+function toggleTheme(){
+  const switchText =
+    document.querySelector(".switch-text");
+  document.body.classList.toggle("dark-mode");
+  if(document.body.classList.contains("dark-mode")){
+    localStorage.setItem("theme", "dark");
+    if(switchText){
+      switchText.textContent = "DARK";
+    }
+  } else {
+    localStorage.setItem("theme", "light");
+    if(switchText){
+      switchText.textContent = "LIGHT";
+    }
+  }
+}
+window.toggleTheme = toggleTheme;
+
+/* DROPDOWN */
+function toggleDropdown(event, menuId){
+
+  event.preventDefault();
+  event.stopPropagation();
+
+  const menu = document.getElementById(menuId);
+
+  document.querySelectorAll(".mega-menu").forEach(item => {
+
+    if(item.id !== menuId){
+      item.classList.remove("active");
+    }
+  });
+
+  if(menu){
+    menu.classList.toggle("active");
+  }
+}
+
+window.toggleDropdown = toggleDropdown;
+
+/* CLICK OUTSIDE */
+document.addEventListener("click", function(event){
+
+  const sidebar =
+    document.getElementById("sidebar");
+
+  const popup =
+    document.getElementById("profilePopup");
+
+  const searchBox =
+    document.getElementById("searchBox");
+
+  if(
+    sidebar &&
+    !sidebar.contains(event.target) &&
+    !event.target.classList.contains("menu-icon")
+  ){
+    sidebar.classList.remove("active");
+  }
+
+  if(
+    popup &&
+    !popup.contains(event.target) &&
+    !event.target.classList.contains("profile-pill")
+  ){
+    popup.classList.remove("active");
+  }
+
+  if(
+    searchBox &&
+    !searchBox.contains(event.target) &&
+    !event.target.classList.contains("fa-magnifying-glass")
+  ){
+    searchBox.classList.remove("active");
+  }
+
+  document.querySelectorAll(".mega-menu").forEach(menu => {
+    menu.classList.remove("active");
+  });
+
+});
 /* SEARCH POPUP */
 function toggleSearch(event) {
   if (event) {
@@ -72,12 +176,17 @@ function toggleTheme() {
 window.toggleTheme = toggleTheme;
 
 /* LOGOUT */
-window.logout = function () {
-  signOut(auth).then(() => {
-    localStorage.removeItem("loginEmail");
-    window.location.href = "index.html";
-  });
-};
+function logout() {
+
+  localStorage.removeItem("loginEmail");
+  localStorage.removeItem("studentName");
+  localStorage.removeItem("profileImage");
+  localStorage.removeItem("theme");
+
+  window.location.href = "index.html";
+}
+
+window.logout = logout;
 
 /*SIDE BAR*/
 
@@ -251,20 +360,11 @@ document.addEventListener("DOMContentLoaded", function () {
       `${rollNumber}@${branchCode}.sreenidhi.edu.in`;
   }
 
-  const profileImage =
-    localStorage.getItem("profileImage");
-
-  const popupName =
-    document.getElementById("popupStudentName");
-
-  const popupEmail =
-    document.getElementById("popupStudentEmail");
-
-  const popupImage =
-    document.getElementById("popupProfileImage");
-
-  const navbarProfile =
-    document.getElementById("navbarProfile");
+  const profileImage = document.getElementById("profileImage");
+  const popupName = document.getElementById("popupStudentName");
+  const popupEmail = document.getElementById("popupStudentEmail");
+  const popupImage = document.getElementById("popupProfileImage");
+  const navbarProfile = document.getElementById("navbarProfile");
 
   if (popupName) popupName.textContent = studentName;
 

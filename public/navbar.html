@@ -108,19 +108,12 @@
 
     <div class="profile-pill" onclick="toggleProfilePopup(event)">
       <img id="navbarProfile" src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="Profile">
-      <i class="fa-solid fa-bars menu-icon" onclick="toggleSidebar(event)"></i>
     </div>
+
+    <i class="fa-solid fa-bars menu-icon" onclick="toggleSidebar(event)"></i>
 
   </div>
 
-</div>
-
-<div class="profile-popup" id="profilePopup">
-  <img id="popupProfileImage" src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png">
-  <h3 id="popupStudentName">Student Name</h3>
-  <p id="popupStudentEmail">student@email.com</p>
-  <a href="profile.html">View Profile</a>
-  <button type="button" onclick="logout()">Logout</button>
 </div>
 
 <div class="search-box" id="searchBox">
@@ -132,15 +125,11 @@
   >
   <div class="search-results" id="searchResults"></div>
 </div>
-<!-- MOBILE SIDEBAR -->
 
-  <div class="sidebar" id="sidebar">
-    <a href="dashboard.html"><i class="fa-solid fa-house"></i> Home</a>
-    <a href="about.html">
-      About SNIST
-   </a>
-<a href="departments.html">Academics Timetable</a>
-<a href="student-events.html">Student Events</a>
-<a href="student-clubs.html">Student Clubs</a>
-
+<div class="profile-popup" id="profilePopup">
+  <img id="popupProfileImage" src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png">
+  <h3 id="popupStudentName">Student Name</h3>
+  <p id="popupStudentEmail">student@email.com</p>
+  <a href="profile.html">View Profile</a>
+  <button type="button" onclick="logout()">Logout</button>
 </div>
