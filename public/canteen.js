@@ -45,7 +45,7 @@ async function confirmOrder() {
 
   console.log("Sending order to backend...", orderData);
 
-  const response = await fetch("http://localhost:5000/api/orders", {
+    const response = await fetch("https://student-portal-backend-uo7y.onrender.com/api/orders", {
     method: "POST",
     headers: {
       "Content-Type": "application/json"

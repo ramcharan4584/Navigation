@@ -14,8 +14,6 @@ app.get("/", (req, res) => {
 
 app.post("/api/orders", async (req, res) => {
   try {
-    console.log("Order route reached");
-
     const {
       studentName,
       studentEmail,
@@ -46,16 +44,12 @@ app.post("/api/orders", async (req, res) => {
       ]
     );
 
-    console.log("New Order Saved:", result.rows[0]);
-
     res.json({
       success: true,
       order: result.rows[0]
     });
 
   } catch (error) {
-    console.error("Database Error:", error.message);
-
     res.status(500).json({
       success: false,
       message: "Order not saved",
@@ -78,8 +72,6 @@ app.get("/api/orders/:email", async (req, res) => {
     res.json(result.rows);
 
   } catch (error) {
-    console.error("Fetch Error:", error.message);
-
     res.status(500).json({
       success: false,
       message: "Orders not fetched"
@@ -87,11 +79,6 @@ app.get("/api/orders/:email", async (req, res) => {
   }
 });
 
-const PORT = process.env.PORT || 5000;
-
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
 app.get("/api/owner/orders", async (req, res) => {
   try {
     const result = await pool.query(
@@ -99,13 +86,16 @@ app.get("/api/owner/orders", async (req, res) => {
     );
 
     res.json(result.rows);
+
   } catch (error) {
     res.status(500).json({
       success: false,
-      message: "Cannot fetch owner orders"
+      message: "Cannot fetch owner orders",
+      error: error.message
     });
   }
 });
+
 app.put("/api/owner/orders/:id/status", async (req, res) => {
   try {
     const { id } = req.params;
@@ -123,10 +113,18 @@ app.put("/api/owner/orders/:id/status", async (req, res) => {
       success: true,
       order: result.rows[0]
     });
+
   } catch (error) {
     res.status(500).json({
       success: false,
-      message: "Status not updated"
+      message: "Status not updated",
+      error: error.message
     });
   }
+});
+
+const PORT = process.env.PORT || 5000;
+
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });

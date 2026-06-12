@@ -5,15 +5,14 @@ async function loadOrders() {
   const table = document.getElementById("ordersTable");
 
   try {
-    const response = await fetch("https://your-backend-url.onrender.com/api/owner/orders");
-    const orders = await response.json();
+    const response = await fetch("https://student-portal-backend-uo7y.onrender.com/api/owner/orders");
 
-    if (!firstLoad && orders.length > previousOrderCount) {
-      showNewOrderNotification();
+    const data = await response.json();
+    const orders = Array.isArray(data) ? data : [];
+
+    if (!response.ok) {
+      throw new Error("Backend error");
     }
-
-    previousOrderCount = orders.length;
-    firstLoad = false;
 
     updateStats(orders);
 
@@ -47,10 +46,10 @@ async function loadOrders() {
     `).join("");
 
   } catch (error) {
+    console.error(error);
     table.innerHTML = `<tr><td colspan="8">Backend not connected.</td></tr>`;
   }
 }
-
 function updateStats(orders) {
   document.getElementById("totalOrders").innerText = orders.length;
   document.getElementById("preparingOrders").innerText =
@@ -62,7 +61,7 @@ function updateStats(orders) {
 }
 
 async function updateStatus(id, status) {
-  await fetch(`http://localhost:5000/api/owner/orders/${id}/status`, {
+  await fetch(`https://student-portal-backend-uo7y.onrender.com/api/owner/orders/${id}/status`, {
     method:"PUT",
     headers:{
       "Content-Type":"application/json"
