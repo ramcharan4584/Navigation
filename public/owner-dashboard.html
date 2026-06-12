@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Canteen Owner Dashboard</title>
+  <link rel="stylesheet" href="owner-dashboard.css">
+</head>
+<body>
+
+<div class="owner-layout">
+
+  <aside class="owner-sidebar">
+    <h2>🍽 UniEats</h2>
+    <p>Owner Panel</p>
+
+    <a class="active">📦 All Orders</a>
+    <a>⏳ Preparing</a>
+    <a>✅ Ready</a>
+    <a>🚚 Delivered</a>
+    <a>❌ Cancelled</a>
+  </aside>
+
+  <main class="owner-main">
+
+    <header class="owner-header">
+      <div>
+        <h1>Canteen Orders Dashboard</h1>
+        <p>Manage student orders, pickup tokens and order status.</p>
+      </div>
+
+      <button onclick="loadOrders()">Refresh Orders</button>
+    </header>
+
+    <section class="stats-grid">
+      <div class="stat-card">
+        <h3 id="totalOrders">0</h3>
+        <p>Total Orders</p>
+      </div>
+
+      <div class="stat-card">
+        <h3 id="preparingOrders">0</h3>
+        <p>Preparing</p>
+      </div>
+
+      <div class="stat-card">
+        <h3 id="readyOrders">0</h3>
+        <p>Ready</p>
+      </div>
+
+      <div class="stat-card">
+        <h3 id="deliveredOrders">0</h3>
+        <p>Delivered</p>
+      </div>
+    </section>
+
+    <section class="orders-section">
+      <h2>Recent Orders</h2>
+
+      <div class="orders-table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Token</th>
+              <th>Student</th>
+              <th>Food</th>
+              <th>Qty</th>
+              <th>Total</th>
+              <th>Payment</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+
+          <tbody id="ordersTable">
+            <tr>
+              <td colspan="8">Loading orders...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+  </main>
+
+</div>
+<div class="toast" id="orderToast">
+  🔔 New Order Received
+</div>
+<script src="owner-dashboard.js"></script>
+</body>
+</html>

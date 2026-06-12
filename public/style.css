@@ -211,6 +211,31 @@ input {
   box-shadow: none;
 }
 
+/* REMOVE BLUE TAP/COLOR EFFECT */
+*{
+  -webkit-tap-highlight-color: transparent;
+}
+
+button,
+a,
+input,
+textarea,
+select{
+  outline:none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+button:focus,
+a:focus,
+input:focus{
+  outline:none;
+}
+
+button:active,
+a:active{
+  outline:none;
+}
+
 /* MOBILE RESPONSIVE */
 @media (max-width: 768px) {
   html, body {

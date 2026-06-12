@@ -25,7 +25,7 @@
   <div class="main-content">
     <div class="cards">
       <div class="card">
-        <h3>College Navigation</h3>
+        <h3>Campus Navigator</h3>
         <p>Find blocks, labs, classrooms and offices.</p>
       </div>
 
@@ -35,8 +35,28 @@
       </div>
 
       <div class="card">
+        <h3>Faculty Connect</h3>
+        <p>Helps students easily check faculty availability and consultation timings.</p>
+      </div>
+
+      <div class="card">
+        <h3>Campus Shuttle Tracker</h3>
+        <p>Allows students and staff to monitor college bus routes and live locations.</p>
+      </div>
+
+      <div class="card" onclick="window.location.href='canteen.html'">
+          <h3>Campus Quick Bites</h3>
+          <p>Explore cafeteria & Canteen food menu's</p>
+      </div>
+
+      <div class="card">
         <h3>Previous Papers</h3>
         <p>Access previous year question papers.</p>
+      </div>
+
+      <div class="card">
+        <h3>InfoBoard</h3>
+        <p>Instant access to notices, event updates and campus information.</p>
       </div>
 
       <div class="card">
@@ -45,6 +65,26 @@
       </div>
     </div>
   </div>
+  <footer>
+  <p>SNIST College Portal</p>
+  </footer>
+
+  <button class="emergency-btn" onclick="toggleEmergencyBox()">
+  <i class="fa-solid fa-phone-volume"></i>
+  <span>Emergency Help</span>
+  </button>
+
+<div class="emergency-box" id="emergencyBox">
+  <h3>Emergency Contacts</h3>
+
+  <a href="tel:+917993610936">Campus Security</a>
+  <a href="tel:+917993610936">Transport Office</a>
+  <a href="tel:+917993610936">Admin Office</a>
+  <a href="tel:+917993610936">Examination Branch</a>
+  <a href="tel:+917993610936">SNIST Boy's Hostel Warden</a>
+  <a href="tel:+917993610936">SNIST Girl's Hostel Warden</a>
+  <button onclick="toggleEmergencyBox()">Close</button>
+</div>
 
   <script type="module" src="dashboard.js"></script>
   <script src="navbar.js"></script>

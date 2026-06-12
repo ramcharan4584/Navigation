@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Campus Dining</title>
+  <link rel="stylesheet" href="canteen.css">
+  <link rel="stylesheet" href="dining-navbar.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+<div id="dining-navbar-container"></div>
+<header class="canteen-header">
+  <h1>UniEats</h1>
+  <p>Pre-order meals, explore menus, and collect your food with a pickup token.</p>
+</header>
+
+<section class="search-section">
+  <input type="text" id="searchFood" placeholder="Search food items...">
+</section>
+
+<section class="category-tabs">
+  <button onclick="filterFood('all')">All</button>
+  <button onclick="filterFood('breakfast')">Breakfast</button>
+  <button onclick="filterFood('meals')">Meals</button>
+  <button onclick="filterFood('snacks')">Snacks</button>
+  <button onclick="filterFood('beverages')">Beverages</button>
+</section>
+
+<section class="food-grid" id="foodGrid">
+
+  <div class="food-card" data-category="breakfast">
+    <img src="images/dosa.jpg" alt="Dosa">
+    <div class="food-info">
+      <h3>Dosa</h3>
+      <p>Campus Special Breakfast</p>
+      <span class="rating">⭐ 4.5</span>
+      <div class="food-bottom">
+        <span>₹50</span>
+        <button onclick="openOrder('Dosa', 50)">Pre Order</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="food-card" data-category="meals">
+    <img src="images/biryani.jpg" alt="Biryani">
+    <div class="food-info">
+      <h3>Chicken Biryani</h3>
+      <p>Special Meal</p>
+      <span class="rating">⭐ 4.8</span>
+      <div class="food-bottom">
+        <span>₹120</span>
+        <button onclick="openOrder('Chicken Biryani', 120)">Pre Order</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="food-card" data-category="snacks">
+    <img src="images/samosa.jpg" alt="Samosa">
+    <div class="food-info">
+      <h3>Samosa</h3>
+      <p>Hot Snack</p>
+      <span class="rating">⭐ 4.3</span>
+      <div class="food-bottom">
+        <span>₹20</span>
+        <button onclick="openOrder('Samosa', 20)">Pre Order</button>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<div class="order-popup" id="orderPopup">
+  <div class="order-box">
+    <h2 id="orderItem">Food Item</h2>
+
+    <label>Quantity</label>
+    <input type="number" id="quantity" value="1" min="1" onchange="updateTotal()">
+
+    <label>Payment Method</label>
+    <select id="paymentMethod">
+      <option>UPI</option>
+      <option>Google Pay</option>
+      <option>PhonePe</option>
+      <option>Cash at Counter</option>
+    </select>
+
+    <h3>Total: ₹<span id="totalAmount">0</span></h3>
+
+    <button class="pay-btn" onclick="confirmOrder()">Pay & Confirm</button>
+    <button class="close-btn" onclick="closeOrder()">Cancel</button>
+  </div>
+</div>
+
+<div class="token-box" id="tokenBox">
+  <h2>Order Confirmed ✅</h2>
+  <p id="tokenDetails"></p>
+  <button onclick="closeToken()">Done</button>
+</div>
+<script src="canteen.js"></script>
+<script src="dining-navbar.js"></script>
+</body>
+</html>

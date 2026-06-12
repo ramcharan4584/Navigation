@@ -31,10 +31,8 @@ onAuthStateChanged(auth, (user) => {
 
 /* SIDEBAR */
 function toggleSidebar(event) {
-  if (event) {
-    event.preventDefault();
-    event.stopPropagation();
-  }
+  event.preventDefault();
+  event.stopPropagation();
 
   const sidebar = document.getElementById("sidebar");
 
@@ -42,7 +40,22 @@ function toggleSidebar(event) {
     sidebar.classList.toggle("active");
   }
 }
+
 window.toggleSidebar = toggleSidebar;
+
+document.addEventListener("click", function(event) {
+  const sidebar = document.getElementById("sidebar");
+  const menuIcon = document.querySelector(".menu-icon");
+
+  if (
+    sidebar &&
+    sidebar.classList.contains("active") &&
+    !sidebar.contains(event.target) &&
+    !menuIcon.contains(event.target)
+  ) {
+    sidebar.classList.remove("active");
+  }
+});
 
 /* IMAGE SLIDER */
 let currentSlide = 0;
@@ -93,4 +106,36 @@ function stopAutoSlider() {
   if (autoSlideInterval) {
     clearInterval(autoSlideInterval);
   }
+}
+
+/* EMERGENCY CONTACTS */
+
+function toggleEmergencyBox(){
+  document.getElementById("emergencyBox").classList.toggle("active");
+}
+
+window.toggleEmergencyBox = toggleEmergencyBox;
+
+/* CLOSE EMERGENCY BOX WHEN CLICKING OUTSIDE */
+
+document.addEventListener("click", closeEmergencyBox);
+document.addEventListener("touchstart", closeEmergencyBox);
+
+function closeEmergencyBox(event){
+
+  const emergencyBox =
+    document.getElementById("emergencyBox");
+
+  const emergencyBtn =
+    document.querySelector(".emergency-btn");
+
+  if(
+    emergencyBox &&
+    emergencyBox.classList.contains("active") &&
+    !emergencyBox.contains(event.target) &&
+    !emergencyBtn.contains(event.target)
+  ){
+    emergencyBox.classList.remove("active");
+  }
+
 }

@@ -7,7 +7,7 @@
 
 body{
   background:#f4f6fb;
-  padding:40px;
+  padding:0;
 }
 
 .page-header{
@@ -22,11 +22,8 @@ body{
   color:#2d1fa3;
 }
 
-.back-btn {
-  text-decoration: none;
-  color: #6c4ccf;
-  font-weight: bold;
-  font-size: 17px;
+.page-content{
+  padding: 95px 40px 40px 40px;
 }
 
 .content-grid{
@@ -34,6 +31,14 @@ body{
   grid-template-columns:
   repeat(auto-fit,minmax(280px,1fr));
   gap:28px;
+}
+.item-card {
+  background: white;
+  color: #111827;
+  padding: 35px;
+  border-radius: 22px;
+  font-size: 20px;
+  font-weight: 600;
 }
 
 .item-card{
@@ -53,10 +58,62 @@ body{
   background:#ede9fe;
   color:#4B2CB3;
 }
+body.dark-mode {
+  background: #111827;
+  color: white;
+}
 
+body.dark-mode h1 {
+  color: white;
+}
+
+body.dark-mode .item-card {
+  background: #1f2937 !important;
+  color: white !important;
+  box-shadow: none;
+}
+
+body.dark-mode .item-card h3,
+body.dark-mode .item-card p,
+body.dark-mode .item-card {
+  color: white !important;
+}
+
+/* FOOTER */
+footer{
+  background:#4B2CB3;
+  color:white;
+  text-align:center;
+  padding:14px;
+}
+
+/* REMOVE BLUE TAP/COLOR EFFECT */
+*{
+  -webkit-tap-highlight-color: transparent;
+}
+
+button,
+a,
+input,
+textarea,
+select{
+  outline:none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+button:focus,
+a:focus,
+input:focus{
+  outline:none;
+}
+
+button:active,
+a:active{
+  outline:none;
+}
 @media(max-width:768px){
   body{
-    padding:20px;
+    padding:0;
   }
 
   .page-header{
@@ -66,5 +123,9 @@ body{
 
   .page-header h1{
     font-size:30px;
+  }
+  
+  .page-content{
+    padding: 90px 20px 20px 20px;
   }
 }

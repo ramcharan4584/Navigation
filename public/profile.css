@@ -20,7 +20,7 @@ body {
   padding:12px 22px;
   border-radius:14px;
   text-decoration:none;
-  font-size:18px;
+  font-size:14px;
   font-weight:bold;
   display:inline-flex;
   align-items:center;
@@ -144,6 +144,31 @@ body.dark-mode .info-box input {
 
 body.dark-mode .info-box input::placeholder {
   color: #9ca3af;
+}
+
+/* REMOVE BLUE TAP/COLOR EFFECT */
+*{
+  -webkit-tap-highlight-color: transparent;
+}
+
+button,
+a,
+input,
+textarea,
+select{
+  outline:none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+button:focus,
+a:focus,
+input:focus{
+  outline:none;
+}
+
+button:active,
+a:active{
+  outline:none;
 }
 
 @media (max-width: 768px) {

@@ -111,6 +111,149 @@ body {
   font-size: 18px;
 }
 
+/* FOOTER */
+footer{
+  background:#4B2CB3;
+  color:white;
+  text-align:center;
+  padding:10px 20px;
+  font-size:15px;
+}
+
+/* EMERGENCY CONTACTS BUTTON */
+
+.emergency-btn{
+  position:fixed;
+  bottom:25px;
+  right:25px;
+  z-index:99999;
+
+  border:none;
+  border-radius:50px;
+  padding:14px 22px;
+
+  background:#dc2626;
+  color:white;
+
+  font-size:15px;
+  font-weight:700;
+  cursor:pointer;
+
+  display:flex;
+  align-items:center;
+  gap:10px;
+
+  box-shadow:0 10px 25px rgba(220,38,38,0.35);
+}
+
+.emergency-box{
+  display:none;
+  position:fixed;
+  bottom:90px;
+  right:25px;
+  width:280px;
+  background:white;
+  padding:22px;
+  border-radius:20px;
+  z-index:99999;
+  box-shadow:0 12px 35px rgba(0,0,0,0.25);
+}
+
+.emergency-box.active{
+  display:block;
+}
+
+.emergency-box h3{
+  color:#dc2626;
+  margin-bottom:15px;
+}
+
+.emergency-box a{
+  display:block;
+  padding:12px;
+  margin-bottom:10px;
+  border-radius:12px;
+  background:#fee2e2;
+  color:#991b1b;
+  text-decoration:none;
+  font-weight:600;
+}
+
+.emergency-box button{
+  width:100%;
+  padding:12px;
+  border:none;
+  border-radius:12px;
+  background:#111827;
+  color:white;
+  cursor:pointer;
+}
+
+/* EMERGENCY DARK MODE */
+body.dark-mode .emergency-box {
+  background: #1f2937 !important;
+  color: #f9fafb !important;
+  box-shadow: 0 12px 35px rgba(0,0,0,0.45);
+}
+
+body.dark-mode .emergency-box h3 {
+  color: #f87171 !important;
+}
+
+body.dark-mode .emergency-box a {
+  background: #374151 !important;
+  color: #f9fafb !important;
+}
+
+body.dark-mode .emergency-box a i {
+  color: #f87171 !important;
+}
+
+body.dark-mode .emergency-box button {
+  background: #111827 !important;
+  color: white !important;
+}
+
+/* REMOVE BLUE TAP/COLOR EFFECT */
+*{
+  -webkit-tap-highlight-color: transparent;
+}
+
+button,
+a,
+input,
+textarea,
+select{
+  outline:none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+button:focus,
+a:focus,
+input:focus{
+  outline:none;
+}
+
+button:active,
+a:active{
+  outline:none;
+}
+
+@media(max-width:768px){
+  .emergency-btn{
+    right:16px;
+    bottom:18px;
+    padding:13px 18px;
+    font-size:14px;
+  }
+
+  .emergency-box{
+    right:16px;
+    bottom:80px;
+    width:calc(100% - 32px);
+  }
+}
+
 /* MOBILE */
 @media (max-width: 900px) {
   .welcome-line {
@@ -287,16 +430,16 @@ body {
     top: 80px;
   }
 
-  .slider {
-    width: calc(100% - 28px);
-    height: 250px;
-    margin: 22px auto;
-    border-radius: 18px;
+  .slider{
+    width: calc(100% - 24px);
+    height: 240px;
+    margin: 18px auto;
+    border-radius: 16px;
   }
 
   .prev,
-  .next {
-    padding: 10px 14px;
+  .next{
+    padding: 8px 12px;
     font-size: 18px;
   }
 
@@ -307,6 +450,9 @@ body {
   .cards {
     grid-template-columns: 1fr;
     gap: 24px;
+  }
+  .card:hover {
+  transform: translateY(-8px);
   }
 
   .card {
@@ -320,6 +466,53 @@ body {
   .card p {
     font-size: 18px;
     line-height: 1.4;
+  }
+  .emergency-btn{
+    width: 52px;
+    height: 52px;
+    right: 16px;
+    bottom: 18px;
+    font-size: 20px;
+  }
+  .emergency-box a{
+  display:flex;
+  align-items:center;
+  gap:12px;
+
+  text-decoration:none;
+
+  background:#fee2e2;
+  color:#991b1b;
+
+  padding:14px 16px;
+  border-radius:14px;
+
+  margin-bottom:12px;
+
+  font-weight:600;
+
+  transition:0.3s ease;
+  }
+
+  .emergency-box a:hover{
+  background:#fecaca;
+  transform:translateX(4px);
+  }
+   .emergency-btn span{
+    display:none;
+  }
+
+  .emergency-btn{
+    width:54px;
+    height:54px;
+
+    padding:0;
+
+    border-radius:50%;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
   }
 }
 
