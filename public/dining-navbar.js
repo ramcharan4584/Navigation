@@ -65,7 +65,7 @@ async function showMyOrders() {
   const studentEmail = localStorage.getItem("studentEmail") || "student@email.com";
 
   try {
-    const response = await fetch(`http://localhost:5000/api/orders/${studentEmail}`);
+    const response = await fetch(`https://student-portal-backend-uo7y.onrender.com/api/orders/${studentEmail}`);
     const orders = await response.json();
 
     if (orders.length === 0) {
@@ -117,7 +117,14 @@ async function enableNotifications() {
 
     localStorage.setItem("fcmToken", token);
 
-    const studentEmail = localStorage.getItem("studentEmail");
+    const studentEmail =
+  localStorage.getItem("studentEmail") ||
+  localStorage.getItem("userEmail");
+
+    if (!studentEmail) {
+      alert("Student email not found. Please login again.");
+      return;
+    }
 
     console.log("EMAIL:", studentEmail);
 
