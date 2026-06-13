@@ -1,0 +1,20 @@
+importScripts("https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js");
+importScripts("https://www.gstatic.com/firebasejs/8.10.1/firebase-messaging.js");
+
+firebase.initializeApp({
+  apiKey: "AIzaSyD_7Cp155ILuZlzdVRk4-pdj9RGlztmkhM",
+  authDomain: "student-portal-1baed.firebaseapp.com",
+  projectId: "student-portal-1baed",
+  storageBucket: "student-portal-1baed.firebasestorage.app",
+  messagingSenderId: "1017420453175",
+  appId: "1:1017420453175:web:5c9c44f5a68a3e4d5476b2"
+});
+
+const messaging = firebase.messaging();
+
+messaging.setBackgroundMessageHandler(function(payload) {
+  return self.registration.showNotification(payload.notification.title, {
+    body: payload.notification.body,
+    icon: "/images/logo.png"
+  });
+});

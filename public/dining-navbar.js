@@ -37,6 +37,9 @@ diningNavbar.innerHTML = `
       <a href="#">🎁 Offers & Coupons</a>
       <a href="#">🔥 Most Ordered</a>
       <a href="#">⏳ Live Queue</a>
+      <a href="javascript:void(0)" onclick="enableNotifications()">
+  🔔      Enable Order Notifications
+      </a>
       <a href="#">☎ Contact Canteen</a>
       <a href="index.html">🚪 Logout</a>
     </div>
@@ -85,5 +88,61 @@ async function showMyOrders() {
   } catch (error) {
     ordersBox.innerHTML = `<p class="empty-orders">Unable to load orders.</p>`;
     ordersBox.classList.add("active");
+  }
+}
+
+const messaging = firebase.messaging();
+
+const vapidKey =
+"BHjO5qV1g41Mvrtqk-Jp08v9G7VQ44LpH_KAMZzwMZxpKlYdRrOL4zxDt1_oFGcVT6EJEQM_4WvmVNS-xq-QKnM";
+
+async function enableNotifications() {
+  try {
+    alert("Button clicked");
+
+    const permission = await Notification.requestPermission();
+    alert("Permission: " + permission);
+
+    if (permission !== "granted") return;
+
+    const registration = await navigator.serviceWorker.register("/firebase-messaging-sw.js");
+
+    const token = await messaging.getToken({
+      vapidKey: vapidKey,
+      serviceWorkerRegistration: registration
+    });
+
+    console.log("FCM TOKEN:", token);
+    alert("Token generated. Check console.");
+
+    localStorage.setItem("fcmToken", token);
+
+    const studentEmail = localStorage.getItem("studentEmail");
+
+    console.log("EMAIL:", studentEmail);
+
+    const response = await fetch(
+      "https://student-portal-backend-uo7y.onrender.com/api/save-fcm-token",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          studentEmail: studentEmail,
+          fcmToken: token
+        })
+      }
+    );
+
+    const data = await response.json();
+
+    console.log("SAVE TOKEN RESPONSE:", data);
+
+    alert("Notifications enabled and saved successfully");
+
+  } catch (error) {
+    console.error("FCM ERROR:", error);
+    alert("Token generation failed. Check console.");
   }
 }

@@ -19,6 +19,35 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
+const messaging = firebase.messaging();
+const vapidKey =
+"BHjO5qV1g41Mvrtqk-Jp08v9G7VQ44LpH_KAMZzwMZxpKlYdRrOL4zxDt1_oFGcVT6EJEQM_4WvmVNS-xq-QKnM";
+/* ENABLE NOTIFICATION */
+async function enableNotifications() {
+  try {
+    const permission = await Notification.requestPermission();
+
+    if (permission !== "granted") {
+      alert("Notification permission denied");
+      return;
+    }
+
+    const token = await messaging.getToken({
+      vapidKey: vapidKey
+    });
+
+    console.log("FCM Token:", token);
+
+    localStorage.setItem("fcmToken", token);
+
+    alert("Notifications enabled successfully");
+
+  } catch (error) {
+    console.error("Notification error:", error);
+  }
+}
+
+enableNotifications();
 
 /* LOGIN PROTECTION */
 onAuthStateChanged(auth, (user) => {

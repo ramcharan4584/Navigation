@@ -12,6 +12,14 @@ app.get("/", (req, res) => {
   res.send("Student Portal Backend Running");
 });
 
+const admin = require("firebase-admin");
+
+const serviceAccount = require("./firebase-service-account.json");
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount)
+});
+
 app.post("/api/orders", async (req, res) => {
   try {
     const {
@@ -169,9 +177,34 @@ app.put("/api/owner/orders/:id/status", async (req, res) => {
       ]
     );
 
+    const updatedOrder = result.rows[0];
+
+const tokenResult = await pool.query(
+  `SELECT fcm_token FROM student_fcm_tokens
+   WHERE student_email = $1`,
+  [updatedOrder.student_email]
+);
+
+if (tokenResult.rows.length > 0 && notificationMessage) {
+  const fcmToken = tokenResult.rows[0].fcm_token;
+
+  await admin.messaging().send({
+    token: fcmToken,
+    notification: {
+      title: "UniEats Order Update",
+      body: notificationMessage
+    },
+    webpush: {
+      notification: {
+        icon: "/images/logo.png"
+      }
+    }
+  });
+}
+
     res.json({
       success: true,
-      order: result.rows[0]
+      order: updatedOrder
     });
 
   } catch (error) {
@@ -186,6 +219,39 @@ app.put("/api/owner/orders/:id/status", async (req, res) => {
 });
 
 const PORT = process.env.PORT || 5000;
+
+app.post("/api/save-fcm-token", async (req, res) => {
+  try {
+    const { studentEmail, fcmToken } = req.body;
+
+    if (!studentEmail || !fcmToken) {
+      return res.status(400).json({
+        success: false,
+        message: "studentEmail and fcmToken are required"
+      });
+    }
+
+    await pool.query(
+      `INSERT INTO student_fcm_tokens (student_email, fcm_token)
+       VALUES ($1, $2)
+       ON CONFLICT (student_email)
+       DO UPDATE SET fcm_token = EXCLUDED.fcm_token`,
+      [studentEmail, fcmToken]
+    );
+
+    res.json({
+      success: true,
+      message: "FCM token saved"
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "FCM token not saved",
+      error: error.message
+    });
+  }
+});
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
