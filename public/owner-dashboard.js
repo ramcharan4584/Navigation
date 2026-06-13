@@ -212,7 +212,7 @@ async function updateStatus(id, status) {
     let deliveryPerson = prompt("Enter delivery person name:");
 
     if (!deliveryPerson || deliveryPerson.trim() === "") {
-      alert("Delivery person name is required.");
+      alert("Delivery person name is required");
       return;
     }
 
@@ -220,47 +220,42 @@ async function updateStatus(id, status) {
   }
 
   if (status === "Cancelled") {
-    let cancelReason = prompt("Enter reason for cancelling this order:");
+    let cancelReason = prompt("Enter cancellation reason:");
 
     if (!cancelReason || cancelReason.trim() === "") {
-      alert("Cancel reason is required.");
+      alert("Cancellation reason is required");
       return;
     }
 
     bodyData.cancelReason = cancelReason.trim();
   }
 
-  const response = await fetch(
-    `https://student-portal-backend-uo7y.onrender.com/api/owner/orders/${id}/status`,
-    {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(bodyData)
+  try {
+    const response = await fetch(
+      `https://student-portal-backend-uo7y.onrender.com/api/owner/orders/${id}/status`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(bodyData)
+      }
+    );
+
+    const result = await response.json();
+
+    if (!result.success) {
+      alert(result.message || "Status update failed");
+      return;
     }
-  );
 
-  const result = await response.json();
+    alert("Order status updated successfully");
+    loadOrders();
 
-  if (!result.success) {
-    alert(result.message || "Status update failed");
-    return;
+  } catch (error) {
+    alert("Backend error. Status not updated.");
+    console.error(error);
   }
-
-  if (status === "Ready") {
-    alert("Student notification updated: Order is ready.");
-  }
-
-  if (status === "Delivered") {
-    alert("Order delivered successfully. Delivery ID generated.");
-  }
-
-  if (status === "Cancelled") {
-    alert("Order cancelled with reason.");
-  }
-
-  loadOrders();
 }
 
 loadOrders();
