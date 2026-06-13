@@ -225,15 +225,47 @@ async function updateStatus(id, status) {
     bodyData.deliveryPersonId = deliveryPersonId.trim();
   }
 
-  if (status === "Cancelled") {
-    let cancelReason = prompt("Enter cancellation reason:");
-    if (!cancelReason || cancelReason.trim() === "") {
-      alert("Cancellation reason is required.");
-      return;
-    }
+ if (status === "Cancelled") {
+        let commonReasons = `
+      Choose cancellation reason:
 
-    bodyData.cancelReason = cancelReason.trim();
-  }
+      1. Food item not available
+      2. Ingredients not available
+      3. Canteen is closing soon
+      4. Payment issue
+      5. Student did not collect on time
+      6. Duplicate order
+      7. Other reason
+
+      Enter number from 1 to 7:
+      `;
+
+        let choice = prompt(commonReasons);
+
+        let reasons = {
+          "1": "Food item not available",
+          "2": "Ingredients not available",
+          "3": "Canteen is closing soon",
+          "4": "Payment issue",
+          "5": "Student did not collect on time",
+          "6": "Duplicate order"
+        };
+
+        let cancelReason = "";
+
+        if (choice === "7") {
+          cancelReason = prompt("Enter custom cancellation reason:");
+        } else {
+          cancelReason = reasons[choice];
+        }
+
+        if (!cancelReason || cancelReason.trim() === "") {
+          alert("Cancellation reason is required.");
+          return;
+        }
+
+        bodyData.cancelReason = cancelReason.trim();
+      }
 
   const response = await fetch(
     `https://student-portal-backend-uo7y.onrender.com/api/owner/orders/${id}/status`,
