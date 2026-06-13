@@ -2,25 +2,25 @@ const express = require("express");
 const cors = require("cors");
 require("dotenv").config();
 const pool = require("./db");
-const firebaseAdmin = require("firebase-admin");
+
+const { initializeApp, cert } = require("firebase-admin/app");
+const { getMessaging } = require("firebase-admin/messaging");
 
 const app = express();
 
 app.use(cors());
 app.use(express.json());
 
-app.get("/", (req, res) => {
-  res.send("Student Portal Backend Running");
-});
-
-const admin = require("firebase-admin");
-
-firebaseAdmin.initializeApp({
-  credential: firebaseAdmin.credential.cert({
+initializeApp({
+  credential: cert({
     projectId: process.env.FIREBASE_PROJECT_ID,
     clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
     privateKey: process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, "\n")
   })
+});
+
+app.get("/", (req, res) => {
+  res.send("Student Portal Backend Running");
 });
 
 app.post("/api/orders", async (req, res) => {
@@ -89,7 +89,8 @@ app.get("/api/orders/:email", async (req, res) => {
   } catch (error) {
     res.status(500).json({
       success: false,
-      message: "Orders not fetched"
+      message: "Orders not fetched",
+      error: error.message
     });
   }
 });
@@ -97,22 +98,22 @@ app.get("/api/orders/:email", async (req, res) => {
 app.get("/api/owner/orders", async (req, res) => {
   try {
     const result = await pool.query(
-  `SELECT 
-    id,
-    student_name,
-    student_email,
-    food_name,
-    quantity,
-    total_amount,
-    payment_method,
-    token_no,
-    status,
-    counter_name,
-    pickup_time,
-    order_time
-  FROM canteen_orders
-  ORDER BY order_time DESC`
-);
+      `SELECT 
+        id,
+        student_name,
+        student_email,
+        food_name,
+        quantity,
+        total_amount,
+        payment_method,
+        token_no,
+        status,
+        counter_name,
+        pickup_time,
+        order_time
+      FROM canteen_orders
+      ORDER BY order_time DESC`
+    );
 
     res.json(result.rows);
 
@@ -120,6 +121,39 @@ app.get("/api/owner/orders", async (req, res) => {
     res.status(500).json({
       success: false,
       message: "Cannot fetch owner orders",
+      error: error.message
+    });
+  }
+});
+
+app.post("/api/save-fcm-token", async (req, res) => {
+  try {
+    const { studentEmail, fcmToken } = req.body;
+
+    if (!studentEmail || !fcmToken) {
+      return res.status(400).json({
+        success: false,
+        message: "studentEmail and fcmToken are required"
+      });
+    }
+
+    await pool.query(
+      `INSERT INTO student_fcm_tokens (student_email, fcm_token)
+       VALUES ($1, $2)
+       ON CONFLICT (student_email)
+       DO UPDATE SET fcm_token = EXCLUDED.fcm_token`,
+      [studentEmail, fcmToken]
+    );
+
+    res.json({
+      success: true,
+      message: "FCM token saved"
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "FCM token not saved",
       error: error.message
     });
   }
@@ -133,7 +167,8 @@ app.put("/api/owner/orders/:id/status", async (req, res) => {
     let notificationMessage = "";
 
     if (status === "Ready") {
-      notificationMessage = "Your order is ready. Please collect it within 10 minutes.";
+      notificationMessage =
+        "Your order is ready. Please collect it within 10 minutes.";
     }
 
     if (status === "Delivered") {
@@ -180,30 +215,37 @@ app.put("/api/owner/orders/:id/status", async (req, res) => {
       ]
     );
 
+    if (result.rows.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "Order not found"
+      });
+    }
+
     const updatedOrder = result.rows[0];
 
-const tokenResult = await pool.query(
-  `SELECT fcm_token FROM student_fcm_tokens
-   WHERE student_email = $1`,
-  [updatedOrder.student_email]
-);
+    const tokenResult = await pool.query(
+      `SELECT fcm_token FROM student_fcm_tokens
+       WHERE student_email = $1`,
+      [updatedOrder.student_email]
+    );
 
-if (tokenResult.rows.length > 0 && notificationMessage) {
-  const fcmToken = tokenResult.rows[0].fcm_token;
+    if (tokenResult.rows.length > 0 && notificationMessage) {
+      const fcmToken = tokenResult.rows[0].fcm_token;
 
-  await firebaseAdmin.messaging().send({
-    token: fcmToken,
-    notification: {
-      title: "UniEats Order Update",
-      body: notificationMessage
-    },
-    webpush: {
-      notification: {
-        icon: "/images/logo.png"
-      }
+      await getMessaging().send({
+        token: fcmToken,
+        notification: {
+          title: "UniEats Order Update",
+          body: notificationMessage
+        },
+        webpush: {
+          notification: {
+            icon: "/images/logo.png"
+          }
+        }
+      });
     }
-  });
-}
 
     res.json({
       success: true,
@@ -222,39 +264,6 @@ if (tokenResult.rows.length > 0 && notificationMessage) {
 });
 
 const PORT = process.env.PORT || 5000;
-
-app.post("/api/save-fcm-token", async (req, res) => {
-  try {
-    const { studentEmail, fcmToken } = req.body;
-
-    if (!studentEmail || !fcmToken) {
-      return res.status(400).json({
-        success: false,
-        message: "studentEmail and fcmToken are required"
-      });
-    }
-
-    await pool.query(
-      `INSERT INTO student_fcm_tokens (student_email, fcm_token)
-       VALUES ($1, $2)
-       ON CONFLICT (student_email)
-       DO UPDATE SET fcm_token = EXCLUDED.fcm_token`,
-      [studentEmail, fcmToken]
-    );
-
-    res.json({
-      success: true,
-      message: "FCM token saved"
-    });
-
-  } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: "FCM token not saved",
-      error: error.message
-    });
-  }
-});
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
