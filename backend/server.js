@@ -117,14 +117,55 @@ app.get("/api/owner/orders", async (req, res) => {
 app.put("/api/owner/orders/:id/status", async (req, res) => {
   try {
     const { id } = req.params;
-    const { status } = req.body;
+    const { status, deliveryPerson, cancelReason } = req.body;
+
+    let notificationMessage = "";
+    let deliveryId = null;
+
+    if (status === "Ready") {
+      notificationMessage = "Your order is ready. Please pick it up within 10 minutes.";
+    }
+
+    if (status === "Delivered") {
+      if (!deliveryPerson) {
+        return res.status(400).json({
+          success: false,
+          message: "Delivery person name is required"
+        });
+      }
+
+      deliveryId = "DEL-" + Date.now();
+      notificationMessage = `Your order has been delivered by ${deliveryPerson}. Delivery ID: ${deliveryId}`;
+    }
+
+    if (status === "Cancelled") {
+      if (!cancelReason) {
+        return res.status(400).json({
+          success: false,
+          message: "Cancel reason is required"
+        });
+      }
+
+      notificationMessage = `Your order has been cancelled. Reason: ${cancelReason}`;
+    }
 
     const result = await pool.query(
       `UPDATE canteen_orders
-       SET status = $1
-       WHERE id = $2
+       SET status = $1,
+           notification_message = $2,
+           delivery_person = $3,
+           delivery_id = $4,
+           cancel_reason = $5
+       WHERE id = $6
        RETURNING *`,
-      [status, id]
+      [
+        status,
+        notificationMessage,
+        deliveryPerson || null,
+        deliveryId,
+        cancelReason || null,
+        id
+      ]
     );
 
     res.json({

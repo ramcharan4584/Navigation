@@ -122,6 +122,24 @@ function renderOrders(orders) {
         <span class="status ${order.status}">
           ${order.status}
         </span>
+
+            ${
+              order.delivery_person
+                ? `<br><small>By: ${order.delivery_person}</small>`
+                : ""
+            }
+
+            ${
+              order.delivery_id
+                ? `<br><small>ID: ${order.delivery_id}</small>`
+                : ""
+            }
+
+            ${
+              order.cancel_reason
+                ? `<br><small>Reason: ${order.cancel_reason}</small>`
+                : ""
+            }
       </td>
 
       <td>
@@ -188,13 +206,59 @@ function updateStats(orders) {
 }
 
 async function updateStatus(id, status) {
-  await fetch(`https://student-portal-backend-uo7y.onrender.com/api/owner/orders/${id}/status`, {
-    method: "PUT",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({ status })
-  });
+  let bodyData = { status: status };
+
+  if (status === "Delivered") {
+    let deliveryPerson = prompt("Enter delivery person name:");
+
+    if (!deliveryPerson || deliveryPerson.trim() === "") {
+      alert("Delivery person name is required.");
+      return;
+    }
+
+    bodyData.deliveryPerson = deliveryPerson.trim();
+  }
+
+  if (status === "Cancelled") {
+    let cancelReason = prompt("Enter reason for cancelling this order:");
+
+    if (!cancelReason || cancelReason.trim() === "") {
+      alert("Cancel reason is required.");
+      return;
+    }
+
+    bodyData.cancelReason = cancelReason.trim();
+  }
+
+  const response = await fetch(
+    `https://student-portal-backend-uo7y.onrender.com/api/owner/orders/${id}/status`,
+    {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(bodyData)
+    }
+  );
+
+  const result = await response.json();
+
+  if (!result.success) {
+    alert(result.message || "Status update failed");
+    return;
+  }
+
+  if (status === "Ready") {
+    alert("Student notification updated: Order is ready.");
+  }
+
+  if (status === "Delivered") {
+    alert("Order delivered successfully. Delivery ID generated.");
+  }
+
+  if (status === "Cancelled") {
+    alert("Order cancelled with reason.");
+  }
 
   loadOrders();
 }
