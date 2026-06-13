@@ -178,6 +178,29 @@ th{
   background:#dc2626;
 }
 
+.owner-search-box{
+  margin-bottom:20px;
+}
+
+.owner-search-box input{
+  width:100%;
+  padding:14px 18px;
+  border:1px solid #cbd5e1;
+  border-radius:14px;
+  font-size:15px;
+  outline:none;
+}
+
+.owner-search-box input:focus{
+  border-color:#2563eb;
+  box-shadow:0 0 10px rgba(37,99,235,0.2);
+}
+
+.counter-text{
+  color:#64748b;
+  font-size:12px;
+}
+
 @media(max-width:768px){
   .owner-sidebar{
     position:relative;

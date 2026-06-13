@@ -175,8 +175,83 @@ body{
   transform:scale(1.05);
 }
 
-/* ORDER POPUP */
+.cart-section{
+  width:90%;
+  margin:20px auto 60px;
+  background:white;
+  padding:25px;
+  border-radius:20px;
+  box-shadow:0 8px 20px rgba(0,0,0,0.08);
+}
 
+.cart-section h2{
+  color:#1d4ed8;
+  margin-bottom:20px;
+}
+
+.cart-item{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:15px;
+  padding:15px 0;
+  border-bottom:1px solid #e2e8f0;
+}
+
+.cart-item button{
+  padding:6px 10px;
+  border:none;
+  border-radius:8px;
+  background:#2563eb;
+  color:white;
+  cursor:pointer;
+  margin:2px;
+}
+
+.checkout-btn{
+  width:100%;
+  padding:14px;
+  margin-top:20px;
+  border:none;
+  border-radius:12px;
+  background:#1d4ed8;
+  color:white;
+  font-size:16px;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+/* PAYMENTS DETAILS */
+.payment-details{
+  margin-top:15px;
+  padding:12px;
+  background:#eff6ff;
+  color:#1e3a8a;
+  border-radius:10px;
+  line-height:1.6;
+  font-size:14px;
+}
+
+.food-bottom{
+  gap:10px;
+  flex-wrap:wrap;
+}
+
+/* BILL DETAILS */
+.bill-box{
+  margin-top:15px;
+  padding:12px;
+  background:#f8fafc;
+  border-radius:10px;
+  border:1px solid #e2e8f0;
+}
+
+.bill-box p{
+  margin:6px 0;
+  color:#334155;
+}
+
+/* ORDER POPUP */
 .order-popup{
   position:fixed;
   top:0;
@@ -325,6 +400,10 @@ body{
 
   .food-info h3{
     font-size:20px;
+  }
+  .cart-item{
+    flex-direction:column;
+    align-items:flex-start;
   }
 
 }

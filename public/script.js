@@ -60,12 +60,14 @@ window.addEventListener("DOMContentLoaded", () => {
   }
 
   auth.signInWithEmailAndPassword(email, passwordValue)
-    .then(() => {
-      window.location.href = "dashboard.html";
-    })
-    .catch((error) => {
-      alert(error.message);
-    });
+    .then((userCredential) => {
+  const user = userCredential.user;
+
+  localStorage.setItem("studentEmail", user.email);
+  localStorage.setItem("studentName", user.displayName || "Student");
+
+  window.location.href = "dashboard.html";
+  })
 });
 
   // INPUT FOCUS EFFECT
@@ -97,17 +99,12 @@ function googleLogin() {
 
   auth.signInWithPopup(provider)
 .then((result) => {
+  const user = result.user;
 
-    const user = result.user;
+  localStorage.setItem("studentName", user.displayName || "Student");
+  localStorage.setItem("studentEmail", user.email);
 
-    // SAVE NAME
-    localStorage.setItem(
-      "studentName",
-      user.displayName
-    );
-
-    // OPEN DASHBOARD
-    window.location.href = "dashboard.html";
+  window.location.href = "dashboard.html";
 });
 }
 function showSignup() {
@@ -141,12 +138,12 @@ function registerUser() {
       });
     })
     .then(() => {
-      alert("Registration successful! You can now login.");
-      hideSignup();
-    })
-    .catch((error) => {
-      alert(error.message);
-    });
+  localStorage.setItem("studentName", name);
+  localStorage.setItem("studentEmail", email);
+
+  alert("Registration successful! You can now login.");
+  hideSignup();
+  })
 }
 function forgotPassword() {
   const email = document.querySelector('input[type="email"]').value;

@@ -23,13 +23,16 @@ app.post("/api/orders", async (req, res) => {
       paymentMethod,
       tokenNo,
       status,
-      counter
+      counter,
+      receiverPlace,
+      pickupTime,
+      pickup_time
     } = req.body;
 
     const result = await pool.query(
       `INSERT INTO canteen_orders
-      (student_name, student_email, food_name, quantity, total_amount, payment_method, token_no, status, counter_name)
-      VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9)
+      (student_name, student_email, food_name, quantity, total_amount, payment_method, token_no, status, counter_name, pickup_time)
+      VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10)
       RETURNING *`,
       [
         studentName,
@@ -40,7 +43,8 @@ app.post("/api/orders", async (req, res) => {
         paymentMethod,
         tokenNo,
         status,
-        counter
+        counter || receiverPlace,
+        pickupTime || pickup_time
       ]
     );
 
@@ -82,8 +86,22 @@ app.get("/api/orders/:email", async (req, res) => {
 app.get("/api/owner/orders", async (req, res) => {
   try {
     const result = await pool.query(
-      `SELECT * FROM canteen_orders ORDER BY order_time DESC`
-    );
+  `SELECT 
+    id,
+    student_name,
+    student_email,
+    food_name,
+    quantity,
+    total_amount,
+    payment_method,
+    token_no,
+    status,
+    counter_name,
+    pickup_time,
+    order_time
+  FROM canteen_orders
+  ORDER BY order_time DESC`
+);
 
     res.json(result.rows);
 

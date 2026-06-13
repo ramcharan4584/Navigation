@@ -25,7 +25,7 @@
 
     <header class="owner-header">
       <div>
-        <h1>Canteen Orders Dashboard</h1>
+        <h1>Orders Dashboard</h1>
         <p>Manage student orders, pickup tokens and order status.</p>
       </div>
 
@@ -57,6 +57,15 @@
     <section class="orders-section">
       <h2>Recent Orders</h2>
 
+      <div class="owner-search-box">
+          <input 
+            type="text" 
+            id="emailSearch" 
+            placeholder="Search orders by student email..."
+            oninput="searchOrdersByEmail()"
+          >
+      </div>
+
       <div class="orders-table-wrapper">
         <table>
           <thead>
@@ -67,6 +76,8 @@
               <th>Qty</th>
               <th>Total</th>
               <th>Payment</th>
+              <th>Pickup Time</th>
+              <th>Counter</th>
               <th>Status</th>
               <th>Action</th>
             </tr>
