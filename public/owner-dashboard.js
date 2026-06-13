@@ -210,12 +210,14 @@ async function updateStatus(id, status) {
 
   if (status === "Delivered") {
     let deliveryPerson = prompt("Enter delivery person name:");
+
     if (!deliveryPerson || deliveryPerson.trim() === "") {
       alert("Delivery person name is required.");
       return;
     }
 
     let deliveryPersonId = prompt("Enter delivery person ID:");
+
     if (!deliveryPersonId || deliveryPersonId.trim() === "") {
       alert("Delivery person ID is required.");
       return;
@@ -225,68 +227,71 @@ async function updateStatus(id, status) {
     bodyData.deliveryPersonId = deliveryPersonId.trim();
   }
 
- if (status === "Cancelled") {
-        let commonReasons = `
-      Choose cancellation reason:
+  if (status === "Cancelled") {
+    let commonReasons =
+      "Choose cancellation reason:\n\n" +
+      "1. Food item not available\n" +
+      "2. Ingredients not available\n" +
+      "3. Canteen is closing soon\n" +
+      "4. Payment issue\n" +
+      "5. Student did not collect on time\n" +
+      "6. Duplicate order\n" +
+      "7. Other reason\n\n" +
+      "Enter number from 1 to 7:";
 
-      1. Food item not available
-      2. Ingredients not available
-      3. Canteen is closing soon
-      4. Payment issue
-      5. Student did not collect on time
-      6. Duplicate order
-      7. Other reason
+    let choice = prompt(commonReasons);
 
-      Enter number from 1 to 7:
-      `;
+    let reasons = {
+      "1": "Food item not available",
+      "2": "Ingredients not available",
+      "3": "Canteen is closing soon",
+      "4": "Payment issue",
+      "5": "Student did not collect on time",
+      "6": "Duplicate order"
+    };
 
-        let choice = prompt(commonReasons);
+    let cancelReason = "";
 
-        let reasons = {
-          "1": "Food item not available",
-          "2": "Ingredients not available",
-          "3": "Canteen is closing soon",
-          "4": "Payment issue",
-          "5": "Student did not collect on time",
-          "6": "Duplicate order"
-        };
-
-        let cancelReason = "";
-
-        if (choice === "7") {
-          cancelReason = prompt("Enter custom cancellation reason:");
-        } else {
-          cancelReason = reasons[choice];
-        }
-
-        if (!cancelReason || cancelReason.trim() === "") {
-          alert("Cancellation reason is required.");
-          return;
-        }
-
-        bodyData.cancelReason = cancelReason.trim();
-      }
-
-  const response = await fetch(
-    `https://student-portal-backend-uo7y.onrender.com/api/owner/orders/${id}/status`,
-    {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(bodyData)
+    if (choice === "7") {
+      cancelReason = prompt("Enter custom cancellation reason:");
+    } else {
+      cancelReason = reasons[choice];
     }
-  );
 
-  const result = await response.json();
+    if (!cancelReason || cancelReason.trim() === "") {
+      alert("Cancellation reason is required.");
+      return;
+    }
 
-  if (!result.success) {
-    alert(result.message || "Status update failed");
-    return;
+    bodyData.cancelReason = cancelReason.trim();
   }
 
-  alert("Order status updated successfully.");
-  loadOrders();
+  try {
+    const response = await fetch(
+      `https://student-portal-backend-uo7y.onrender.com/api/owner/orders/${id}/status`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(bodyData)
+      }
+    );
+
+    const result = await response.json();
+
+    if (!result.success) {
+      alert(result.message || "Status update failed");
+      return;
+    }
+
+    alert("Order status updated successfully.");
+    loadOrders();
+
+  } catch (error) {
+    alert("Backend error. Status not updated.");
+    console.error(error);
+  }
 }
 
 loadOrders();
