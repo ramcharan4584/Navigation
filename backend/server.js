@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require("cors");
 require("dotenv").config();
 const pool = require("./db");
+const firebaseAdmin = require("firebase-admin");
 
 const app = express();
 
@@ -14,8 +15,8 @@ app.get("/", (req, res) => {
 
 const admin = require("firebase-admin");
 
-admin.initializeApp({
-  credential: admin.credential.cert({
+firebaseAdmin.initializeApp({
+  credential: firebaseAdmin.credential.cert({
     projectId: process.env.FIREBASE_PROJECT_ID,
     clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
     privateKey: process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, "\n")
@@ -190,7 +191,7 @@ const tokenResult = await pool.query(
 if (tokenResult.rows.length > 0 && notificationMessage) {
   const fcmToken = tokenResult.rows[0].fcm_token;
 
-  await admin.messaging().send({
+  await firebaseAdmin.messaging().send({
     token: fcmToken,
     notification: {
       title: "UniEats Order Update",
