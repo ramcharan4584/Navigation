@@ -210,52 +210,51 @@ async function updateStatus(id, status) {
 
   if (status === "Delivered") {
     let deliveryPerson = prompt("Enter delivery person name:");
-
     if (!deliveryPerson || deliveryPerson.trim() === "") {
-      alert("Delivery person name is required");
+      alert("Delivery person name is required.");
+      return;
+    }
+
+    let deliveryPersonId = prompt("Enter delivery person ID:");
+    if (!deliveryPersonId || deliveryPersonId.trim() === "") {
+      alert("Delivery person ID is required.");
       return;
     }
 
     bodyData.deliveryPerson = deliveryPerson.trim();
+    bodyData.deliveryPersonId = deliveryPersonId.trim();
   }
 
   if (status === "Cancelled") {
     let cancelReason = prompt("Enter cancellation reason:");
-
     if (!cancelReason || cancelReason.trim() === "") {
-      alert("Cancellation reason is required");
+      alert("Cancellation reason is required.");
       return;
     }
 
     bodyData.cancelReason = cancelReason.trim();
   }
 
-  try {
-    const response = await fetch(
-      `https://student-portal-backend-uo7y.onrender.com/api/owner/orders/${id}/status`,
-      {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(bodyData)
-      }
-    );
-
-    const result = await response.json();
-
-    if (!result.success) {
-      alert(result.message || "Status update failed");
-      return;
+  const response = await fetch(
+    `https://student-portal-backend-uo7y.onrender.com/api/owner/orders/${id}/status`,
+    {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(bodyData)
     }
+  );
 
-    alert("Order status updated successfully");
-    loadOrders();
+  const result = await response.json();
 
-  } catch (error) {
-    alert("Backend error. Status not updated.");
-    console.error(error);
+  if (!result.success) {
+    alert(result.message || "Status update failed");
+    return;
   }
+
+  alert("Order status updated successfully.");
+  loadOrders();
 }
 
 loadOrders();

@@ -117,36 +117,37 @@ app.get("/api/owner/orders", async (req, res) => {
 app.put("/api/owner/orders/:id/status", async (req, res) => {
   try {
     const { id } = req.params;
-    const { status, deliveryPerson, cancelReason } = req.body;
+    const { status, deliveryPerson, deliveryPersonId, cancelReason } = req.body;
 
     let notificationMessage = "";
-    let deliveryId = null;
 
     if (status === "Ready") {
-      notificationMessage = "Your order is ready. Please pick it up within 10 minutes.";
+      notificationMessage =
+        "Your order is ready. Please collect it within 10 minutes.";
     }
 
     if (status === "Delivered") {
-      if (!deliveryPerson) {
+      if (!deliveryPerson || !deliveryPersonId) {
         return res.status(400).json({
           success: false,
-          message: "Delivery person name is required"
+          message: "Delivery person name and ID are required"
         });
       }
 
-      deliveryId = "DEL-" + Date.now();
-      notificationMessage = `Your order has been delivered by ${deliveryPerson}. Delivery ID: ${deliveryId}`;
+      notificationMessage =
+        `Your order has been delivered by ${deliveryPerson}. Delivery Person ID: ${deliveryPersonId}`;
     }
 
     if (status === "Cancelled") {
       if (!cancelReason) {
         return res.status(400).json({
           success: false,
-          message: "Cancel reason is required"
+          message: "Cancellation reason is required"
         });
       }
 
-      notificationMessage = `Your order has been cancelled. Reason: ${cancelReason}`;
+      notificationMessage =
+        `Your order has been cancelled. Reason: ${cancelReason}`;
     }
 
     const result = await pool.query(
@@ -154,7 +155,7 @@ app.put("/api/owner/orders/:id/status", async (req, res) => {
        SET status = $1,
            notification_message = $2,
            delivery_person = $3,
-           delivery_id = $4,
+           delivery_person_id = $4,
            cancel_reason = $5
        WHERE id = $6
        RETURNING *`,
@@ -162,7 +163,7 @@ app.put("/api/owner/orders/:id/status", async (req, res) => {
         status,
         notificationMessage,
         deliveryPerson || null,
-        deliveryId,
+        deliveryPersonId || null,
         cancelReason || null,
         id
       ]
