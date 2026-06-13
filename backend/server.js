@@ -122,8 +122,7 @@ app.put("/api/owner/orders/:id/status", async (req, res) => {
     let notificationMessage = "";
 
     if (status === "Ready") {
-      notificationMessage =
-        "Your order is ready. Please collect it within 10 minutes.";
+      notificationMessage = "Your order is ready. Please collect it within 10 minutes.";
     }
 
     if (status === "Delivered") {
@@ -152,11 +151,12 @@ app.put("/api/owner/orders/:id/status", async (req, res) => {
 
     const result = await pool.query(
       `UPDATE canteen_orders
-       SET status = $1,
-           notification_message = $2,
-           delivery_person = $3,
-           delivery_person_id = $4,
-           cancel_reason = $5
+       SET 
+         status = $1,
+         notification_message = COALESCE($2, notification_message),
+         delivery_person = COALESCE($3, delivery_person),
+         delivery_person_id = COALESCE($4, delivery_person_id),
+         cancel_reason = COALESCE($5, cancel_reason)
        WHERE id = $6
        RETURNING *`,
       [
@@ -175,6 +175,8 @@ app.put("/api/owner/orders/:id/status", async (req, res) => {
     });
 
   } catch (error) {
+    console.error("Status update error:", error.message);
+
     res.status(500).json({
       success: false,
       message: "Status not updated",
