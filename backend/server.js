@@ -159,12 +159,60 @@ app.post("/api/save-fcm-token", async (req, res) => {
   }
 });
 
+app.post("/api/test-notification", async (req, res) => {
+  try {
+    const { email } = req.body;
+
+    const tokenResult = await pool.query(
+      `SELECT fcm_token FROM student_fcm_tokens
+       WHERE student_email = $1`,
+      [email]
+    );
+
+    if (tokenResult.rows.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "No FCM token found for this email"
+      });
+    }
+
+    const response = await getMessaging().send({
+      token: tokenResult.rows[0].fcm_token,
+      notification: {
+        title: "UniEats Test Notification",
+        body: "FCM is working successfully."
+      },
+      webpush: {
+        notification: {
+          icon: "/images/logo.png"
+        }
+      }
+    });
+
+    res.json({
+      success: true,
+      message: "Test notification sent",
+      response
+    });
+
+  } catch (error) {
+    console.error("Test notification error:", error);
+
+    res.status(500).json({
+      success: false,
+      message: "Test notification failed",
+      error: error.message
+    });
+  }
+});
+
 app.put("/api/owner/orders/:id/status", async (req, res) => {
   try {
     const { id } = req.params;
     const { status, deliveryPerson, deliveryPersonId, cancelReason } = req.body;
 
     let notificationMessage = "";
+    let finalCancelReason = cancelReason || null;
 
     if (status === "Ready") {
       notificationMessage =
@@ -184,15 +232,10 @@ app.put("/api/owner/orders/:id/status", async (req, res) => {
     }
 
     if (status === "Cancelled") {
-      if (!cancelReason) {
-        return res.status(400).json({
-          success: false,
-          message: "Cancellation reason is required"
-        });
-      }
+      finalCancelReason = cancelReason || "No reason provided";
 
       notificationMessage =
-        `Your order has been cancelled. Reason: ${cancelReason}`;
+        `Your order has been cancelled. Reason: ${finalCancelReason}`;
     }
 
     const result = await pool.query(
@@ -207,10 +250,10 @@ app.put("/api/owner/orders/:id/status", async (req, res) => {
        RETURNING *`,
       [
         status,
-        notificationMessage,
+        notificationMessage || null,
         deliveryPerson || null,
         deliveryPersonId || null,
-        cancelReason || null,
+        finalCancelReason,
         id
       ]
     );
@@ -224,11 +267,17 @@ app.put("/api/owner/orders/:id/status", async (req, res) => {
 
     const updatedOrder = result.rows[0];
 
+    console.log("Updated order email:", updatedOrder.student_email);
+    console.log("Updated status:", status);
+    console.log("Notification message:", notificationMessage);
+
     const tokenResult = await pool.query(
       `SELECT fcm_token FROM student_fcm_tokens
        WHERE student_email = $1`,
       [updatedOrder.student_email]
     );
+
+    console.log("Token rows found:", tokenResult.rows.length);
 
     if (tokenResult.rows.length > 0 && notificationMessage) {
       const fcmToken = tokenResult.rows[0].fcm_token;
@@ -245,6 +294,8 @@ app.put("/api/owner/orders/:id/status", async (req, res) => {
           }
         }
       });
+
+      console.log("FCM sent successfully");
     }
 
     res.json({
@@ -253,7 +304,7 @@ app.put("/api/owner/orders/:id/status", async (req, res) => {
     });
 
   } catch (error) {
-    console.error("Status update error:", error.message);
+    console.error("Status update error:", error);
 
     res.status(500).json({
       success: false,
