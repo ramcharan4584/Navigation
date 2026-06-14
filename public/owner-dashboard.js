@@ -206,7 +206,10 @@ function updateStats(orders) {
 }
 
 async function updateStatus(id, status) {
-  let bodyData = { status: status };
+  body: JSON.stringify({
+  status: status,
+  cancelReason: cancelReason
+})
 
   if (status === "Delivered") {
     let deliveryPerson = prompt("Enter delivery person name:");
