@@ -282,20 +282,23 @@ app.put("/api/owner/orders/:id/status", async (req, res) => {
     if (tokenResult.rows.length > 0 && notificationMessage) {
       const fcmToken = tokenResult.rows[0].fcm_token;
 
-      await getMessaging().send({
+      const fcmResponse = await getMessaging().send({
         token: fcmToken,
-        notification: {
-          title: "UniEats Order Update",
-          body: notificationMessage
-        },
         webpush: {
           notification: {
-            icon: "/images/logo.png"
+            title: "UniEats Order Update",
+            body: notificationMessage,
+            icon: "https://student-portal-1baed.web.app/images/logo.png",
+            badge: "https://student-portal-1baed.web.app/images/logo.png",
+            requireInteraction: true
+          },
+          fcmOptions: {
+            link: "https://student-portal-1baed.web.app/canteen.html"
           }
         }
       });
 
-      console.log("FCM sent successfully");
+      console.log("FCM sent successfully:", fcmResponse);
     }
 
     res.json({
@@ -312,10 +315,4 @@ app.put("/api/owner/orders/:id/status", async (req, res) => {
       error: error.message
     });
   }
-});
-
-const PORT = process.env.PORT || 5000;
-
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
 });
