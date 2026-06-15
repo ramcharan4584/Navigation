@@ -280,26 +280,23 @@ app.put("/api/owner/orders/:id/status", async (req, res) => {
     console.log("Token rows found:", tokenResult.rows.length);
 
     if (tokenResult.rows.length > 0 && notificationMessage) {
-      const fcmToken = tokenResult.rows[0].fcm_token;
+    const fcmToken = tokenResult.rows[0].fcm_token;
 
-      const fcmResponse = await getMessaging().send({
-        token: fcmToken,
-        webpush: {
-          notification: {
-            title: "UniEats Order Update",
-            body: notificationMessage,
-            icon: "https://student-portal-1baed.web.app/images/logo.png",
-            badge: "https://student-portal-1baed.web.app/images/logo.png",
-            requireInteraction: true
-          },
-          fcmOptions: {
-            link: "https://student-portal-1baed.web.app/canteen.html"
-          }
+    const fcmResponse = await getMessaging().send({
+      token: fcmToken,
+      notification: {
+        title: "UniEats Order Update",
+        body: notificationMessage
+      },
+      webpush: {
+        notification: {
+          icon: "/images/logo.png"
         }
-      });
+      }
+    });
 
-      console.log("FCM sent successfully:", fcmResponse);
-    }
+    console.log("FCM sent successfully:", fcmResponse);
+  }
 
     res.json({
       success: true,
