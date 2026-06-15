@@ -121,9 +121,11 @@ messaging.onMessage(function(payload) {
     payload.notification?.body ||
     "Your order status has been updated.";
 
-  new Notification(title, {
-    body: body
-  });
+  if (Notification.permission === "granted") {
+    new Notification(title, {
+      body: body
+    });
+  }
 });
 
 const vapidKey =

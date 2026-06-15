@@ -53,15 +53,35 @@ app.post("/api/orders", async (req, res) => {
         totalAmount,
         paymentMethod,
         tokenNo,
-        status,
+        status || "Preparing",
         counter || receiverPlace,
         pickupTime || pickup_time
       ]
     );
 
+    const savedOrder = result.rows[0];
+
+    const tokenResult = await pool.query(
+      `SELECT fcm_token FROM student_fcm_tokens
+       WHERE student_email = $1`,
+      [studentEmail]
+    );
+
+    for (const row of tokenResult.rows) {
+      await getMessaging().send({
+        token: row.fcm_token,
+        data: {
+          title: "UniEats Order Confirmed",
+          body: `Your order for ${foodName} has been placed successfully.`
+        }
+      });
+
+      console.log("Order confirmation sent to:", row.fcm_token);
+    }
+
     res.json({
       success: true,
-      order: result.rows[0]
+      order: savedOrder
     });
 
   } catch (error) {
@@ -95,73 +115,32 @@ app.get("/api/orders/:email", async (req, res) => {
   }
 });
 
-app.post("/api/orders", async (req, res) => {
+app.get("/api/owner/orders", async (req, res) => {
   try {
-    const {
-      studentName,
-      studentEmail,
-      foodName,
-      quantity,
-      totalAmount,
-      paymentMethod,
-      tokenNo,
-      status,
-      counter,
-      receiverPlace,
-      pickupTime,
-      pickup_time
-    } = req.body;
-
     const result = await pool.query(
-      `INSERT INTO canteen_orders
-      (student_name, student_email, food_name, quantity, total_amount, payment_method, token_no, status, counter_name, pickup_time)
-      VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10)
-      RETURNING *`,
-      [
-        studentName,
-        studentEmail,
-        foodName,
+      `SELECT 
+        id,
+        student_name,
+        student_email,
+        food_name,
         quantity,
-        totalAmount,
-        paymentMethod,
-        tokenNo,
+        total_amount,
+        payment_method,
+        token_no,
         status,
-        counter || receiverPlace,
-        pickupTime || pickup_time
-      ]
+        counter_name,
+        pickup_time,
+        order_time
+      FROM canteen_orders
+      ORDER BY order_time DESC`
     );
 
-    const savedOrder = result.rows[0];
-
-    const tokenResult = await pool.query(
-      `SELECT fcm_token FROM student_fcm_tokens
-       WHERE student_email = $1`,
-      [studentEmail]
-    );
-
-    if (tokenResult.rows.length > 0) {
-      for (const row of tokenResult.rows) {
-        await getMessaging().send({
-          token: row.fcm_token,
-          data: {
-            title: "UniEats Order Confirmed",
-            body: `Your order for ${foodName} has been placed successfully.`
-          }
-        });
-
-        console.log("Order confirmation notification sent to:", row.fcm_token);
-      }
-    }
-
-    res.json({
-      success: true,
-      order: savedOrder
-    });
+    res.json(result.rows);
 
   } catch (error) {
     res.status(500).json({
       success: false,
-      message: "Order not saved",
+      message: "Cannot fetch owner orders",
       error: error.message
     });
   }
@@ -180,9 +159,9 @@ app.post("/api/save-fcm-token", async (req, res) => {
 
     await pool.query(
       `INSERT INTO student_fcm_tokens (student_email, fcm_token)
-      VALUES ($1, $2)
-      ON CONFLICT (fcm_token)
-      DO UPDATE SET student_email = EXCLUDED.student_email`,
+       VALUES ($1, $2)
+       ON CONFLICT (fcm_token)
+       DO UPDATE SET student_email = EXCLUDED.student_email`,
       [studentEmail, fcmToken]
     );
 
@@ -225,8 +204,6 @@ app.post("/api/test-notification", async (req, res) => {
           body: "FCM is working successfully."
         }
       });
-
-      console.log("Test notification sent to:", row.fcm_token);
     }
 
     res.json({
@@ -235,8 +212,6 @@ app.post("/api/test-notification", async (req, res) => {
     });
 
   } catch (error) {
-    console.error("Test notification error:", error);
-
     res.status(500).json({
       success: false,
       message: "Test notification failed",
@@ -271,9 +246,7 @@ app.put("/api/owner/orders/:id/status", async (req, res) => {
 
     if (status === "Cancelled") {
       finalCancelReason = cancelReason || "No reason provided";
-
-      notificationMessage =
-        `Your order has been cancelled. Reason: ${finalCancelReason}`;
+      notificationMessage = `Your order has been cancelled. Reason: ${finalCancelReason}`;
     }
 
     const result = await pool.query(
@@ -311,18 +284,14 @@ app.put("/api/owner/orders/:id/status", async (req, res) => {
       [updatedOrder.student_email]
     );
 
-    if (tokenResult.rows.length > 0 && notificationMessage) {
-      for (const row of tokenResult.rows) {
-        await getMessaging().send({
-          token: row.fcm_token,
-          data: {
-            title: "UniEats Order Update",
-            body: notificationMessage
-          }
-        });
-
-        console.log("Order notification sent to:", row.fcm_token);
-      }
+    for (const row of tokenResult.rows) {
+      await getMessaging().send({
+        token: row.fcm_token,
+        data: {
+          title: "UniEats Order Update",
+          body: notificationMessage
+        }
+      });
     }
 
     res.json({
@@ -331,8 +300,6 @@ app.put("/api/owner/orders/:id/status", async (req, res) => {
     });
 
   } catch (error) {
-    console.error("Status update error:", error);
-
     res.status(500).json({
       success: false,
       message: "Status not updated",
@@ -340,6 +307,7 @@ app.put("/api/owner/orders/:id/status", async (req, res) => {
     });
   }
 });
+
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, "0.0.0.0", () => {
