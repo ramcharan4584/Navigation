@@ -201,6 +201,48 @@ th{
   font-size:12px;
 }
 
+.locked-status {
+  color: #64748b;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.order-tools {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 18px;
+}
+
+.order-tools button {
+  border: none;
+  background: #eef4ff;
+  color: #1d4ed8;
+  padding: 10px 16px;
+  border-radius: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.order-tools button:hover {
+  background: #2563eb;
+  color: white;
+}
+
+#lastUpdated {
+  margin-left: auto;
+  color: #64748b;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+table thead {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+}
+
 @media(max-width:768px){
   .owner-sidebar{
     position:relative;

@@ -143,9 +143,21 @@ function renderOrders(orders) {
       </td>
 
       <td>
-        <button class="action-btn ready-btn" onclick="updateStatus(${order.id}, 'Ready')">Ready</button>
-        <button class="action-btn delivered-btn" onclick="updateStatus(${order.id}, 'Delivered')">Delivered</button>
-        <button class="action-btn cancel-btn" onclick="updateStatus(${order.id}, 'Cancelled')">Cancel</button>
+        ${
+          order.status === "Preparing"
+            ? `
+              <button class="action-btn ready-btn" onclick="updateStatus(${order.id}, 'Ready')">Ready</button>
+              <button class="action-btn cancel-btn" onclick="updateStatus(${order.id}, 'Cancelled')">Cancel</button>
+            `
+            : order.status === "Ready"
+            ? `
+              <button class="action-btn delivered-btn" onclick="updateStatus(${order.id}, 'Delivered')">Delivered</button>
+              <button class="action-btn cancel-btn" onclick="updateStatus(${order.id}, 'Cancelled')">Cancel</button>
+            `
+            : `
+              <span class="locked-status">Status Locked</span>
+            `
+        }
       </td>
     </tr>
   `).join("");
@@ -206,6 +218,54 @@ function updateStats(orders) {
 
   document.getElementById("cancelledorders").innerText =
     orders.filter(o => o.status === "Cancelled").length;
+    
+  document.getElementById("pendingOrders").innerText =
+    orders.filter(o => o.status === "Preparing" || o.status === "Ready").length;
+
+  const today = new Date().toDateString();
+
+  const todayOrders = orders.filter(order => {
+    return new Date(order.order_time).toDateString() === today;
+  });
+
+  document.getElementById("todayOrders").innerText = todayOrders.length;
+
+  const revenue = todayOrders.reduce((sum, order) => {
+    return sum + Number(order.total_amount || 0);
+  }, 0);
+
+  document.getElementById("todayRevenue").innerText = "₹" + revenue;
+
+  document.getElementById("lastUpdated").innerText =
+    "Last updated: " + new Date().toLocaleTimeString();
+}
+
+function filterByStatus(status) {
+  if (status === "All") {
+    renderOrders(allOrders);
+    return;
+  }
+
+  const filtered = allOrders.filter(order => order.status === status);
+  renderOrders(filtered);
+}
+
+function exportOrders() {
+  let csv = "Token,Student,Email,Food,Qty,Total,Payment,Pickup Time,Counter,Status\n";
+
+  allOrders.forEach(order => {
+    csv += `"${getToken(order)}","${getStudentName(order)}","${getStudentEmail(order)}","${getFoodName(order)}","${getQuantity(order)}","${getTotal(order)}","${getPayment(order)}","${getPickupTime(order)}","${getCounter(order)}","${order.status}"\n`;
+  });
+
+  const blob = new Blob([csv], { type: "text/csv" });
+  const url = window.URL.createObjectURL(blob);
+
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "unieats-orders.csv";
+  a.click();
+
+  window.URL.revokeObjectURL(url);
 }
 
 async function updateStatus(id, status) {

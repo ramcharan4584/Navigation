@@ -13,12 +13,6 @@
   <aside class="owner-sidebar">
     <h2>🍽 UniEats</h2>
     <p>Owner Panel</p>
-
-    <a class="active">All Orders</a>
-    <a>Preparing</a>
-    <a>Ready</a>
-    <a>Delivered</a>
-    <a>Cancelled</a>
   </aside>
 
   <main class="owner-main">
@@ -33,14 +27,25 @@
     </header>
 
     <section class="stats-grid">
+
       <div class="stat-card">
-        <h3 id="totalOrders">0</h3>
-        <p>Total Orders</p>
+      <h2 id="todayRevenue">₹0</h2>
+      <p>Today Revenue</p>
+      </div>
+
+      <div class="stat-card">
+      <h2 id="todayOrders">0</h2>
+      <p>Today Orders</p>
       </div>
 
       <div class="stat-card">
         <h3 id="preparingOrders">0</h3>
         <p>Preparing</p>
+      </div>
+
+      <div class="stat-card">
+      <h2 id="pendingOrders">0</h2>
+      <p>Pending</p>
       </div>
 
       <div class="stat-card">
@@ -57,6 +62,8 @@
         <h3 id="cancelledorders">0</h3>
         <p>cancelled</p>
       </div>
+
+      <span id="lastUpdated">Last updated: --</span>
     </section>
 
     <section class="orders-section">
