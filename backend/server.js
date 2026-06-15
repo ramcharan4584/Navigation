@@ -79,7 +79,6 @@ app.post("/api/orders", async (req, res) => {
             Token No: ${tokenNo}
             Pickup Time: ${pickupTime || pickup_time}
             Payment: ${paymentMethod}
-            Status: ${status || "Preparing"}
             Counter: ${counter || receiverPlace}`
         }
       });
