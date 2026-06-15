@@ -236,7 +236,8 @@ app.put("/api/owner/orders/:id/status", async (req, res) => {
     let finalCancelReason = cancelReason || null;
 
     if (status === "Ready") {
-      notificationMessage = "Your order is ready. Please collect it within 10 minutes.";
+      notificationMessage =
+      `Your order is ready for pickup at ${counter || receiverPlace}. Please collect it within 5 minutes.`;  
     }
 
     if (status === "Delivered") {
