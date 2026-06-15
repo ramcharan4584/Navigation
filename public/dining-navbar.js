@@ -27,9 +27,11 @@ diningNavbar.innerHTML = `
       <a href="#">📅 Weekly Menu</a>
       <a href="#">📍 Pickup Counters</a>
       <a href="#" onclick="showMyOrders()">🛒 My Orders</a>
-        <div class="orders-dropdown" id="ordersDropdown">
-          <p class="empty-orders">Click to load your orders</p>
-        </div>
+
+      <div class="orders-dropdown" id="ordersDropdown">
+        <p class="empty-orders">Click to load your orders</p>
+      </div>
+
       <a href="#">🎫 Pickup Tokens</a>
       <a href="#">❤️ Favorites</a>
       <a href="#">🕒 Order History</a>
@@ -37,9 +39,11 @@ diningNavbar.innerHTML = `
       <a href="#">🎁 Offers & Coupons</a>
       <a href="#">🔥 Most Ordered</a>
       <a href="#">⏳ Live Queue</a>
-      <a href="javascript:void(0)" onclick="enableNotifications()">
-  🔔      Enable Order Notifications
+
+      <a href="javascript:void(0)" id="notificationLink" onclick="enableNotifications()">
+        🔔 Enable Order Notifications
       </a>
+
       <a href="#">☎ Contact Canteen</a>
       <a href="index.html">🚪 Logout</a>
     </div>
@@ -55,16 +59,17 @@ function closeDiningSidebar() {
   document.getElementById("diningSidebar").classList.remove("active");
   document.getElementById("sidebarOverlay").classList.remove("active");
 }
+
 function toggleOrders() {
-  document
-  .getElementById("ordersDropdown")
-  .classList.toggle("active");
+  document.getElementById("ordersDropdown").classList.toggle("active");
 }
+
 async function showMyOrders() {
   const ordersBox = document.getElementById("ordersDropdown");
+
   const studentEmail =
-  localStorage.getItem("studentEmail") ||
-  localStorage.getItem("userEmail");
+    localStorage.getItem("studentEmail") ||
+    localStorage.getItem("userEmail");
 
   if (!studentEmail) {
     alert("Student email not found. Please login again.");
@@ -72,7 +77,10 @@ async function showMyOrders() {
   }
 
   try {
-    const response = await fetch(`https://student-portal-backend-uo7y.onrender.com/api/orders/${studentEmail}`);
+    const response = await fetch(
+      `https://student-portal-backend-uo7y.onrender.com/api/orders/${studentEmail}`
+    );
+
     const orders = await response.json();
 
     if (orders.length === 0) {
@@ -99,11 +107,19 @@ async function showMyOrders() {
 }
 
 const messaging = firebase.messaging();
+
 messaging.onMessage(function(payload) {
   console.log("Foreground message received:", payload);
 
-  const title = payload.notification?.title || "UniEats Order Update";
-  const body = payload.notification?.body || "Your order status has been updated.";
+  const title =
+    payload.data?.title ||
+    payload.notification?.title ||
+    "UniEats Order Update";
+
+  const body =
+    payload.data?.body ||
+    payload.notification?.body ||
+    "Your order status has been updated.";
 
   new Notification(title, {
     body: body
@@ -111,16 +127,16 @@ messaging.onMessage(function(payload) {
 });
 
 const vapidKey =
-"BHjO5qV1g41Mvrtqk-Jp08v9G7VQ44LpH_KAMZzwMZxpKlYdRrOL4zxDt1_oFGcVT6EJEQM_4WvmVNS-xq-QKnM";
+  "BHjO5qV1g41Mvrtqk-Jp08v9G7VQ44LpH_KAMZzwMZxpKlYdRrOL4zxDt1_oFGcVT6EJEQM_4WvmVNS-xq-QKnM";
 
 async function enableNotifications() {
   try {
-    alert("Button clicked");
-
     const permission = await Notification.requestPermission();
-    alert("Permission: " + permission);
 
-    if (permission !== "granted") return;
+    if (permission !== "granted") {
+      alert("Notification permission denied.");
+      return;
+    }
 
     const registration = await navigator.serviceWorker.register("/firebase-messaging-sw.js");
 
@@ -130,13 +146,12 @@ async function enableNotifications() {
     });
 
     console.log("FCM TOKEN:", token);
-    alert("Token generated. Check console.");
 
     localStorage.setItem("fcmToken", token);
 
     const studentEmail =
-    localStorage.getItem("studentEmail") ||
-    localStorage.getItem("userEmail");
+      localStorage.getItem("studentEmail") ||
+      localStorage.getItem("userEmail");
 
     if (!studentEmail) {
       alert("Student email not found. Please login again.");
@@ -163,10 +178,44 @@ async function enableNotifications() {
 
     console.log("SAVE TOKEN RESPONSE:", data);
 
-    alert("Notifications enabled and saved successfully");
+    if (data.success) {
+      localStorage.setItem("notificationsEnabled", "true");
+      localStorage.setItem("notificationEmail", studentEmail);
+
+      updateNotificationUI();
+
+      alert("Notifications enabled and saved successfully.");
+    } else {
+      alert(data.message || "Notification token not saved.");
+    }
 
   } catch (error) {
     console.error("FCM ERROR:", error);
     alert("Token generation failed. Check console.");
   }
 }
+
+function updateNotificationUI() {
+  const link = document.getElementById("notificationLink");
+
+  if (!link) return;
+
+  const enabled = localStorage.getItem("notificationsEnabled") === "true";
+  const savedEmail = localStorage.getItem("notificationEmail");
+
+  const currentEmail =
+    localStorage.getItem("studentEmail") ||
+    localStorage.getItem("userEmail");
+
+  if (enabled && savedEmail === currentEmail) {
+    link.innerHTML = "✅ Order Notifications Enabled";
+    link.style.background = "#dcfce7";
+    link.style.color = "#166534";
+  } else {
+    link.innerHTML = "🔔 Enable Order Notifications";
+    link.style.background = "";
+    link.style.color = "";
+  }
+}
+
+updateNotificationUI();

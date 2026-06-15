@@ -164,31 +164,34 @@ app.post("/api/test-notification", async (req, res) => {
     const { email } = req.body;
 
     const tokenResult = await pool.query(
-        `SELECT fcm_token FROM student_fcm_tokens
-        WHERE student_email = $1`,
-        [updatedOrder.student_email]
-      );
+      `SELECT fcm_token FROM student_fcm_tokens
+       WHERE student_email = $1`,
+      [email]
+    );
 
-      console.log("Token rows found:", tokenResult.rows.length);
+    if (tokenResult.rows.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "No FCM token found for this email"
+      });
+    }
 
-      if (tokenResult.rows.length > 0 && notificationMessage) {
-        for (const row of tokenResult.rows) {
-          await getMessaging().send({
-            token: row.fcm_token,
-            notification: {
-              title: "UniEats Order Update",
-              body: notificationMessage
-            }
-          });
-
-          console.log("Order notification sent to:", row.fcm_token);
+    for (const row of tokenResult.rows) {
+      await getMessaging().send({
+        token: row.fcm_token,
+        data: {
+          title: "UniEats Test Notification",
+          body: "FCM is working successfully."
         }
-}
+      });
 
-res.json({
-  success: true,
-  message: "Test notification sent to all devices"
-});
+      console.log("Test notification sent to:", row.fcm_token);
+    }
+
+    res.json({
+      success: true,
+      message: "Test notification sent to all devices"
+    });
 
   } catch (error) {
     console.error("Test notification error:", error);
@@ -200,6 +203,7 @@ res.json({
     });
   }
 });
+
 
 app.put("/api/owner/orders/:id/status", async (req, res) => {
   try {
