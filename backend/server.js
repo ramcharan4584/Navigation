@@ -236,8 +236,7 @@ app.put("/api/owner/orders/:id/status", async (req, res) => {
     let finalCancelReason = cancelReason || null;
 
     if (status === "Ready") {
-      notificationMessage =
-      `Your order is ready for pickup at ${counter || receiverPlace}. Please collect it within 5 minutes.`;  
+      notificationMessage = "Your order is ready. Please collect it within 5 minutes.";
     }
 
     if (status === "Delivered") {
@@ -285,6 +284,11 @@ app.put("/api/owner/orders/:id/status", async (req, res) => {
     }
 
     const updatedOrder = result.rows[0];
+
+    if (status === "Ready") {
+      notificationMessage =
+        `Your order is ready for pickup at ${updatedOrder.counter_name}. Please collect it within 5 minutes.`;
+    }
 
     const tokenResult = await pool.query(
       `SELECT fcm_token FROM student_fcm_tokens
