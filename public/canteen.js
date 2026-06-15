@@ -184,7 +184,13 @@ async function confirmOrder() {
   }
 
   let tokenNumber = "SNIST-" + Math.floor(100 + Math.random() * 900);
+  const studentEmail = localStorage.getItem("studentEmail");
+  const studentName = localStorage.getItem("studentName") || "Student";
 
+  if (!studentEmail) {
+    alert("Student email not found. Please login again.");
+    return;
+  }
   let orderData;
   let tokenHTML;
 
@@ -193,8 +199,8 @@ async function confirmOrder() {
     let total = selectedPrice * quantity;
 
     orderData = {
-      studentName: localStorage.getItem("studentName") || "Student",
-      studentEmail: localStorage.getItem("studentEmail") || "student@email.com",
+      studentName: studentName,
+      studentEmail: studentEmail,
       foodName: selectedItem,
       quantity: quantity,
       totalAmount: total,
@@ -236,8 +242,8 @@ async function confirmOrder() {
     }).join("<br>");
 
     orderData = {
-      studentName: localStorage.getItem("studentName") || "Student",
-      studentEmail: localStorage.getItem("studentEmail") || "student@email.com",
+      studentName: studentName,
+      studentEmail: studentEmail,
       foodName: foodNames,
       quantity: totalQuantity,
       items: cart,

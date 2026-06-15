@@ -13,8 +13,18 @@ firebase.initializeApp({
 const messaging = firebase.messaging();
 
 messaging.setBackgroundMessageHandler(function(payload) {
-  return self.registration.showNotification(payload.notification.title, {
-    body: payload.notification.body,
+  const title =
+    payload.notification?.title ||
+    payload.data?.title ||
+    "UniEats Order Update";
+
+  const body =
+    payload.notification?.body ||
+    payload.data?.body ||
+    "Your order status has been updated.";
+
+  return self.registration.showNotification(title, {
+    body: body,
     icon: "/images/logo.png"
   });
 });
