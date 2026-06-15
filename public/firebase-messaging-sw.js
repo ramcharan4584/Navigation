@@ -24,7 +24,7 @@ messaging.setBackgroundMessageHandler(function(payload) {
     body:
       payload.notification?.body ||
       payload.data?.body ||
-      "Your order status has been updated.",
+      "Your order has been delivered.",
     icon: "/images/logo.png",
     badge: "/images/logo.png"
   };

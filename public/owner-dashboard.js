@@ -203,6 +203,9 @@ function updateStats(orders) {
 
   document.getElementById("deliveredOrders").innerText =
     orders.filter(o => o.status === "Delivered").length;
+
+  document.getElementById("cancelledorders").innerText =
+    orders.filter(o => o.status === "Cancelled").length;
 }
 
 async function updateStatus(id, status) {
