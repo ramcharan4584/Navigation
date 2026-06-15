@@ -204,7 +204,6 @@ app.post("/api/test-notification", async (req, res) => {
   }
 });
 
-
 app.put("/api/owner/orders/:id/status", async (req, res) => {
   try {
     const { id } = req.params;
@@ -214,8 +213,7 @@ app.put("/api/owner/orders/:id/status", async (req, res) => {
     let finalCancelReason = cancelReason || null;
 
     if (status === "Ready") {
-      notificationMessage =
-        "Your order is ready. Please collect it within 10 minutes.";
+      notificationMessage = "Your order is ready. Please collect it within 10 minutes.";
     }
 
     if (status === "Delivered") {
@@ -266,36 +264,25 @@ app.put("/api/owner/orders/:id/status", async (req, res) => {
 
     const updatedOrder = result.rows[0];
 
-    console.log("Updated order email:", updatedOrder.student_email);
-    console.log("Updated status:", status);
-    console.log("Notification message:", notificationMessage);
-
     const tokenResult = await pool.query(
       `SELECT fcm_token FROM student_fcm_tokens
        WHERE student_email = $1`,
       [updatedOrder.student_email]
     );
 
-    console.log("Token rows found:", tokenResult.rows.length);
-
     if (tokenResult.rows.length > 0 && notificationMessage) {
-    const fcmToken = tokenResult.rows[0].fcm_token;
+      for (const row of tokenResult.rows) {
+        await getMessaging().send({
+          token: row.fcm_token,
+          data: {
+            title: "UniEats Order Update",
+            body: notificationMessage
+          }
+        });
 
-    const fcmResponse = await getMessaging().send({
-      token: fcmToken,
-      notification: {
-        title: "UniEats Order Update",
-        body: notificationMessage
-      },
-      webpush: {
-        notification: {
-          icon: "/images/logo.png"
-        }
+        console.log("Order notification sent to:", row.fcm_token);
       }
-    });
-
-    console.log("FCM sent successfully:", fcmResponse);
-  }
+    }
 
     res.json({
       success: true,

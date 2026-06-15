@@ -1,26 +1,36 @@
-[debug] [2026-06-15T07:20:19.806Z] ----------------------------------------------------------------------
-[debug] [2026-06-15T07:20:19.807Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\SEDAMKARI RAMCHARAN\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js deploy --only hosting
-[debug] [2026-06-15T07:20:19.808Z] CLI Version:   15.20.0
-[debug] [2026-06-15T07:20:19.808Z] Platform:      win32
-[debug] [2026-06-15T07:20:19.808Z] Node Version:  v24.16.0
-[debug] [2026-06-15T07:20:19.808Z] Time:          Mon Jun 15 2026 12:50:19 GMT+0530 (India Standard Time)
-[debug] [2026-06-15T07:20:19.808Z] ----------------------------------------------------------------------
+[debug] [2026-06-15T07:33:48.705Z] ----------------------------------------------------------------------
+[debug] [2026-06-15T07:33:48.708Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\SEDAMKARI RAMCHARAN\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js deploy --only hosting
+[debug] [2026-06-15T07:33:48.709Z] CLI Version:   15.20.0
+[debug] [2026-06-15T07:33:48.709Z] Platform:      win32
+[debug] [2026-06-15T07:33:48.709Z] Node Version:  v24.16.0
+[debug] [2026-06-15T07:33:48.709Z] Time:          Mon Jun 15 2026 13:03:48 GMT+0530 (India Standard Time)
+[debug] [2026-06-15T07:33:48.709Z] ----------------------------------------------------------------------
 [debug] 
-[debug] [2026-06-15T07:20:20.855Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
-[debug] [2026-06-15T07:20:20.855Z] > authorizing via signed-in user (ramcharan4584@gmail.com)
-[debug] [2026-06-15T07:20:20.856Z] [iam] checking project student-portal-1baed for permissions ["firebase.projects.get","firebasehosting.sites.update"]
-[debug] [2026-06-15T07:20:20.856Z] Checked if tokens are valid: false, expires at: 1781504808641
-[debug] [2026-06-15T07:20:20.856Z] Checked if tokens are valid: false, expires at: 1781504808641
-[debug] [2026-06-15T07:20:20.857Z] > refreshing access token with scopes: []
-[debug] [2026-06-15T07:20:20.858Z] >>> [apiv2][query] POST https://www.googleapis.com/oauth2/v3/token [none]
-[debug] [2026-06-15T07:20:20.858Z] >>> [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
-[debug] [2026-06-15T07:20:21.437Z] <<< [apiv2][status] POST https://www.googleapis.com/oauth2/v3/token 200
-[debug] [2026-06-15T07:20:21.437Z] <<< [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
-[debug] [2026-06-15T07:20:21.443Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/student-portal-1baed:testIamPermissions [none]
-[debug] [2026-06-15T07:20:21.443Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/student-portal-1baed:testIamPermissions  x-goog-user-project=student-portal-1baed
-[debug] [2026-06-15T07:20:21.443Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/student-portal-1baed:testIamPermissions {"permissions":["firebase.projects.get","firebasehosting.sites.update"]}
-[debug] [2026-06-15T07:20:23.021Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/student-portal-1baed:testIamPermissions 200
-[debug] [2026-06-15T07:20:23.021Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/student-portal-1baed:testIamPermissions {"permissions":["firebase.projects.get","firebasehosting.sites.update"]}
-[debug] [2026-06-15T07:20:23.021Z] Checked if tokens are valid: true, expires at: 1781511620437
-[debug] [2026-06-15T07:20:23.021Z] Checked if tokens are valid: true, expires at: 1781511620437
-[debug] [2026-06-15T07:20:23.022Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/student-portal-1baed [none]
+[debug] [2026-06-15T07:33:50.634Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2026-06-15T07:33:50.635Z] > authorizing via signed-in user (ramcharan4584@gmail.com)
+[debug] [2026-06-15T07:33:50.635Z] [iam] checking project student-portal-1baed for permissions ["firebase.projects.get","firebasehosting.sites.update"]
+[debug] [2026-06-15T07:33:50.636Z] Checked if tokens are valid: true, expires at: 1781511620437
+[debug] [2026-06-15T07:33:50.636Z] Checked if tokens are valid: true, expires at: 1781511620437
+[debug] [2026-06-15T07:33:50.638Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/student-portal-1baed:testIamPermissions [none]
+[debug] [2026-06-15T07:33:50.638Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/student-portal-1baed:testIamPermissions  x-goog-user-project=student-portal-1baed
+[debug] [2026-06-15T07:33:50.638Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/student-portal-1baed:testIamPermissions {"permissions":["firebase.projects.get","firebasehosting.sites.update"]}
+[debug] [2026-06-15T07:33:52.709Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/student-portal-1baed:testIamPermissions 200
+[debug] [2026-06-15T07:33:52.709Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/student-portal-1baed:testIamPermissions {"permissions":["firebase.projects.get","firebasehosting.sites.update"]}
+[debug] [2026-06-15T07:33:52.710Z] Checked if tokens are valid: true, expires at: 1781511620437
+[debug] [2026-06-15T07:33:52.710Z] Checked if tokens are valid: true, expires at: 1781511620437
+[debug] [2026-06-15T07:33:52.711Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/student-portal-1baed [none]
+[debug] [2026-06-15T07:33:57.088Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/student-portal-1baed 200
+[debug] [2026-06-15T07:33:57.089Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/student-portal-1baed {"projectId":"student-portal-1baed","projectNumber":"1017420453175","displayName":"student portal","name":"projects/student-portal-1baed","resources":{"hostingSite":"student-portal-1baed"},"state":"ACTIVE","etag":"1_0990702a-baf3-4d80-bc16-a703118b6b04"}
+[info] 
+[info] === Deploying to 'student-portal-1baed'...
+[info] 
+[info] i  deploying hosting 
+[debug] [2026-06-15T07:33:57.094Z] Checked if tokens are valid: true, expires at: 1781511620437
+[debug] [2026-06-15T07:33:57.094Z] Checked if tokens are valid: true, expires at: 1781511620437
+[debug] [2026-06-15T07:33:57.094Z] >>> [apiv2][query] GET https://firebasehosting.googleapis.com/v1beta1/projects/student-portal-1baed/sites/student-portal-1baed [none]
+[debug] [2026-06-15T07:33:59.020Z] <<< [apiv2][status] GET https://firebasehosting.googleapis.com/v1beta1/projects/student-portal-1baed/sites/student-portal-1baed 200
+[debug] [2026-06-15T07:33:59.020Z] <<< [apiv2][body] GET https://firebasehosting.googleapis.com/v1beta1/projects/student-portal-1baed/sites/student-portal-1baed {"name":"projects/student-portal-1baed/sites/student-portal-1baed","defaultUrl":"https://student-portal-1baed.web.app","appId":"1:1017420453175:web:5c9c44f5a68a3e4d5476b2","type":"DEFAULT_SITE"}
+[debug] [2026-06-15T07:33:59.025Z] Checked if tokens are valid: true, expires at: 1781511620437
+[debug] [2026-06-15T07:33:59.025Z] Checked if tokens are valid: true, expires at: 1781511620437
+[debug] [2026-06-15T07:33:59.025Z] >>> [apiv2][query] POST https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/student-portal-1baed/versions [none]
+[debug] [2026-06-15T07:33:59.025Z] >>> [apiv2][body] POST https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/student-portal-1baed/versions {"status":"CREATED","labels":{"deployment-tool":"cli-firebase"}}
