@@ -285,11 +285,6 @@ app.put("/api/owner/orders/:id/status", async (req, res) => {
 
     const updatedOrder = result.rows[0];
 
-    if (status === "Ready") {
-      notificationMessage =
-        `Your order is ready for pickup at ${updatedOrder.counter_name}. Please collect it within 5 minutes.`;
-    }
-
     const tokenResult = await pool.query(
       `SELECT fcm_token FROM student_fcm_tokens
        WHERE student_email = $1`,
