@@ -139,9 +139,9 @@ app.post("/api/save-fcm-token", async (req, res) => {
 
     await pool.query(
       `INSERT INTO student_fcm_tokens (student_email, fcm_token)
-       VALUES ($1, $2)
-       ON CONFLICT (student_email)
-       DO UPDATE SET fcm_token = EXCLUDED.fcm_token`,
+      VALUES ($1, $2)
+      ON CONFLICT (fcm_token)
+      DO UPDATE SET student_email = EXCLUDED.student_email`,
       [studentEmail, fcmToken]
     );
 
@@ -164,36 +164,34 @@ app.post("/api/test-notification", async (req, res) => {
     const { email } = req.body;
 
     const tokenResult = await pool.query(
-      `SELECT fcm_token FROM student_fcm_tokens
-       WHERE student_email = $1`,
-      [email]
-    );
+  `SELECT fcm_token FROM student_fcm_tokens
+   WHERE student_email = $1`,
+  [email]
+);
 
-    if (tokenResult.rows.length === 0) {
-      return res.status(404).json({
-        success: false,
-        message: "No FCM token found for this email"
-      });
+if (tokenResult.rows.length === 0) {
+  return res.status(404).json({
+    success: false,
+    message: "No FCM token found for this email"
+  });
+}
+
+for (const row of tokenResult.rows) {
+  await getMessaging().send({
+    token: row.fcm_token,
+    notification: {
+      title: "UniEats Test Notification",
+      body: "FCM is working successfully."
     }
+  });
 
-    const response = await getMessaging().send({
-      token: tokenResult.rows[0].fcm_token,
-      notification: {
-        title: "UniEats Test Notification",
-        body: "FCM is working successfully."
-      },
-      webpush: {
-        notification: {
-          icon: "/images/logo.png"
-        }
-      }
-    });
+  console.log("Test notification sent to:", row.fcm_token);
+}
 
-    res.json({
-      success: true,
-      message: "Test notification sent",
-      response
-    });
+res.json({
+  success: true,
+  message: "Test notification sent to all devices"
+});
 
   } catch (error) {
     console.error("Test notification error:", error);

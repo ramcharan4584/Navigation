@@ -13,18 +13,46 @@ firebase.initializeApp({
 const messaging = firebase.messaging();
 
 messaging.setBackgroundMessageHandler(function(payload) {
+  console.log("Background message received:", payload);
+
   const title =
     payload.notification?.title ||
     payload.data?.title ||
     "UniEats Order Update";
 
-  const body =
-    payload.notification?.body ||
-    payload.data?.body ||
-    "Your order status has been updated.";
+  const options = {
+    body:
+      payload.notification?.body ||
+      payload.data?.body ||
+      "Your order status has been updated.",
+    icon: "/images/logo.png",
+    badge: "/images/logo.png"
+  };
 
-  return self.registration.showNotification(title, {
-    body: body,
-    icon: "/images/logo.png"
-  });
+  return self.registration.showNotification(title, options);
+});
+
+self.addEventListener("push", function(event) {
+  if (!event.data) return;
+
+  const payload = event.data.json();
+  console.log("Push event received:", payload);
+
+  const title =
+    payload.notification?.title ||
+    payload.data?.title ||
+    "UniEats Order Update";
+
+  const options = {
+    body:
+      payload.notification?.body ||
+      payload.data?.body ||
+      "Your order status has been updated.",
+    icon: "/images/logo.png",
+    badge: "/images/logo.png"
+  };
+
+  event.waitUntil(
+    self.registration.showNotification(title, options)
+  );
 });

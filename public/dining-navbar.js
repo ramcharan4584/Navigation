@@ -62,7 +62,14 @@ function toggleOrders() {
 }
 async function showMyOrders() {
   const ordersBox = document.getElementById("ordersDropdown");
-  const studentEmail = localStorage.getItem("studentEmail") || "student@email.com";
+  const studentEmail =
+  localStorage.getItem("studentEmail") ||
+  localStorage.getItem("userEmail");
+
+  if (!studentEmail) {
+    alert("Student email not found. Please login again.");
+    return;
+  }
 
   try {
     const response = await fetch(`https://student-portal-backend-uo7y.onrender.com/api/orders/${studentEmail}`);
@@ -92,6 +99,16 @@ async function showMyOrders() {
 }
 
 const messaging = firebase.messaging();
+messaging.onMessage(function(payload) {
+  console.log("Foreground message received:", payload);
+
+  const title = payload.notification?.title || "UniEats Order Update";
+  const body = payload.notification?.body || "Your order status has been updated.";
+
+  new Notification(title, {
+    body: body
+  });
+});
 
 const vapidKey =
 "BHjO5qV1g41Mvrtqk-Jp08v9G7VQ44LpH_KAMZzwMZxpKlYdRrOL4zxDt1_oFGcVT6EJEQM_4WvmVNS-xq-QKnM";
@@ -118,8 +135,8 @@ async function enableNotifications() {
     localStorage.setItem("fcmToken", token);
 
     const studentEmail =
-  localStorage.getItem("studentEmail") ||
-  localStorage.getItem("userEmail");
+    localStorage.getItem("studentEmail") ||
+    localStorage.getItem("userEmail");
 
     if (!studentEmail) {
       alert("Student email not found. Please login again.");
