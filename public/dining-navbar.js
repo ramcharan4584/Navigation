@@ -189,7 +189,11 @@ function updateNotificationUI() {
     localStorage.getItem("studentEmail") ||
     localStorage.getItem("userEmail");
 
-  if (enabled && savedEmail === currentEmail) {
+  if (
+    enabled &&
+    savedEmail === currentEmail &&
+    Notification.permission === "granted"
+  ) {
     link.innerHTML = "✅ Order Notifications Enabled";
     link.style.background = "#dcfce7";
     link.style.color = "#166534";
@@ -200,4 +204,6 @@ function updateNotificationUI() {
   }
 }
 
-updateNotificationUI();
+window.addEventListener("load", () => {
+  updateNotificationUI();
+});
