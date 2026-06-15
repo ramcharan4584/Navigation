@@ -119,7 +119,7 @@ messaging.onMessage(function(payload) {
   const body =
     payload.data?.body ||
     payload.notification?.body ||
-    "Your order status has been updated.";
+    "Your order has been Delivered.";
 
   if (Notification.permission === "granted") {
     new Notification(title, {
