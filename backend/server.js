@@ -282,8 +282,6 @@ app.put("/api/owner/orders/:id/status", async (req, res) => {
     }
 
     if (status === "Delivered") {
-      notificationMessage =
-        `Your order has been delivered by ${deliveryPerson}. Delivery Person ID: ${deliveryPersonId}`;
     }
 
     if (status === "Cancelled") {
