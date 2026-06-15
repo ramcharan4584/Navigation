@@ -280,7 +280,7 @@ app.put("/api/owner/orders/:id/status", async (req, res) => {
     }
 
     if (status === "Delivered") {
-      notificationMessage = "Your order has been delivered successfully.";
+      notificationMessage = "Your order has been delivered successfully.Thank You Choosing UniEats !!!.";
     }
 
     if (status === "Cancelled") {

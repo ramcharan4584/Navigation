@@ -16,7 +16,7 @@ messaging.setBackgroundMessageHandler(function(payload) {
   const title = payload.data?.title || "UniEats Order Update";
 
   const options = {
-    body: payload.data?.body || "Your order has been delivered."
+    body: payload.data?.body || "Your order has been delivered successfully.Thank You Choosing UniEats !!!."
   };
 
   return self.registration.showNotification(title, options);
