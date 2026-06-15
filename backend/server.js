@@ -72,7 +72,15 @@ app.post("/api/orders", async (req, res) => {
         token: row.fcm_token,
         data: {
           title: "UniEats Order Confirmed",
-          body: `Your order for ${foodName} has been placed successfully.`
+          body:
+            `Food: ${foodName}
+            Quantity: ${quantity}
+            Total: ₹${totalAmount}
+            Token No: ${tokenNo}
+            Pickup Time: ${pickupTime || pickup_time}
+            Payment: ${paymentMethod}
+            Status: ${status || "Preparing"}
+            Counter: ${counter || receiverPlace}`
         }
       });
 
