@@ -95,32 +95,73 @@ app.get("/api/orders/:email", async (req, res) => {
   }
 });
 
-app.get("/api/owner/orders", async (req, res) => {
+app.post("/api/orders", async (req, res) => {
   try {
+    const {
+      studentName,
+      studentEmail,
+      foodName,
+      quantity,
+      totalAmount,
+      paymentMethod,
+      tokenNo,
+      status,
+      counter,
+      receiverPlace,
+      pickupTime,
+      pickup_time
+    } = req.body;
+
     const result = await pool.query(
-      `SELECT 
-        id,
-        student_name,
-        student_email,
-        food_name,
+      `INSERT INTO canteen_orders
+      (student_name, student_email, food_name, quantity, total_amount, payment_method, token_no, status, counter_name, pickup_time)
+      VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10)
+      RETURNING *`,
+      [
+        studentName,
+        studentEmail,
+        foodName,
         quantity,
-        total_amount,
-        payment_method,
-        token_no,
+        totalAmount,
+        paymentMethod,
+        tokenNo,
         status,
-        counter_name,
-        pickup_time,
-        order_time
-      FROM canteen_orders
-      ORDER BY order_time DESC`
+        counter || receiverPlace,
+        pickupTime || pickup_time
+      ]
     );
 
-    res.json(result.rows);
+    const savedOrder = result.rows[0];
+
+    const tokenResult = await pool.query(
+      `SELECT fcm_token FROM student_fcm_tokens
+       WHERE student_email = $1`,
+      [studentEmail]
+    );
+
+    if (tokenResult.rows.length > 0) {
+      for (const row of tokenResult.rows) {
+        await getMessaging().send({
+          token: row.fcm_token,
+          data: {
+            title: "UniEats Order Confirmed",
+            body: `Your order for ${foodName} has been placed successfully.`
+          }
+        });
+
+        console.log("Order confirmation notification sent to:", row.fcm_token);
+      }
+    }
+
+    res.json({
+      success: true,
+      order: savedOrder
+    });
 
   } catch (error) {
     res.status(500).json({
       success: false,
-      message: "Cannot fetch owner orders",
+      message: "Order not saved",
       error: error.message
     });
   }
