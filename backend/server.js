@@ -23,6 +23,7 @@ app.get("/", (req, res) => {
   res.send("Student Portal Backend Running");
 });
 
+// SAVE NEW ORDER
 app.post("/api/orders", async (req, res) => {
   try {
     const {
@@ -40,9 +41,23 @@ app.post("/api/orders", async (req, res) => {
       pickup_time
     } = req.body;
 
+    const finalPickupTime = pickupTime || pickup_time;
+    const finalCounter = counter || receiverPlace || "Main Cafeteria";
+
     const result = await pool.query(
       `INSERT INTO canteen_orders
-      (student_name, student_email, food_name, quantity, total_amount, payment_method, token_no, status, counter_name, pickup_time)
+      (
+        student_name,
+        student_email,
+        food_name,
+        quantity,
+        total_amount,
+        payment_method,
+        token_no,
+        status,
+        counter_name,
+        pickup_time
+      )
       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10)
       RETURNING *`,
       [
@@ -54,32 +69,34 @@ app.post("/api/orders", async (req, res) => {
         paymentMethod,
         tokenNo,
         status || "Preparing",
-        counter || receiverPlace,
-        pickupTime || pickup_time
+        finalCounter,
+        finalPickupTime
       ]
     );
 
     const savedOrder = result.rows[0];
 
     const tokenResult = await pool.query(
-      `SELECT fcm_token FROM student_fcm_tokens
+      `SELECT DISTINCT fcm_token 
+       FROM student_fcm_tokens
        WHERE student_email = $1`,
       [studentEmail]
     );
+
+    const messageBody = `Food: ${foodName}
+Quantity: ${quantity}
+Total: ₹${totalAmount}
+Token No: ${tokenNo}
+Pickup Time: ${finalPickupTime}
+Payment: ${paymentMethod}
+Counter: ${finalCounter}`;
 
     for (const row of tokenResult.rows) {
       await getMessaging().send({
         token: row.fcm_token,
         data: {
           title: "UniEats Order Confirmed",
-          body:
-            `Food: ${foodName}
-            Quantity: ${quantity}
-            Total: ₹${totalAmount}
-            Token No: ${tokenNo}
-            Pickup Time: ${pickupTime || pickup_time}
-            Payment: ${paymentMethod}
-            Counter: ${counter || receiverPlace}`
+          body: messageBody
         }
       });
 
@@ -92,6 +109,8 @@ app.post("/api/orders", async (req, res) => {
     });
 
   } catch (error) {
+    console.error("Order save error:", error.message);
+
     res.status(500).json({
       success: false,
       message: "Order not saved",
@@ -100,6 +119,7 @@ app.post("/api/orders", async (req, res) => {
   }
 });
 
+// STUDENT ORDERS
 app.get("/api/orders/:email", async (req, res) => {
   try {
     const email = req.params.email;
@@ -122,6 +142,7 @@ app.get("/api/orders/:email", async (req, res) => {
   }
 });
 
+// OWNER ORDERS
 app.get("/api/owner/orders", async (req, res) => {
   try {
     const result = await pool.query(
@@ -137,7 +158,11 @@ app.get("/api/owner/orders", async (req, res) => {
         status,
         counter_name,
         pickup_time,
-        order_time
+        order_time,
+        delivery_person,
+        delivery_person_id,
+        cancel_reason,
+        notification_message
       FROM canteen_orders
       ORDER BY order_time DESC`
     );
@@ -153,6 +178,7 @@ app.get("/api/owner/orders", async (req, res) => {
   }
 });
 
+// SAVE FCM TOKEN
 app.post("/api/save-fcm-token", async (req, res) => {
   try {
     const { studentEmail, fcmToken } = req.body;
@@ -165,7 +191,8 @@ app.post("/api/save-fcm-token", async (req, res) => {
     }
 
     await pool.query(
-      `INSERT INTO student_fcm_tokens (student_email, fcm_token)
+      `INSERT INTO student_fcm_tokens 
+       (student_email, fcm_token)
        VALUES ($1, $2)
        ON CONFLICT (fcm_token)
        DO UPDATE SET student_email = EXCLUDED.student_email`,
@@ -186,12 +213,14 @@ app.post("/api/save-fcm-token", async (req, res) => {
   }
 });
 
+// TEST NOTIFICATION
 app.post("/api/test-notification", async (req, res) => {
   try {
     const { email } = req.body;
 
     const tokenResult = await pool.query(
-      `SELECT fcm_token FROM student_fcm_tokens
+      `SELECT DISTINCT fcm_token 
+       FROM student_fcm_tokens
        WHERE student_email = $1`,
       [email]
     );
@@ -215,7 +244,7 @@ app.post("/api/test-notification", async (req, res) => {
 
     res.json({
       success: true,
-      message: "Test notification sent to all devices"
+      message: "Test notification sent"
     });
 
   } catch (error) {
@@ -227,6 +256,7 @@ app.post("/api/test-notification", async (req, res) => {
   }
 });
 
+// UPDATE ORDER STATUS
 app.put("/api/owner/orders/:id/status", async (req, res) => {
   try {
     const { id } = req.params;
@@ -277,16 +307,15 @@ app.put("/api/owner/orders/:id/status", async (req, res) => {
     let notificationMessage = "";
 
     if (status === "Ready") {
-      notificationMessage =
-        `Your order is ready for pickup at ${updatedOrder.counter_name}. Please collect it within 5 minutes.`;
+      notificationMessage = `Your order is ready for pickup at ${updatedOrder.counter_name}. Please collect it within 5 minutes.`;
     }
 
     if (status === "Delivered") {
+      notificationMessage = "Your order has been delivered successfully. Thank you for using UniEats.";
     }
 
     if (status === "Cancelled") {
-      notificationMessage =
-        `Your order has been cancelled. Reason: ${finalCancelReason}`;
+      notificationMessage = `Your order has been cancelled. Reason: ${finalCancelReason}`;
     }
 
     await pool.query(
@@ -296,20 +325,25 @@ app.put("/api/owner/orders/:id/status", async (req, res) => {
       [notificationMessage, id]
     );
 
-    const tokenResult = await pool.query(
-      `SELECT fcm_token FROM student_fcm_tokens
-       WHERE student_email = $1`,
-      [updatedOrder.student_email]
-    );
+    if (notificationMessage) {
+      const tokenResult = await pool.query(
+        `SELECT DISTINCT fcm_token 
+         FROM student_fcm_tokens
+         WHERE student_email = $1`,
+        [updatedOrder.student_email]
+      );
 
-    for (const row of tokenResult.rows) {
-      await getMessaging().send({
-        token: row.fcm_token,
-        data: {
-          title: "UniEats Order Update",
-          body: notificationMessage
-        }
-      });
+      for (const row of tokenResult.rows) {
+        await getMessaging().send({
+          token: row.fcm_token,
+          data: {
+            title: "UniEats Order Update",
+            body: notificationMessage
+          }
+        });
+
+        console.log("Status notification sent to:", row.fcm_token);
+      }
     }
 
     res.json({
@@ -321,6 +355,8 @@ app.put("/api/owner/orders/:id/status", async (req, res) => {
     });
 
   } catch (error) {
+    console.error("Status update error:", error.message);
+
     res.status(500).json({
       success: false,
       message: "Status not updated",

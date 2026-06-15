@@ -13,20 +13,10 @@ firebase.initializeApp({
 const messaging = firebase.messaging();
 
 messaging.setBackgroundMessageHandler(function(payload) {
-  console.log("Background message received:", payload);
-
-  const title =
-    payload.notification?.title ||
-    payload.data?.title ||
-    "UniEats Order Update";
+  const title = payload.data?.title || "UniEats Order Update";
 
   const options = {
-    body:
-      payload.notification?.body ||
-      payload.data?.body ||
-      "Your order has been delivered.",
-    icon: "/images/logo.png",
-    badge: "/images/logo.png"
+    body: payload.data?.body || "Your order has been delivered."
   };
 
   return self.registration.showNotification(title, options);

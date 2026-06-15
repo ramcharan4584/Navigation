@@ -212,23 +212,40 @@ async function updateStatus(id, status) {
   let bodyData = { status: status };
 
   if (status === "Delivered") {
-    let deliveryPerson = prompt("Enter delivery person name:");
 
-    if (!deliveryPerson || deliveryPerson.trim() === "") {
-      alert("Delivery person name is required.");
-      return;
-    }
+  let deliveryPerson = prompt("Enter delivery person name:");
 
-    let deliveryPersonId = prompt("Enter delivery person ID:");
-
-    if (!deliveryPersonId || deliveryPersonId.trim() === "") {
-      alert("Delivery person ID is required.");
-      return;
-    }
-
-    bodyData.deliveryPerson = deliveryPerson.trim();
-    bodyData.deliveryPersonId = deliveryPersonId.trim();
+  if (!deliveryPerson || deliveryPerson.trim() === "") {
+    alert("Delivery person name is required.");
+    return;
   }
+
+  deliveryPerson = deliveryPerson.trim();
+
+  // Only alphabets and spaces allowed
+  if (!/^[A-Za-z\s]+$/.test(deliveryPerson)) {
+    alert("Delivery person name must contain alphabets only.");
+    return;
+  }
+
+  let deliveryPersonId = prompt("Enter delivery person ID:");
+
+  if (!deliveryPersonId || deliveryPersonId.trim() === "") {
+    alert("Delivery person ID is required.");
+    return;
+  }
+
+  deliveryPersonId = deliveryPersonId.trim();
+
+  // Only digits allowed
+  if (!/^[0-9]+$/.test(deliveryPersonId)) {
+    alert("Delivery person ID must contain digits only.");
+    return;
+  }
+
+  bodyData.deliveryPerson = deliveryPerson;
+  bodyData.deliveryPersonId = deliveryPersonId;
+}
 
   if (status === "Cancelled") {
     let commonReasons =

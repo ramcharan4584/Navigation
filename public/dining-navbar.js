@@ -108,26 +108,6 @@ async function showMyOrders() {
 
 const messaging = firebase.messaging();
 
-messaging.onMessage(function(payload) {
-  console.log("Foreground message received:", payload);
-
-  const title =
-    payload.data?.title ||
-    payload.notification?.title ||
-    "UniEats Order Update";
-
-  const body =
-    payload.data?.body ||
-    payload.notification?.body ||
-    "Your order has been Delivered.";
-
-  if (Notification.permission === "granted") {
-    new Notification(title, {
-      body: body
-    });
-  }
-});
-
 const vapidKey =
   "BHjO5qV1g41Mvrtqk-Jp08v9G7VQ44LpH_KAMZzwMZxpKlYdRrOL4zxDt1_oFGcVT6EJEQM_4WvmVNS-xq-QKnM";
 

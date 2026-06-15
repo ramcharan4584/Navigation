@@ -141,23 +141,29 @@ function updateTotal() {
 /* PAYMENT DETAILS */
 
 function showPaymentDetails() {
+
   let payment = document.getElementById("paymentMethod").value;
   let paymentDetails = document.getElementById("paymentDetails");
 
   if (
-    payment === "UPI" ||
-    payment === "Google Pay" ||
-    payment === "PhonePe"
+    payment === "Cash" ||
+    payment === "Cash at Counter"
   ) {
+
     paymentDetails.style.display = "block";
+
     paymentDetails.innerHTML = `
-      <strong>Note:</strong> Pay before collecting your order.
+      <strong>Note:</strong><br>
+      Pay while collecting your food at Counter.
     `;
+
   } else {
+
     paymentDetails.style.display = "block";
+
     paymentDetails.innerHTML = `
-      <strong>Payment:</strong> Cash at Counter<br>
-      Pay while collecting your food.
+      <strong>Payment:</strong><br>
+      Please complete your online payment.
     `;
   }
 }
