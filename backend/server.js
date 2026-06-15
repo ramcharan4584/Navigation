@@ -68,21 +68,23 @@ app.post("/api/orders", async (req, res) => {
       [studentEmail]
     );
 
-    for (const row of tokenResult.rows) {
-      await getMessaging().send({
-        token: row.fcm_token,
-        data: {
-          title: "UniEats Order Confirmed",
-          body: `Food: ${foodName}
+    if (tokenResult.rows.length > 0) {
+  await getMessaging().send({
+    token: tokenResult.rows[0].fcm_token,
+    data: {
+      title: "UniEats Order Confirmed",
+      body: `Food: ${foodName}
 Quantity: ${quantity}
 Total: ₹${totalAmount}
 Token No: ${tokenNo}
 Pickup Time: ${pickupTime || pickup_time}
 Payment: ${paymentMethod}
 Counter: ${counter || receiverPlace}`
-        }
-      });
     }
+  });
+
+  console.log("Order confirmation sent to:", tokenResult.rows[0].fcm_token);
+}
 
     res.json({
       success: true,
