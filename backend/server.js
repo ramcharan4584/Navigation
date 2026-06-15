@@ -232,12 +232,7 @@ app.put("/api/owner/orders/:id/status", async (req, res) => {
     const { id } = req.params;
     const { status, deliveryPerson, deliveryPersonId, cancelReason } = req.body;
 
-    let notificationMessage = "";
     let finalCancelReason = cancelReason || null;
-
-    if (status === "Ready") {
-      notificationMessage = "Your order is ready. Please collect it within 5 minutes.";
-    }
 
     if (status === "Delivered") {
       if (!deliveryPerson || !deliveryPersonId) {
@@ -246,29 +241,23 @@ app.put("/api/owner/orders/:id/status", async (req, res) => {
           message: "Delivery person name and ID are required"
         });
       }
-
-      notificationMessage =
-        `Your order has been delivered by ${deliveryPerson}. Delivery Person ID: ${deliveryPersonId}`;
     }
 
     if (status === "Cancelled") {
       finalCancelReason = cancelReason || "No reason provided";
-      notificationMessage = `Your order has been cancelled. Reason: ${finalCancelReason}`;
     }
 
     const result = await pool.query(
       `UPDATE canteen_orders
        SET 
          status = $1,
-         notification_message = COALESCE($2, notification_message),
-         delivery_person = COALESCE($3, delivery_person),
-         delivery_person_id = COALESCE($4, delivery_person_id),
-         cancel_reason = COALESCE($5, cancel_reason)
-       WHERE id = $6
+         delivery_person = COALESCE($2, delivery_person),
+         delivery_person_id = COALESCE($3, delivery_person_id),
+         cancel_reason = COALESCE($4, cancel_reason)
+       WHERE id = $5
        RETURNING *`,
       [
         status,
-        notificationMessage || null,
         deliveryPerson || null,
         deliveryPersonId || null,
         finalCancelReason,
@@ -284,6 +273,30 @@ app.put("/api/owner/orders/:id/status", async (req, res) => {
     }
 
     const updatedOrder = result.rows[0];
+
+    let notificationMessage = "";
+
+    if (status === "Ready") {
+      notificationMessage =
+        `Your order is ready for pickup at ${updatedOrder.counter_name}. Please collect it within 5 minutes.`;
+    }
+
+    if (status === "Delivered") {
+      notificationMessage =
+        `Your order has been delivered by ${deliveryPerson}. Delivery Person ID: ${deliveryPersonId}`;
+    }
+
+    if (status === "Cancelled") {
+      notificationMessage =
+        `Your order has been cancelled. Reason: ${finalCancelReason}`;
+    }
+
+    await pool.query(
+      `UPDATE canteen_orders
+       SET notification_message = $1
+       WHERE id = $2`,
+      [notificationMessage, id]
+    );
 
     const tokenResult = await pool.query(
       `SELECT fcm_token FROM student_fcm_tokens
@@ -303,7 +316,10 @@ app.put("/api/owner/orders/:id/status", async (req, res) => {
 
     res.json({
       success: true,
-      order: updatedOrder
+      order: {
+        ...updatedOrder,
+        notification_message: notificationMessage
+      }
     });
 
   } catch (error) {
