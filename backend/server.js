@@ -71,14 +71,16 @@ async function sendFCMNotification(email, title, body) {
       },
 
       webpush: {
-        notification: {
-          title,
-          body,
-          icon: "/logo.png",
-          badge: "/logo.png",
-          requireInteraction: true
-        }
+      notification: {
+        title,
+        body,
+        icon: "/logo.png",
+        badge: "/logo.png",
+        requireInteraction: true,
+        tag: "unieats-order-update",
+        renotify: true
       }
+    }
     });
 
     console.log("Notification sent to email:", email);

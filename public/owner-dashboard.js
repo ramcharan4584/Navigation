@@ -89,6 +89,34 @@ function getCounter(order) {
   return order.counter_name || order.counter || order.receiverPlace || order.receiver_place || "";
 }
 
+function getOrderAge(orderTime) {
+
+  const now = new Date();
+  const orderDate = new Date(orderTime);
+
+  const diffMs = now - orderDate;
+
+  const minutes = Math.floor(diffMs / 60000);
+
+  if (minutes < 1) {
+    return "Just now";
+  }
+
+  if (minutes < 60) {
+    return `${minutes} mins ago`;
+  }
+
+  const hours = Math.floor(minutes / 60);
+
+  if (hours < 24) {
+    return `${hours} hrs ago`;
+  }
+
+  const days = Math.floor(hours / 24);
+
+  return `${days} days ago`;
+}
+
 function renderOrders(orders) {
   const table = document.getElementById("ordersTable");
 
@@ -118,6 +146,8 @@ function renderOrders(orders) {
 
       <td>${getCounter(order)}</td>
 
+      <td>${getOrderAge(order.order_time)}</td>
+
       <td>
         <span class="status ${order.status}">
           ${order.status}
@@ -125,19 +155,19 @@ function renderOrders(orders) {
 
             ${
               order.delivery_person
-                ? `<br><small>By: ${order.delivery_person}</small>`
+                ? `<br> <br> <small>By: ${order.delivery_person}</small>`
                 : ""
             }
 
             ${
               order.delivery_id
-                ? `<br><small>ID: ${order.delivery_id}</small>`
+                ? `<br> <br> <small>ID: ${order.delivery_id}</small>`
                 : ""
             }
 
             ${
               order.cancel_reason
-                ? `<br><small>Reason: ${order.cancel_reason}</small>`
+                ? `<br> <br> <small>Reason: ${order.cancel_reason}</small>`
                 : ""
             }
       </td>
@@ -223,9 +253,6 @@ function updateStats(orders, updateTime = true) {
   document.getElementById("cancelledorders").innerText =
     orders.filter(o => o.status === "Cancelled").length;
 
-  document.getElementById("pendingOrders").innerText =
-    orders.filter(o => o.status === "Preparing" || o.status === "Ready").length;
-
   const today = new Date().toDateString();
 
   const todayOrders = orders.filter(order => {
@@ -234,7 +261,9 @@ function updateStats(orders, updateTime = true) {
 
   document.getElementById("todayOrders").innerText = todayOrders.length;
 
-  const revenue = todayOrders.reduce((sum, order) => {
+  const deliveredOrders = todayOrders.filter(order => order.status === "Delivered");
+
+  const revenue = deliveredOrders.reduce((sum, order) => {
     return sum + Number(order.total_amount || 0);
   }, 0);
 
@@ -242,7 +271,7 @@ function updateStats(orders, updateTime = true) {
 
   if (updateTime) {
   document.getElementById("lastUpdated").innerText =
-    "Last updated: " + new Date().toLocaleTimeString();
+    "Last Refreshed: " + new Date().toLocaleTimeString();
 }
 }
 

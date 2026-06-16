@@ -110,10 +110,8 @@ const vapidKey =
 
 async function enableNotifications() {
   try {
-    const permission = await Notification.requestPermission();
 
     if (Notification.permission === "denied") {
-
       alert(
         "Notifications are blocked.\n\n" +
         "Please allow them manually:\n\n" +
@@ -134,7 +132,7 @@ async function enableNotifications() {
     }
 
     const registration = await navigator.serviceWorker.register("/firebase-messaging-sw.js");
-    
+
     const token = await messaging.getToken({
       vapidKey: vapidKey,
       serviceWorkerRegistration: registration
@@ -202,6 +200,12 @@ function updateNotificationUI() {
     localStorage.getItem("studentEmail") ||
     localStorage.getItem("userEmail");
 
+  if (savedEmail && currentEmail && savedEmail !== currentEmail) {
+    localStorage.removeItem("notificationsEnabled");
+    localStorage.removeItem("notificationEmail");
+    localStorage.removeItem("fcmToken");
+  }
+
   if (
     enabled &&
     savedEmail === currentEmail &&
@@ -217,6 +221,56 @@ function updateNotificationUI() {
   }
 }
 
+async function autoSaveNotificationToken() {
+  try {
+    if (Notification.permission !== "granted") {
+      return;
+    }
+
+    const studentEmail =
+      localStorage.getItem("studentEmail") ||
+      localStorage.getItem("userEmail");
+
+    if (!studentEmail) return;
+
+    const savedEmail = localStorage.getItem("notificationEmail");
+
+    if (savedEmail === studentEmail && localStorage.getItem("fcmToken")) {
+      return;
+    }
+
+    const registration = await navigator.serviceWorker.register("/firebase-messaging-sw.js");
+
+    const token = await messaging.getToken({
+      vapidKey: vapidKey,
+      serviceWorkerRegistration: registration
+    });
+
+    await fetch("https://student-portal-backend-uo7y.onrender.com/api/save-fcm-token", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        studentEmail: studentEmail,
+        fcmToken: token
+      })
+    });
+
+    localStorage.setItem("fcmToken", token);
+    localStorage.setItem("notificationsEnabled", "true");
+    localStorage.setItem("notificationEmail", studentEmail);
+
+    updateNotificationUI();
+
+    console.log("Notification token auto-updated for:", studentEmail);
+
+  } catch (error) {
+    console.log("Auto token update skipped:", error.message);
+  }
+}
+
 window.addEventListener("load", () => {
   updateNotificationUI();
+  autoSaveNotificationToken();
 });

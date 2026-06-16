@@ -13,11 +13,37 @@ firebase.initializeApp({
 const messaging = firebase.messaging();
 
 messaging.setBackgroundMessageHandler(function(payload) {
-  const title = payload.data?.title || "UniEats Order Update";
+  console.log("Background FCM received:", payload);
+
+  const title =
+    payload.notification?.title ||
+    payload.data?.title ||
+    "UniEats Order Update";
+
+  const body =
+    payload.notification?.body ||
+    payload.data?.body ||
+    "Your order has been delivered successfully.Thank You Choosing UniEats !!!.";
 
   const options = {
-    body: payload.data?.body || "Your order has been delivered successfully.Thank You Choosing UniEats !!!."
+    body: body,
+    icon: "/logo.png",
+    badge: "/logo.png",
+    tag: "unieats-order-update",
+    renotify: true,
+    requireInteraction: true,
+    data: {
+      url: "/canteen.html"
+    }
   };
 
   return self.registration.showNotification(title, options);
+});
+
+self.addEventListener("notificationclick", function(event) {
+  event.notification.close();
+
+  event.waitUntil(
+    clients.openWindow(event.notification.data.url || "/canteen.html")
+  );
 });
