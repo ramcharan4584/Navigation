@@ -112,13 +112,29 @@ async function enableNotifications() {
   try {
     const permission = await Notification.requestPermission();
 
+    if (Notification.permission === "denied") {
+
+      alert(
+        "Notifications are blocked.\n\n" +
+        "Please allow them manually:\n\n" +
+        "1. Click the lock icon near URL\n" +
+        "2. Open Site Settings\n" +
+        "3. Allow Notifications\n" +
+        "4. Refresh the page"
+      );
+
+      return;
+    }
+
+    const permission = await Notification.requestPermission();
+
     if (permission !== "granted") {
-      alert("Notification permission denied.");
+      alert("Notification permission not granted.");
       return;
     }
 
     const registration = await navigator.serviceWorker.register("/firebase-messaging-sw.js");
-
+    
     const token = await messaging.getToken({
       vapidKey: vapidKey,
       serviceWorkerRegistration: registration
