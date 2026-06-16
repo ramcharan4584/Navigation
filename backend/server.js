@@ -104,6 +104,7 @@ app.post("/api/orders", async (req, res) => {
       foodName,
       quantity,
       totalAmount,
+      ownerNote,
       paymentMethod,
       tokenNo,
       status,
@@ -115,8 +116,8 @@ app.post("/api/orders", async (req, res) => {
 
     const result = await pool.query(
       `INSERT INTO canteen_orders
-      (student_name, student_email, food_name, quantity, total_amount, payment_method, token_no, status, counter_name, pickup_time, last_action_time)
-      VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,CURRENT_TIMESTAMP)
+      (student_name, student_email, food_name, quantity, total_amount, payment_method, token_no, status, counter_name, pickup_time, last_action_time, owner_note)
+      VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,CURRENT_TIMESTAMP)
       RETURNING *`,
       [
         studentName,
@@ -126,6 +127,7 @@ app.post("/api/orders", async (req, res) => {
         totalAmount,
         paymentMethod,
         tokenNo,
+        ownerNote || null,
         status || "Preparing",
         counter || receiverPlace,
         pickupTime || pickup_time
@@ -313,7 +315,7 @@ app.post("/api/test-notification", async (req, res) => {
 app.put("/api/owner/orders/:id/status", async (req, res) => {
   try {
     const { id } = req.params;
-    const { status, deliveryPerson, deliveryPersonId, cancelReason } = req.body;
+    const { status, deliveryPerson, deliveryPersonId, cancelReason} = req.body;
 
     let finalCancelReason = cancelReason || null;
 

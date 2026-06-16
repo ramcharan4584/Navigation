@@ -242,6 +242,17 @@ table thead {
   z-index: 5;
 }
 
+.ready-warning{
+  margin-top:8px;
+  background:#fef3c7;
+  color:#92400e;
+  padding:6px 10px;
+  border-radius:8px;
+  font-size:12px;
+  font-weight:600;
+  animation:pulseWarning 1.5s infinite;
+}
+
 @media(max-width:768px){
   .owner-sidebar{
     position:relative;
@@ -305,5 +316,19 @@ table thead {
   }
   50%{
     background:#dc2626;
+  }
+}
+
+@keyframes pulseWarning{
+  0%{
+    transform:scale(1);
+  }
+
+  50%{
+    transform:scale(1.03);
+  }
+
+  100%{
+    transform:scale(1);
   }
 }

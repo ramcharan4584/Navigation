@@ -189,6 +189,9 @@ async function confirmOrder() {
     return;
   }
 
+  const ownerNote =
+  document.getElementById("ownerNote").value.trim();
+
   let tokenNumber = "SNIST-" + Math.floor(100 + Math.random() * 900);
   const studentEmail = localStorage.getItem("studentEmail");
   const studentName = localStorage.getItem("studentName") || "Student";
@@ -213,6 +216,7 @@ async function confirmOrder() {
       tokenNo: tokenNumber,
       pickupTime: pickupTime,
       pickup_time: pickupTime,
+      ownerNote: ownerNote,
       paymentMethod: payment,
       status: "Preparing",
       counter: receiverPlace,
@@ -258,6 +262,7 @@ async function confirmOrder() {
       pickupTime: pickupTime,
       pickup_time: pickupTime,
       paymentMethod: payment,
+      ownerNote: ownerNote,
       status: "Preparing",
       counter: receiverPlace,
     };

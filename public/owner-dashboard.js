@@ -108,6 +108,33 @@ function getOrderAge(order) {
   return `${days} days ago`;
 }
 
+function getReadyWarning(order) {
+
+  if (order.status !== "Ready") {
+    return "";
+  }
+
+  const readyTime = new Date(
+    order.status_updated_at || order.order_time
+  );
+
+  const now = new Date();
+
+  const diffMinutes = Math.floor(
+    (now - readyTime) / 60000
+  );
+
+  if (diffMinutes >= 10) {
+    return `
+      <div class="ready-warning">
+        ⚠ Not collected yet
+      </div>
+    `;
+  }
+
+  return "";
+}
+
 function renderOrders(orders) {
   const table = document.getElementById("ordersTable");
 
@@ -151,16 +178,17 @@ function renderOrders(orders) {
             }
 
             ${
-              order.delivery_id
-                ? `<br> <br> <small>ID: ${order.delivery_id}</small>`
-                : ""
-            }
-
-            ${
               order.cancel_reason
                 ? `<br> <br> <small>Reason: ${order.cancel_reason}</small>`
                 : ""
             }
+          ${getReadyWarning(order)}
+
+          ${
+            order.owner_note
+              ? `<br><br><small>📝 ${order.owner_note}</small>`
+              : ""
+          }
       </td>
 
       <td>
