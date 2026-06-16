@@ -89,31 +89,22 @@ function getCounter(order) {
   return order.counter_name || order.counter || order.receiverPlace || order.receiver_place || "";
 }
 
-function getOrderAge(orderTime) {
+function getOrderAge(order) {
+  const timeToUse = order.status_updated_at || order.order_time;
 
   const now = new Date();
-  const orderDate = new Date(orderTime);
+  const orderDate = new Date(timeToUse);
 
   const diffMs = now - orderDate;
-
   const minutes = Math.floor(diffMs / 60000);
 
-  if (minutes < 1) {
-    return "Just now";
-  }
-
-  if (minutes < 60) {
-    return `${minutes} mins ago`;
-  }
+  if (minutes < 1) return "just now";
+  if (minutes < 60) return `${minutes} mins ago`;
 
   const hours = Math.floor(minutes / 60);
-
-  if (hours < 24) {
-    return `${hours} hrs ago`;
-  }
+  if (hours < 24) return `${hours} hrs ago`;
 
   const days = Math.floor(hours / 24);
-
   return `${days} days ago`;
 }
 
@@ -146,7 +137,7 @@ function renderOrders(orders) {
 
       <td>${getCounter(order)}</td>
 
-      <td>${getOrderAge(order.order_time)}</td>
+      <td>${getOrderAge(order)}</td>
 
       <td>
         <span class="status ${order.status}">

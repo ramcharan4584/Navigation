@@ -115,8 +115,8 @@ app.post("/api/orders", async (req, res) => {
 
     const result = await pool.query(
       `INSERT INTO canteen_orders
-      (student_name, student_email, food_name, quantity, total_amount, payment_method, token_no, status, counter_name, pickup_time)
-      VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10)
+      (student_name, student_email, food_name, quantity, total_amount, payment_method, token_no, status, counter_name, pickup_time, last_action_time)
+      VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,CURRENT_TIMESTAMP)
       RETURNING *`,
       [
         studentName,
@@ -181,7 +181,7 @@ app.get("/api/owner/orders", async (req, res) => {
         total_amount, payment_method, token_no, status,
         counter_name, pickup_time, order_time,
         delivery_person, delivery_person_id, cancel_reason,
-        notification_message
+        notification_message,status_updated_at
       FROM canteen_orders
       WHERE order_time >= CURRENT_DATE
         AND order_time < CURRENT_DATE + INTERVAL '1 day'
@@ -336,7 +336,8 @@ app.put("/api/owner/orders/:id/status", async (req, res) => {
          status = $1,
          delivery_person = COALESCE($2, delivery_person),
          delivery_person_id = COALESCE($3, delivery_person_id),
-         cancel_reason = COALESCE($4, cancel_reason)
+         cancel_reason = COALESCE($4, cancel_reason),
+         status_updated_at = CURRENT_TIMESTAMP
        WHERE id = $5
        RETURNING *`,
       [status, deliveryPerson || null, deliveryPersonId || null, finalCancelReason, id]
