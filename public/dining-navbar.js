@@ -25,14 +25,11 @@ diningNavbar.innerHTML = `
     <div class="sidebar-links">
       <a href="dashboard.html">🏠 Dashboard</a>
       <a href="#">📅 Weekly Menu</a>
-      <a href="#">📍 Pickup Counters</a>
       <a href="#" onclick="showMyOrders()">🛒 My Orders</a>
 
       <div class="orders-dropdown" id="ordersDropdown">
         <p class="empty-orders">Click to load your orders</p>
       </div>
-
-      <a href="#">🎫 Pickup Tokens</a>
       <a href="#">❤️ Favorites</a>
       <a href="#">🕒 Order History</a>
       <a href="#">💳 Wallet</a>

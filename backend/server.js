@@ -36,13 +36,17 @@ try {
   console.log("Firebase initialization failed:", error.message);
 }
 
-// ✅ Helper: Send FCM notification safely (won't crash server if it fails)
 async function sendFCMNotification(email, title, body) {
-  if (!firebaseReady) return;
+  if (!firebaseReady) {
+    console.log("Firebase not ready");
+    return;
+  }
 
   try {
     const tokenResult = await pool.query(
-      `SELECT fcm_token FROM student_fcm_tokens WHERE student_email = $1 LIMIT 1`,
+      `SELECT fcm_token FROM student_fcm_tokens 
+       WHERE LOWER(student_email) = LOWER($1) 
+       LIMIT 1`,
       [email]
     );
 
@@ -51,34 +55,38 @@ async function sendFCMNotification(email, title, body) {
       return;
     }
 
-    await getMessaging().send({
-      token: tokenResult.rows[0].fcm_token,
+    const userToken = tokenResult.rows[0].fcm_token;
 
-      // ✅ This is what actually shows the popup on the phone
+    const response = await getMessaging().send({
+      token: userToken,
+
       notification: {
-        title: title,
-        body: body
+        title,
+        body
       },
 
-      // ✅ Keep data too — useful if app wants to handle it in background
       data: {
-        title: title,
-        body: body
+        title,
+        body
       },
 
-      // ✅ Android specific — ensures it shows even when app is in background
-      android: {
-        priority: "high",
+      webpush: {
         notification: {
-          sound: "default",
-          channelId: "default"
+          title,
+          body,
+          icon: "/logo.png",
+          badge: "/logo.png",
+          requireInteraction: true
         }
       }
     });
 
-    console.log(`Notification sent to ${email}`);
+    console.log("Notification sent to email:", email);
+    console.log("Notification sent to token:", userToken);
+    console.log("Firebase response:", response);
+
   } catch (err) {
-    console.error("FCM send failed (non-fatal):", err.message);
+    console.error("FCM send failed:", err.message);
   }
 }
 
@@ -124,7 +132,6 @@ app.post("/api/orders", async (req, res) => {
 
     const savedOrder = result.rows[0];
 
-    // ✅ FCM is now wrapped in a safe helper — won't crash if it fails
     await sendFCMNotification(
       studentEmail,
       "UniEats Order Confirmed",
@@ -199,12 +206,12 @@ app.post("/api/save-fcm-token", async (req, res) => {
     }
 
     await pool.query(
-      `INSERT INTO student_fcm_tokens (student_email, fcm_token)
-       VALUES ($1, $2)
-       ON CONFLICT (student_email)
-       DO UPDATE SET fcm_token = EXCLUDED.fcm_token`,
-      [studentEmail, fcmToken]
-    );
+  `INSERT INTO student_fcm_tokens (student_email, fcm_token)
+   VALUES (LOWER($1), $2)
+   ON CONFLICT (student_email)
+   DO UPDATE SET fcm_token = EXCLUDED.fcm_token`,
+  [studentEmail, fcmToken]
+);
 
     res.json({ success: true, message: "FCM token saved" });
 
@@ -223,11 +230,16 @@ app.post("/api/test-notification", async (req, res) => {
     const { email } = req.body;
 
     if (!firebaseReady) {
-      return res.status(503).json({ success: false, message: "Firebase not initialized" });
+      return res.status(503).json({
+        success: false,
+        message: "Firebase not initialized"
+      });
     }
 
     const tokenResult = await pool.query(
-      `SELECT fcm_token FROM student_fcm_tokens WHERE student_email = $1 LIMIT 1`,
+      `SELECT fcm_token FROM student_fcm_tokens 
+       WHERE LOWER(student_email) = LOWER($1) 
+       LIMIT 1`,
       [email]
     );
 
@@ -238,24 +250,37 @@ app.post("/api/test-notification", async (req, res) => {
       });
     }
 
-    // ✅ Wrapped in try-catch so test endpoint won't crash server
-    try {
-      await getMessaging().send({
-        token: tokenResult.rows[0].fcm_token,
-        data: {
-          title: "UniEats Test Notification",
-          body: "FCM is working successfully."
-        }
-      });
-    } catch (fcmError) {
-      console.error("FCM test send failed:", fcmError.message);
-      return res.status(500).json({ success: false, message: "FCM send failed", error: fcmError.message });
-    }
+    await getMessaging().send({
+      token: tokenResult.rows[0].fcm_token,
 
-    res.json({ success: true, message: "Test notification sent" });
+      notification: {
+        title: "UniEats Test Notification",
+        body: "FCM is working successfully."
+      },
+
+      data: {
+        title: "UniEats Test Notification",
+        body: "FCM is working successfully."
+      },
+
+      webpush: {
+        notification: {
+          title: "UniEats Test Notification",
+          body: "FCM is working successfully.",
+          icon: "/logo.png",
+          requireInteraction: true
+        }
+      }
+    });
+
+    res.json({
+      success: true,
+      message: "Test notification sent"
+    });
 
   } catch (error) {
     console.error("POST /api/test-notification error:", error.message);
+
     res.status(500).json({
       success: false,
       message: "Test notification failed",
@@ -317,7 +342,6 @@ app.put("/api/owner/orders/:id/status", async (req, res) => {
       [notificationMessage, id]
     );
 
-    // ✅ Safe FCM call — won't crash server if Firebase fails
     if (notificationMessage) {
       await sendFCMNotification(
         updatedOrder.student_email,
@@ -341,10 +365,8 @@ app.put("/api/owner/orders/:id/status", async (req, res) => {
   }
 });
 
-// ✅ FIX: Proper process-level error handling — log AND keep the process alive
 process.on("uncaughtException", (err) => {
   console.error("Uncaught Exception (non-fatal, server continuing):", err.message);
-  // DO NOT call process.exit() here unless it's truly unrecoverable
 });
 
 process.on("unhandledRejection", (reason) => {
