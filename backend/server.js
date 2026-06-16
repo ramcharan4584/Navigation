@@ -127,10 +127,10 @@ app.post("/api/orders", async (req, res) => {
         totalAmount,
         paymentMethod,
         tokenNo,
-        ownerNote || null,
         status || "Preparing",
         counter || receiverPlace,
-        pickupTime || pickup_time
+        pickupTime || pickup_time,
+        ownerNote || null,
       ]
     );
 
