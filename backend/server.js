@@ -256,26 +256,28 @@ app.post("/api/test-notification", async (req, res) => {
       });
     }
 
-    await getMessaging().send({
-      token: tokenResult.rows[0].fcm_token,
+    const response = await getMessaging().send({
+  token: userToken,
 
-      notification: {
-        title: "UniEats Test Notification",
-        body: "FCM is working successfully."
+        webpush: {
+        notification: {
+          title: title,
+          body: body,
+          icon: "/logo.png",
+          badge: "/logo.png",
+          requireInteraction: true,
+          tag: "unieats-order-update",
+          renotify: true
+        },
+
+        fcmOptions: {
+          link: "https://student-portal-1baed.web.app/canteen.html"
+        }
       },
 
       data: {
-        title: "UniEats Test Notification",
-        body: "FCM is working successfully."
-      },
-
-      webpush: {
-        notification: {
-          title: "UniEats Test Notification",
-          body: "FCM is working successfully.",
-          icon: "/logo.png",
-          requireInteraction: true
-        }
+        title: title,
+        body: body
       }
     });
 
