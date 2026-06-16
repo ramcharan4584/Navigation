@@ -172,6 +172,14 @@ function renderOrders(orders) {
         </span>
 
             ${
+              order.owner_note
+                ? `<br><br><small>Note: ${order.owner_note}</small>`
+                : ""
+            }
+
+            ${getReadyWarning(order)}
+
+            ${
               order.delivery_person
                 ? `<br> <br> <small>By: ${order.delivery_person}</small>`
                 : ""
@@ -182,13 +190,6 @@ function renderOrders(orders) {
                 ? `<br> <br> <small>Reason: ${order.cancel_reason}</small>`
                 : ""
             }
-          ${getReadyWarning(order)}
-
-          ${
-            order.owner_note
-              ? `<br><br><small>📝 ${order.owner_note}</small>`
-              : ""
-          }
       </td>
 
       <td>
