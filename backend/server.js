@@ -196,7 +196,7 @@ app.get("/api/owner/orders", async (req, res) => {
         total_amount, payment_method, token_no, status,
         counter_name, pickup_time, order_time,
         delivery_person, delivery_person_id, cancel_reason,
-        notification_message,status_updated_at
+        notification_message,status_updated_at,owner_note
       FROM canteen_orders
       WHERE order_time >= CURRENT_DATE
         AND order_time < CURRENT_DATE + INTERVAL '1 day'
