@@ -163,7 +163,7 @@ function renderOrders(orders) {
   `).join("");
 }
 
-async function loadOrders() {
+async function loadOrders(updateTime = true) {
   const table = document.getElementById("ordersTable");
 
   try {
@@ -176,7 +176,7 @@ async function loadOrders() {
     }
 
     allOrders = orders;
-    updateStats(orders);
+    updateStats(orders, updateTime);
 
     const searchInput = document.getElementById("emailSearch");
     const searchValue = searchInput ? searchInput.value.toLowerCase() : "";
@@ -204,7 +204,7 @@ function searchOrdersByEmail() {
   renderOrders(filteredOrders);
 }
 
-function updateStats(orders) {
+function updateStats(orders, updateTime = true) {
   const totalOrdersElement = document.getElementById("totalOrders");
 
   if (totalOrdersElement) {
@@ -240,8 +240,10 @@ function updateStats(orders) {
 
   document.getElementById("todayRevenue").innerText = "₹" + revenue;
 
+  if (updateTime) {
   document.getElementById("lastUpdated").innerText =
-    "Last Refreshed: " + new Date().toLocaleTimeString();
+    "Last updated: " + new Date().toLocaleTimeString();
+}
 }
 
 function filterByStatus(status) {
@@ -379,5 +381,8 @@ async function updateStatus(id, status) {
 }
 
 loadOrders();
-setInterval(loadOrders, 5000);
+
+let autoRefresh = setInterval(() => {
+  loadOrders(false);
+}, 5000);
 
