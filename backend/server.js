@@ -11,13 +11,30 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-initializeApp({
-  credential: cert({
-    projectId: process.env.FIREBASE_PROJECT_ID,
-    clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
-    privateKey: process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, "\n")
-  })
-});
+let firebaseReady = false;
+
+try {
+  if (
+    process.env.FIREBASE_PROJECT_ID &&
+    process.env.FIREBASE_CLIENT_EMAIL &&
+    process.env.FIREBASE_PRIVATE_KEY
+  ) {
+    initializeApp({
+      credential: cert({
+        projectId: process.env.FIREBASE_PROJECT_ID,
+        clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
+        privateKey: process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, "\n")
+      })
+    });
+
+    firebaseReady = true;
+    console.log("Firebase Admin initialized successfully");
+  } else {
+    console.log("Firebase env variables missing. Notifications disabled.");
+  }
+} catch (error) {
+  console.log("Firebase initialization failed:", error.message);
+}
 
 app.get("/", (req, res) => {
   res.send("Student Portal Backend Running");
@@ -68,23 +85,27 @@ app.post("/api/orders", async (req, res) => {
       [studentEmail]
     );
 
-    if (tokenResult.rows.length > 0) {
-  await getMessaging().send({
-    token: tokenResult.rows[0].fcm_token,
-    data: {
-      title: "UniEats Order Confirmed",
-      body: `Food: ${foodName}
+    if (tokenResult.rows.length > 0 && firebaseReady) {
+      try {
+        await getMessaging().send({
+          token: tokenResult.rows[0].fcm_token,
+          data: {
+            title: "UniEats Order Confirmed",
+            body: `Food: ${foodName}
 Quantity: ${quantity}
 Total: ₹${totalAmount}
 Token No: ${tokenNo}
 Pickup Time: ${pickupTime || pickup_time}
 Payment: ${paymentMethod}
 Counter: ${counter || receiverPlace}`
-    }
-  });
+          }
+        });
 
-  console.log("Order confirmation sent to:", tokenResult.rows[0].fcm_token);
-}
+        console.log("Order confirmation sent");
+      } catch (fcmError) {
+        console.log("FCM failed:", fcmError.message);
+      }
+    }
 
     res.json({
       success: true,
@@ -326,6 +347,14 @@ app.put("/api/owner/orders/:id/status", async (req, res) => {
       error: error.message
     });
   }
+});
+
+process.on("uncaughtException", (err) => {
+  console.error("Uncaught Exception:", err.message);
+});
+
+process.on("unhandledRejection", (err) => {
+  console.error("Unhandled Rejection:", err.message);
 });
 
 const PORT = process.env.PORT || 5000;
