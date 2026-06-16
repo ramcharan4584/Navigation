@@ -256,30 +256,43 @@ app.post("/api/test-notification", async (req, res) => {
       });
     }
 
-    const response = await getMessaging().send({
-  token: userToken,
+    const userToken = tokenResult.rows[0].fcm_token;
+    const title = "UniEats Test Notification";
+    const body = "FCM is working successfully.";
 
-        webpush: {
+    const response = await getMessaging().send({
+      token: userToken,
+
+      data: {
+        title,
+        body
+      },
+
+      webpush: {
+        headers: {
+          Urgency: "high",
+          TTL: "86400"
+        },
+
         notification: {
-          title: title,
-          body: body,
-          icon: "/logo.png",
-          badge: "/logo.png",
+          title,
+          body,
+          icon: "https://student-portal-1baed.web.app/logo.png",
+          badge: "https://student-portal-1baed.web.app/logo.png",
           requireInteraction: true,
-          tag: "unieats-order-update",
+          tag: "unieats-test-" + Date.now(),
           renotify: true
         },
 
         fcmOptions: {
           link: "https://student-portal-1baed.web.app/canteen.html"
         }
-      },
-
-      data: {
-        title: title,
-        body: body
       }
     });
+
+    console.log("Test notification sent to email:", email);
+    console.log("Test notification sent to token:", userToken);
+    console.log("Firebase response:", response);
 
     res.json({
       success: true,
