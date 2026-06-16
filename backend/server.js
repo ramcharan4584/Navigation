@@ -115,24 +115,37 @@ app.post("/api/orders", async (req, res) => {
     } = req.body;
 
     const result = await pool.query(
-      `INSERT INTO canteen_orders
-      (student_name, student_email, food_name, quantity, total_amount, payment_method, token_no, status, counter_name, pickup_time, last_action_time, owner_note)
-      VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,CURRENT_TIMESTAMP)
-      RETURNING *`,
-      [
-        studentName,
-        studentEmail,
-        foodName,
-        quantity,
-        totalAmount,
-        paymentMethod,
-        tokenNo,
-        status || "Preparing",
-        counter || receiverPlace,
-        pickupTime || pickup_time,
-        ownerNote || null,
-      ]
-    );
+  `INSERT INTO canteen_orders
+  (
+    student_name,
+    student_email,
+    food_name,
+    quantity,
+    total_amount,
+    payment_method,
+    token_no,
+    status,
+    counter_name,
+    pickup_time,
+    last_action_time,
+    owner_note
+  )
+  VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,CURRENT_TIMESTAMP,$11)
+  RETURNING *`,
+  [
+    studentName,
+    studentEmail,
+    foodName,
+    quantity,
+    totalAmount,
+    paymentMethod,
+    tokenNo,
+    status || "Preparing",
+    counter || receiverPlace,
+    pickupTime || pickup_time,
+    ownerNote || null
+  ]
+);
 
     const savedOrder = result.rows[0];
 
