@@ -205,7 +205,11 @@ function searchOrdersByEmail() {
 }
 
 function updateStats(orders) {
-  document.getElementById("totalOrders").innerText = orders.length;
+  const totalOrdersElement = document.getElementById("totalOrders");
+
+  if (totalOrdersElement) {
+    totalOrdersElement.innerText = orders.length;
+  }
 
   document.getElementById("preparingOrders").innerText =
     orders.filter(o => o.status === "Preparing").length;
@@ -218,7 +222,7 @@ function updateStats(orders) {
 
   document.getElementById("cancelledorders").innerText =
     orders.filter(o => o.status === "Cancelled").length;
-    
+
   document.getElementById("pendingOrders").innerText =
     orders.filter(o => o.status === "Preparing" || o.status === "Ready").length;
 
@@ -237,7 +241,7 @@ function updateStats(orders) {
   document.getElementById("todayRevenue").innerText = "₹" + revenue;
 
   document.getElementById("lastUpdated").innerText =
-    "Last updated: " + new Date().toLocaleTimeString();
+    "Last Refreshed: " + new Date().toLocaleTimeString();
 }
 
 function filterByStatus(status) {
