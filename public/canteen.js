@@ -21,13 +21,20 @@ function openOrder(button) {
   selectedItem = food.foodName;
   selectedPrice = food.price;
 
-  document.getElementById("orderTitle").innerText = "Pre Order";
+  document.getElementById("fixedCheckoutBar").style.display = "none";
+
+  document.getElementById("orderTitle").innerText = "Checkout Details";
   document.getElementById("orderItem").innerText = food.foodName;
+
+  document.getElementById("checkoutItemsStep").style.display = "none";
+  document.getElementById("proceedCheckoutBtn").style.display = "none";
+  document.getElementById("paymentStep").style.display = "block";
+
   document.getElementById("singleOrderBox").style.display = "block";
 
   document.getElementById("quantity").value = 1;
   document.getElementById("totalAmount").innerText = food.price;
-
+  document.body.classList.add("popup-open");
   document.getElementById("orderPopup").style.display = "flex";
 }
 
@@ -79,6 +86,7 @@ function displayCart() {
   });
 
   cartTotal.innerText = total;
+  updateFixedCheckoutBar();
 }
 
 function increaseCartQty(index) {
@@ -111,15 +119,18 @@ function openCheckout() {
 
   orderMode = "cart";
 
-  document.getElementById("orderTitle").innerText = "Cart Checkout";
-  document.getElementById("orderItem").innerText = "Multiple Items";
+  document.getElementById("fixedCheckoutBar").style.display = "none";
+
+  document.getElementById("orderTitle").innerText = "Review Your Cart";
+  document.getElementById("orderItem").innerText = "";
   document.getElementById("singleOrderBox").style.display = "none";
 
-  let total = cart.reduce((sum, item) => {
-    return sum + item.price * item.quantity;
-  }, 0);
+  document.getElementById("checkoutItemsStep").style.display = "block";
+  document.getElementById("proceedCheckoutBtn").style.display = "block";
+  document.getElementById("paymentStep").style.display = "none";
 
-  document.getElementById("totalAmount").innerText = total;
+  displayCheckoutItemsStep();
+  document.body.classList.add("popup-open");
   document.getElementById("orderPopup").style.display = "flex";
 }
 
@@ -170,6 +181,8 @@ function showPaymentDetails() {
 
 function closeOrder() {
   document.getElementById("orderPopup").style.display = "none";
+  document.body.classList.remove("popup-open");
+  updateFixedCheckoutBar();
 }
 
 /* CONFIRM ORDER */
@@ -221,15 +234,21 @@ async function confirmOrder() {
       ownerNote: ownerNote
     };
 
-    tokenHTML = `
-      <strong>Food:</strong> ${selectedItem}<br>
-      <strong>Quantity:</strong> ${quantity}<br>
-      <strong>Total:</strong> ₹${total}<br>
-      <strong>Token No:</strong> ${tokenNumber}<br>
-      <strong>Pickup Time:</strong> ${pickupTime}<br>
-      <strong>Payment:</strong> ${payment}<br>
-      <strong>Status:</strong> Preparing<br>
-      <strong>Counter:</strong> ${receiverPlace}
+      tokenHTML = `
+      <div class="token-items">
+        <strong>Items:</strong><br>
+        ${selectedItem} × ${quantity}
+      </div>
+
+      <div class="token-summary">
+        <strong>Total Quantity:</strong> ${quantity}<br>
+        <strong>Total:</strong> ₹${total}<br>
+        <strong>Token No:</strong> ${tokenNumber}<br>
+        <strong>Pickup Time:</strong> ${pickupTime}<br>
+        <strong>Payment:</strong> ${payment}<br>
+        <strong>Status:</strong> Preparing<br>
+        <strong>Counter:</strong> ${receiverPlace}
+      </div>
     `;
   }
 
@@ -267,15 +286,21 @@ async function confirmOrder() {
     };
 
     tokenHTML = `
-      <strong>Items:</strong><br>${itemList}<br><br>
-      <strong>Total Quantity:</strong> ${totalQuantity}<br>
-      <strong>Total:</strong> ₹${total}<br>
-      <strong>Token No:</strong> ${tokenNumber}<br>
-      <strong>Pickup Time:</strong> ${pickupTime}<br>
-      <strong>Payment:</strong> ${payment}<br>
-      <strong>Status:</strong> Preparing<br>
-      <strong>Counter:</strong> ${receiverPlace}
-    `;
+  <div class="token-items">
+    <strong>Items:</strong><br>
+    ${itemList}
+  </div>
+
+  <div class="token-summary">
+    <strong>Total Quantity:</strong> ${totalQuantity}<br>
+    <strong>Total:</strong> ₹${total}<br>
+    <strong>Token No:</strong> ${tokenNumber}<br>
+    <strong>Pickup Time:</strong> ${pickupTime}<br>
+    <strong>Payment:</strong> ${payment}<br>
+    <strong>Status:</strong> Preparing<br>
+    <strong>Counter:</strong> ${receiverPlace}
+  </div>
+`;
   }
 
   console.log("Sending order:", orderData);
@@ -335,3 +360,106 @@ document.getElementById("searchFood").addEventListener("keyup", function () {
     }
   });
 });
+
+function updateFixedCheckoutBar() {
+  let fixedBar = document.getElementById("fixedCheckoutBar");
+  let itemCount = document.getElementById("checkoutItemCount");
+
+  let totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+  let totalPrice = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+
+  let orderPopup = document.getElementById("orderPopup");
+
+  if (orderPopup.style.display === "flex") {
+    fixedBar.style.display = "none";
+    return;
+  }
+
+  if (cart.length > 0) {
+    fixedBar.style.display = "flex";
+    itemCount.innerText = `${totalItems} item${totalItems > 1 ? "s" : ""} selected`;
+    totalAmount.innerText = `Total ₹${totalPrice}`;
+  } else {
+    fixedBar.style.display = "none";
+  }
+}
+
+function displayCheckoutItemsStep() {
+  let checkoutItemsStep = document.getElementById("checkoutItemsStep");
+
+  checkoutItemsStep.innerHTML = "";
+
+  let total = 0;
+
+  cart.forEach((item, index) => {
+    total += item.price * item.quantity;
+
+    checkoutItemsStep.innerHTML += `
+      <div class="checkout-cart-item">
+        <div>
+          <strong>${item.foodName}</strong>
+          <p>₹${item.price} × ${item.quantity}</p>
+        </div>
+
+        <div>
+          <button onclick="decreaseCheckoutQty(${index})">-</button>
+          <span>${item.quantity}</span>
+          <button onclick="increaseCheckoutQty(${index})">+</button>
+          <button onclick="removeCheckoutItem(${index})">Remove</button>
+        </div>
+      </div>
+    `;
+  });
+
+  checkoutItemsStep.innerHTML += `
+    <div class="checkout-step-total">
+      <strong>Total: ₹${total}</strong>
+    </div>
+  `;
+}
+
+function increaseCheckoutQty(index) {
+  cart[index].quantity++;
+  displayCart();
+  displayCheckoutItemsStep();
+}
+
+function decreaseCheckoutQty(index) {
+  if (cart[index].quantity > 1) {
+    cart[index].quantity--;
+  } else {
+    cart.splice(index, 1);
+  }
+
+  if (cart.length === 0) {
+    closeOrder();
+    return;
+  }
+
+  displayCart();
+  displayCheckoutItemsStep();
+}
+
+function removeCheckoutItem(index) {
+  cart.splice(index, 1);
+
+  if (cart.length === 0) {
+    closeOrder();
+    return;
+  }
+
+  displayCart();
+  displayCheckoutItemsStep();
+}
+
+function proceedToPayment() {
+  let total = cart.reduce((sum, item) => {
+    return sum + item.price * item.quantity;
+  }, 0);
+
+  document.getElementById("orderTitle").innerText = "Checkout Details";
+  document.getElementById("checkoutItemsStep").style.display = "none";
+  document.getElementById("proceedCheckoutBtn").style.display = "none";
+  document.getElementById("paymentStep").style.display = "block";
+  document.getElementById("totalAmount").innerText = total;
+}
