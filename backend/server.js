@@ -414,12 +414,6 @@ process.on("unhandledRejection", (reason) => {
   console.error("Unhandled Promise Rejection (non-fatal, server continuing):", reason);
 });
 
-const PORT = process.env.PORT || 5000;
-
-app.listen(PORT, "0.0.0.0", () => {
-  console.log(`Server running on port ${PORT}`);
-});
-
 const nodemailer = require("nodemailer");
 const cron = require("node-cron");
 
@@ -457,8 +451,8 @@ async function sendDailyDeliveredOrdersReport() {
         <td>${order.quantity}</td>
         <td>₹${order.total_amount || order.totalamount}</td>
         <td>${order.payment_method || order.paymentmethod}</td>
-        <td>${order.counter}</td>
-        <td>${order.delivery_person_name || "Not entered"}</td>
+        <td>${order.counter_name || "Not entered"}</td>
+        <td>${order.delivery_person || "Not entered"}</td>
         <td>${order.delivery_person_id || "Not entered"}</td>
         <td>${order.delivered_at}</td>
       </tr>
@@ -511,4 +505,10 @@ cron.schedule("59 23 * * *", () => {
   sendDailyDeliveredOrdersReport();
 }, {
   timezone: "Asia/Kolkata"
+});
+
+const PORT = process.env.PORT || 5000;
+
+app.listen(PORT, "0.0.0.0", () => {
+  console.log(`Server running on port ${PORT}`);
 });
