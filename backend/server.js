@@ -346,21 +346,28 @@ app.put("/api/owner/orders/:id/status", async (req, res) => {
     }
 
     const result = await pool.query(
-      `UPDATE canteen_orders
-       SET 
-         status = $1,
-         delivery_person = COALESCE($2, delivery_person),
-         delivery_person_id = COALESCE($3, delivery_person_id),
-         cancel_reason = COALESCE($4, cancel_reason),
-         status_updated_at = CURRENT_TIMESTAMP,
-          delivered_at = CASE 
-            WHEN $1 = 'Delivered' THEN CURRENT_TIMESTAMP 
-            ELSE delivered_at 
-          END
-       WHERE id = $5
-       RETURNING *`,
-      [status, deliveryPerson || null, deliveryPersonId || null, finalCancelReason, id]
-    );
+  `UPDATE canteen_orders
+   SET 
+     status = $1,
+     delivery_person = COALESCE($2, delivery_person),
+     delivery_person_id = COALESCE($3, delivery_person_id),
+     cancel_reason = COALESCE($4, cancel_reason),
+     status_updated_at = CURRENT_TIMESTAMP,
+     delivered_at = CASE 
+       WHEN $6 = 'Delivered' THEN CURRENT_TIMESTAMP 
+       ELSE delivered_at 
+     END
+   WHERE id = $5
+   RETURNING *`,
+  [
+    status,
+    deliveryPerson || null,
+    deliveryPersonId || null,
+    finalCancelReason,
+    id,
+    status
+  ]
+);
 
     if (result.rows.length === 0) {
       return res.status(404).json({ success: false, message: "Order not found" });

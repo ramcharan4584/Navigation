@@ -415,18 +415,24 @@ async function updateStatus(id, status) {
 
     const result = await response.json();
 
-    if (!result.success) {
-      alert(result.message || "Status update failed");
-      return;
-    }
+if (!result.success) {
+  alert(
+    (result.message || "Status update failed") +
+    "\n\nBackend Error: " +
+    (result.error || "No exact error received")
+  );
 
-    alert("Order status updated successfully.");
-    loadOrders();
+  console.log("FULL BACKEND RESULT:", result);
+  return;
+}
 
-  } catch (error) {
-    alert("Backend error. Status not updated.");
-    console.error(error);
-  }
+alert("Order status updated successfully.");
+loadOrders();
+
+} catch (error) {
+  alert("Backend error. Status not updated.");
+  console.error(error);
+}
 }
 
 loadOrders();
