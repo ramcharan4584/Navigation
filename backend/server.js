@@ -352,7 +352,11 @@ app.put("/api/owner/orders/:id/status", async (req, res) => {
          delivery_person = COALESCE($2, delivery_person),
          delivery_person_id = COALESCE($3, delivery_person_id),
          cancel_reason = COALESCE($4, cancel_reason),
-         status_updated_at = CURRENT_TIMESTAMP
+         status_updated_at = CURRENT_TIMESTAMP,
+          delivered_at = CASE 
+            WHEN $1 = 'Delivered' THEN CURRENT_TIMESTAMP 
+            ELSE delivered_at 
+          END
        WHERE id = $5
        RETURNING *`,
       [status, deliveryPerson || null, deliveryPersonId || null, finalCancelReason, id]
@@ -414,4 +418,97 @@ const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, "0.0.0.0", () => {
   console.log(`Server running on port ${PORT}`);
+});
+
+const nodemailer = require("nodemailer");
+const cron = require("node-cron");
+
+const transporter = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: process.env.MAIL_USER,
+    pass: process.env.MAIL_PASS
+  }
+});
+
+async function sendDailyDeliveredOrdersReport() {
+  try {
+    const result = await pool.query(`
+      SELECT *
+      FROM canteen_orders
+      WHERE status = 'Delivered'
+      AND DATE(delivered_at) = CURRENT_DATE
+      ORDER BY delivered_at DESC
+    `);
+
+    const orders = result.rows;
+
+    const totalOrders = orders.length;
+    const totalRevenue = orders.reduce((sum, order) => {
+      return sum + Number(order.total_amount || order.totalamount || 0);
+    }, 0);
+
+    let ordersHTML = orders.map(order => `
+      <tr>
+        <td>${order.token_no || order.tokenno}</td>
+        <td>${order.student_name || order.studentname}</td>
+        <td>${order.student_email || order.studentemail}</td>
+        <td>${order.food_name || order.foodname}</td>
+        <td>${order.quantity}</td>
+        <td>₹${order.total_amount || order.totalamount}</td>
+        <td>${order.payment_method || order.paymentmethod}</td>
+        <td>${order.counter}</td>
+        <td>${order.delivery_person_name || "Not entered"}</td>
+        <td>${order.delivery_person_id || "Not entered"}</td>
+        <td>${order.delivered_at}</td>
+      </tr>
+    `).join("");
+
+    const html = `
+      <h2>UniEats Daily Delivered Orders Report</h2>
+
+      <h3>Daily Stats</h3>
+      <p><strong>Total Delivered Orders:</strong> ${totalOrders}</p>
+      <p><strong>Total Revenue:</strong> ₹${totalRevenue}</p>
+
+      <table border="1" cellpadding="8" cellspacing="0">
+        <thead>
+          <tr>
+            <th>Token</th>
+            <th>Student Name</th>
+            <th>Student Email</th>
+            <th>Food Items</th>
+            <th>Qty</th>
+            <th>Total</th>
+            <th>Payment</th>
+            <th>Counter</th>
+            <th>Delivery Person</th>
+            <th>Delivery ID</th>
+            <th>Delivered At</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${ordersHTML || `<tr><td colspan="11">No delivered orders today</td></tr>`}
+        </tbody>
+      </table>
+    `;
+
+    await transporter.sendMail({
+      from: process.env.MAIL_USER,
+      to: process.env.OWNER_EMAIL,
+      subject: "UniEats Daily Delivered Orders Report",
+      html
+    });
+
+    console.log("Daily delivered orders email sent");
+
+  } catch (error) {
+    console.error("Email report failed:", error.message);
+  }
+}
+
+cron.schedule("59 23 * * *", () => {
+  sendDailyDeliveredOrdersReport();
+}, {
+  timezone: "Asia/Kolkata"
 });

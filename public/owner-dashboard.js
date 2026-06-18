@@ -139,7 +139,7 @@ function renderOrders(orders) {
   const table = document.getElementById("ordersTable");
 
   if (orders.length === 0) {
-    table.innerHTML = `<tr><td colspan="10">No matching orders found.</td></tr>`;
+    table.innerHTML = `<tr><td colspan="10">No orders found.</td></tr>`;
     return;
   }
 
