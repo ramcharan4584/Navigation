@@ -514,6 +514,11 @@ cron.schedule("59 23 * * *", () => {
   timezone: "Asia/Kolkata"
 });
 
+app.get("/api/test-daily-report", async (req, res) => {
+  await sendDailyDeliveredOrdersReport();
+  res.json({ success: true, message: "Daily report test triggered" });
+});
+
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, "0.0.0.0", () => {
