@@ -23,26 +23,22 @@ diningNavbar.innerHTML = `
     </div>
 
     <div class="sidebar-links">
-      <a href="dashboard.html">🏠 Dashboard</a>
-      <a href="#">📅 Weekly Menu</a>
-      <a href="#" onclick="showMyOrders()">🛒 My Orders</a>
-
-      <div class="orders-dropdown" id="ordersDropdown">
-        <p class="empty-orders">Click to load your orders</p>
-      </div>
-      <a href="#">❤️ Favorites</a>
-      <a href="#">🕒 Order History</a>
-      <a href="#">💳 Wallet</a>
-      <a href="#">🎁 Offers & Coupons</a>
-      <a href="#">🔥 Most Ordered</a>
-      <a href="#">⏳ Live Queue</a>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="#">Weekly Menu</a>
+      <a href="my-orders.html">Your Orders</a>
+      <a href="#">Favorites</a>
+      <a href="#">Order History</a>
+      <a href="#">Wallet</a>
+      <a href="#">Offers & Coupons</a>
+      <a href="#">Most Ordered</a>
+      <a href="#">Live Queue</a>
 
       <a href="javascript:void(0)" id="notificationLink" onclick="enableNotifications()">
-        🔔 Enable Order Notifications
+        Enable Order Notifications
       </a>
 
-      <a href="#">☎ Contact Canteen</a>
-      <a href="index.html">🚪 Logout</a>
+      <a href="#">Contact Canteen</a>
+      <a href="index.html">Logout</a>
     </div>
   </div>
 `;

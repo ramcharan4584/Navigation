@@ -36,6 +36,7 @@ function openOrder(button) {
   document.getElementById("totalAmount").innerText = food.price;
   document.body.classList.add("popup-open");
   document.getElementById("orderPopup").style.display = "flex";
+  document.getElementById("tokenBox").style.display = "none";
 }
 
 /* ADD TO CART */
@@ -112,6 +113,7 @@ function removeFromCart(index) {
 /* CART CHECKOUT */
 
 function openCheckout() {
+
   if (cart.length === 0) {
     alert("Please add food items to cart first");
     return;
@@ -119,19 +121,33 @@ function openCheckout() {
 
   orderMode = "cart";
 
+  document.getElementById("tokenBox").style.display = "none";
+
   document.getElementById("fixedCheckoutBar").style.display = "none";
 
-  document.getElementById("orderTitle").innerText = "Review Your Cart";
-  document.getElementById("orderItem").innerText = "";
-  document.getElementById("singleOrderBox").style.display = "none";
+  document.getElementById("orderTitle").innerText =
+    "Review Your Cart";
 
-  document.getElementById("checkoutItemsStep").style.display = "block";
-  document.getElementById("proceedCheckoutBtn").style.display = "block";
-  document.getElementById("paymentStep").style.display = "none";
+  document.getElementById("orderItem").innerText = "";
+
+  document.getElementById("singleOrderBox").style.display =
+    "none";
+
+  document.getElementById("checkoutItemsStep").style.display =
+    "block";
+
+  document.getElementById("proceedCheckoutBtn").style.display =
+    "block";
+
+  document.getElementById("paymentStep").style.display =
+    "none";
 
   displayCheckoutItemsStep();
+
   document.body.classList.add("popup-open");
-  document.getElementById("orderPopup").style.display = "flex";
+
+  document.getElementById("orderPopup").style.display =
+    "flex";
 }
 
 /* TOTAL */
@@ -153,8 +169,11 @@ function updateTotal() {
 
 function showPaymentDetails() {
 
-  let payment = document.getElementById("paymentMethod").value;
-  let paymentDetails = document.getElementById("paymentDetails");
+  let payment =
+    document.getElementById("paymentMethod").value;
+
+  let paymentDetails =
+    document.getElementById("paymentDetails");
 
   if (
     payment === "Cash" ||
@@ -170,12 +189,8 @@ function showPaymentDetails() {
 
   } else {
 
-    paymentDetails.style.display = "block";
-
-    paymentDetails.innerHTML = `
-      <strong>Payment:</strong><br>
-      Please complete your online payment.
-    `;
+    paymentDetails.style.display = "none";
+    paymentDetails.innerHTML = "";
   }
 }
 
@@ -316,9 +331,15 @@ async function confirmOrder() {
   const result = await response.json();
   console.log("Backend response:", result);
 
-  document.getElementById("orderPopup").style.display = "none";
-  document.getElementById("tokenBox").style.display = "block";
+ if (!result.success) {
+  alert(result.message || "Order failed");
+  return;
+}
+
   document.getElementById("tokenDetails").innerHTML = tokenHTML;
+  document.getElementById("orderPopup").style.display = "none";
+  document.body.classList.remove("popup-open");
+  document.getElementById("tokenBox").style.display = "block";
 
   if (orderMode === "cart") {
     cart = [];
@@ -328,6 +349,7 @@ async function confirmOrder() {
 
 function closeToken() {
   document.getElementById("tokenBox").style.display = "none";
+  document.body.classList.remove("popup-open");
 }
 
 /* FILTER */
@@ -377,7 +399,7 @@ function updateFixedCheckoutBar() {
 
   if (cart.length > 0) {
     fixedBar.style.display = "flex";
-    itemCount.innerText = `${totalItems} item${totalItems > 1 ? "s" : ""} selected`;
+    itemCount.innerText = `${totalItems} item${totalItems > 1 ? "s" : ""} added`;
     totalAmount.innerText = `Total ₹${totalPrice}`;
   } else {
     fixedBar.style.display = "none";
@@ -462,4 +484,9 @@ function proceedToPayment() {
   document.getElementById("proceedCheckoutBtn").style.display = "none";
   document.getElementById("paymentStep").style.display = "block";
   document.getElementById("totalAmount").innerText = total;
+}
+
+function selectPayment(method) {
+  document.getElementById("paymentMethod").value = method;
+  showPaymentDetails();
 }

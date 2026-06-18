@@ -291,7 +291,7 @@ function updateStats(orders, updateTime = true) {
 
   if (updateTime) {
   document.getElementById("lastUpdated").innerText =
-    "Last Refreshed: " + new Date().toLocaleTimeString();
+    "Last Updated: " + new Date().toLocaleTimeString();
 }
 }
 

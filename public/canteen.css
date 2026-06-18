@@ -94,9 +94,16 @@ body.popup-open{
   width:90%;
   margin:auto;
   display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  grid-template-columns:
+  repeat(auto-fit,minmax(280px,350px));
+  justify-content:center;
   gap:30px;
   padding-bottom:50px;
+}
+
+.food-card{
+  width:100%;
+  max-width:350px;
 }
 
 /* FOOD CARD */
@@ -430,7 +437,7 @@ body.popup-open{
   text-align:center;
   box-shadow:0 10px 30px rgba(0,0,0,0.2);
   display:none;
-  z-index:1200;
+  z-index:3000;
 }
 
 .token-box h2{
@@ -461,6 +468,111 @@ body.popup-open{
   color:white;
   font-weight:bold;
   cursor:pointer;
+}
+
+.payment-options-box{
+  margin-top:10px;
+}
+
+.coupon-row{
+  display:flex;
+  gap:8px;
+  margin:10px 0;
+}
+
+.coupon-row input{
+  flex:1;
+}
+
+.coupon-row button{
+  border:none;
+  background:#2563eb;
+  color:white;
+  padding:0 14px;
+  border-radius:10px;
+  font-weight:bold;
+}
+
+.payment-note{
+  background:#eff6ff;
+  padding:12px;
+  border-radius:12px;
+  color:#1e3a8a;
+  margin:12px 0;
+}
+
+.upi-options div{
+  background:white;
+  border:1px solid #dbeafe;
+  border-radius:14px;
+  padding:14px 8px;
+  text-align:center;
+  cursor:pointer;
+}
+
+.upi-options span{
+  display:block;
+  margin-top:6px;
+  font-size:13px;
+}
+
+.upi-options{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:12px;
+  margin-top:14px;
+}
+
+.upi-card{
+  background:white;
+  border:1px solid #dbeafe;
+  border-radius:16px;
+  padding:16px 10px;
+  text-align:center;
+  cursor:pointer;
+  transition:0.3s;
+}
+
+.upi-card:hover{
+  transform:translateY(-3px);
+  box-shadow:0 6px 16px rgba(37,99,235,0.15);
+}
+
+.upi-card img{
+  width:42px;
+  height:42px;
+  object-fit:contain;
+}
+
+.upi-card span{
+  display:block;
+  margin-top:8px;
+  font-size:13px;
+  font-weight:bold;
+}
+
+.payment-list{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:15px;
+  border:1px solid #e2e8f0;
+  border-radius:14px;
+  margin-top:12px;
+  background:white;
+  cursor:pointer;
+}
+
+.payment-list div{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+.payment-list img{
+  width:34px;
+  height:34px;
+  object-fit:contain;
 }
 
 /* MOBILE */

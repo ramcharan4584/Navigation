@@ -6,6 +6,11 @@ import {
   signOut
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
+import {
+  getMessaging,
+  getToken
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-messaging.js";
+
 /* FIREBASE CONFIG */
 const firebaseConfig = {
   apiKey: "AIzaSyD_7Cp155ILuZlzdVRk4-pdj9RGlztmkhM",
@@ -19,7 +24,7 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
-const messaging = firebase.messaging();
+const messaging = getMessaging(app);
 const vapidKey =
 "BHjO5qV1g41Mvrtqk-Jp08v9G7VQ44LpH_KAMZzwMZxpKlYdRrOL4zxDt1_oFGcVT6EJEQM_4WvmVNS-xq-QKnM";
 /* ENABLE NOTIFICATION */
@@ -32,9 +37,9 @@ async function enableNotifications() {
       return;
     }
 
-    const token = await messaging.getToken({
-      vapidKey: vapidKey
-    });
+    const token = await getToken(messaging, {
+    vapidKey: vapidKey
+  });
 
     console.log("FCM Token:", token);
 
@@ -136,14 +141,6 @@ function stopAutoSlider() {
     clearInterval(autoSlideInterval);
   }
 }
-
-/* EMERGENCY CONTACTS */
-
-function toggleEmergencyBox(){
-  document.getElementById("emergencyBox").classList.toggle("active");
-}
-
-window.toggleEmergencyBox = toggleEmergencyBox;
 
 /* CLOSE EMERGENCY BOX WHEN CLICKING OUTSIDE */
 

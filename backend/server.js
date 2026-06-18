@@ -502,7 +502,6 @@ async function sendDailyDeliveredOrdersReport() {
     });
 
     console.log("Daily delivered orders email sent");
-
   } catch (error) {
     console.error("Email report failed:", error.message);
   }

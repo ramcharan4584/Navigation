@@ -87,7 +87,7 @@
             <strong id="checkoutItemCount">0 items</strong>
           </div>
 
-          <button>Checkout</button>
+          <button>Continue</button>
         </div>
 
         <div class="order-popup" id="orderPopup">
@@ -96,49 +96,27 @@
     <h2 id="orderTitle">Checkout</h2>
     <h3 id="orderItem">Food Item</h3>
 
-    <!-- STEP 1 : REVIEW CART -->
     <div id="checkoutItemsStep"></div>
 
-    <button
-      class="pay-btn"
-      id="proceedCheckoutBtn"
-      onclick="proceedToPayment()"
-    >
+    <button class="pay-btn" id="proceedCheckoutBtn" onclick="proceedToPayment()">
       Proceed
     </button>
 
-    <!-- STEP 2 : PAYMENT -->
     <div id="paymentStep">
 
-      <!-- SINGLE ORDER QUANTITY -->
       <div id="singleOrderBox">
-
         <label>Quantity</label>
-
-        <input
-          type="number"
-          id="quantity"
-          value="1"
-          min="1"
-          oninput="updateTotal()"
-        >
-
+        <input type="number" id="quantity" value="1" min="1" oninput="updateTotal()">
       </div>
 
-      <!-- RECEIVER PLACE -->
-
       <label>Receiver Place</label>
-
       <select id="receiverPlace">
         <option value="">Choose Receiver Place</option>
         <option>Main Cafeteria Counter</option>
         <option>Canteen Counter</option>
       </select>
 
-      <!-- PICKUP TIME -->
-
       <label>Pickup Time</label>
-
       <select id="pickupTime">
         <option value="">Choose Pickup Time</option>
         <option>09:30 AM</option>
@@ -152,45 +130,92 @@
         <option>02:00 PM</option>
       </select>
 
-      <!-- ORDER NOTES -->
-
       <label>Order Notes</label>
+      <textarea id="ownerNote" placeholder="Example: Less spicy, extra chutney, no onions..."></textarea>
 
-      <textarea
-        id="ownerNote"
-        placeholder="Example: Less spicy, extra chutney, no onions..."
-      ></textarea>
+      <label>Payment Options</label>
 
-      <!-- PAYMENT METHOD -->
+      <div class="payment-options-box">
 
-      <label>Payment Method</label>
+        <div class="coupon-row">
+          <input type="text" placeholder="Have a coupon? Paste here">
+          <button type="button">APPLY</button>
+        </div>
 
-      <select id="paymentMethod" onchange="showPaymentDetails()">
-        <option>UPI</option>
-        <option>Google Pay</option>
-        <option>PhonePe</option>
-        <option>Cash at Counter</option>
-      </select>
+        <p class="payment-note">
+          Convenience fee may apply for some payment methods.
+        </p>
 
-      <!-- PAYMENT DETAILS -->
+        <h4>Pay Via UPI</h4>
+
+        <div class="upi-options">
+          <div class="upi-card" onclick="selectPayment('Any UPI')">
+            <img src="images/upi.png" alt="UPI">
+            <span>Any UPI</span>
+          </div>
+
+          <div class="upi-card" onclick="selectPayment('Google Pay')">
+            <img src="images/gpay.png" alt="Google Pay">
+            <span>Google Pay</span>
+          </div>
+
+          <div class="upi-card" onclick="selectPayment('PhonePe')">
+            <img src="images/phonepe.png" alt="PhonePe">
+            <span>PhonePe</span>
+          </div>
+        </div>
+
+        <h4>Other Payment Options</h4>
+
+        <div class="payment-list" onclick="selectPayment('UPI QR')">
+          <div>
+            <img src="images/upi.png" alt="UPI QR">
+            <span>Pay by UPI QR</span>
+          </div>
+          <span>›</span>
+        </div>
+
+        <div class="payment-list" onclick="selectPayment('Card')">
+          <div>
+            <img src="images/card.jpg" alt="Card">
+            <span>Card</span>
+          </div>
+          <span>›</span>
+        </div>
+
+        <div class="payment-list" onclick="selectPayment('Wallet')">
+          <div>
+            <span>Wallet</span>
+          </div>
+          <span>›</span>
+        </div>
+
+        <div class="payment-list" onclick="selectPayment('Net Banking')">
+          <div>
+            <span>Net Banking</span>
+          </div>
+          <span>›</span>
+        </div>
+
+        <div class="payment-list" onclick="selectPayment('Cash at Counter')">
+          <div>
+            <span>Cash at Counter</span>
+          </div>
+        </div>
+
+      </div>
+
+      <input type="hidden" id="paymentMethod" value="UPI">
 
       <div class="payment-details" id="paymentDetails"></div>
-
-      <!-- TOTAL -->
 
       <div class="bill-box">
         <h3>Total: ₹<span id="totalAmount">0</span></h3>
       </div>
 
-      <!-- BUTTONS -->
+      <button class="pay-btn" onclick="confirmOrder()">Pay & Confirm</button>
 
-      <button class="pay-btn" onclick="confirmOrder()">
-        Pay & Confirm
-      </button>
-
-      <button class="close-btn" onclick="closeOrder()">
-        Cancel
-      </button>
+      <button class="close-btn" onclick="closeOrder()">Cancel</button>
 
     </div>
 
