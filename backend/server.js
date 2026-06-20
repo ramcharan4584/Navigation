@@ -518,6 +518,29 @@ app.get("/api/test-daily-report", async (req, res) => {
   res.json({ success: true, message: "Daily report test triggered" });
 });
 
+app.get("/api/favorite-foods", async (req, res) => {
+  try {
+    const result = await pool.query(`
+      SELECT food_name, COUNT(*) AS total_orders
+      FROM canteen_orders
+      WHERE status != 'Cancelled'
+      GROUP BY food_name
+      ORDER BY total_orders DESC
+      LIMIT 6
+    `);
+
+    res.json(result.rows);
+
+  } catch (error) {
+    console.error("Favorite foods error:", error);
+
+    res.status(500).json({
+      success: false,
+      message: "Cannot fetch favorite foods"
+    });
+  }
+});
+
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, "0.0.0.0", () => {

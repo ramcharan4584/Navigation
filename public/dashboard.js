@@ -45,8 +45,6 @@ async function enableNotifications() {
 
     localStorage.setItem("fcmToken", token);
 
-    alert("Notifications enabled successfully");
-
   } catch (error) {
     console.error("Notification error:", error);
   }

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Favorites</title>
+
+  <link rel="stylesheet" href="dining-navbar.css">
+  <link rel="stylesheet" href="favorites.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+
+<body>
+
+  <div id="dining-navbar-container"></div>
+
+  <header class="favorites-header">
+    <h1>Student Favorites</h1>
+    <p>Most ordered and loved food items by students</p>
+  </header>
+
+  <section class="favorites-section">
+    <div class="section-title">
+      <h2>⭐ Top Favorite Foods</h2>
+      <p>Based on student order history</p>
+    </div>
+
+    <div id="favoritesBoard" class="favorites-grid">
+      <p class="loading-text">Loading favorites...</p>
+    </div>
+  </section>
+
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-messaging.js"></script>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyD_7Cp155ILuZlzdVRk4-pdj9RGlztmkhM",
+      authDomain: "student-portal-1baed.firebaseapp.com",
+      projectId: "student-portal-1baed",
+      storageBucket: "student-portal-1baed.firebasestorage.app",
+      messagingSenderId: "1017420453175",
+      appId: "1:1017420453175:web:5c9c44f5a68a3e4d5476b2",
+      measurementId: "G-T8PCR4Q06B"
+    };
+
+    if (!firebase.apps.length) {
+      firebase.initializeApp(firebaseConfig);
+    }
+  </script>
+
+  <script src="dining-navbar.js"></script>
+  <script src="favorites.js"></script>
+
+</body>
+</html>
