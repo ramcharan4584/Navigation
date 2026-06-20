@@ -6,29 +6,42 @@
   <title>Student Favorites</title>
 
   <link rel="stylesheet" href="dining-navbar.css">
-  <link rel="stylesheet" href="favorites.css">
+  <link rel="stylesheet" href="mostordered.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 
 <body>
 
-  <div id="dining-navbar-container"></div>
+  <header class="most-header">
+  <h1>Most Ordered Foods</h1>
+  <p>Trending food items based on student orders</p>
+</header>
 
-  <header class="favorites-header">
-    <h1>Student Favorites</h1>
-    <p>Most ordered and loved food items by students</p>
-  </header>
+<section class="most-section">
+  <div class="section-heading">
+    <h2>🔥 Campus Food Trends</h2>
+    <p>Live ranking from UniEats order history</p>
+  </div>
 
-  <section class="favorites-section">
-    <div class="section-title">
-      <h2>⭐ Top Favorite Foods</h2>
-      <p>Based on student order history</p>
-    </div>
+  <div class="most-table-card">
+    <table>
+      <thead>
+        <tr>
+          <th>Rank</th>
+          <th>Food Item</th>
+          <th>Total Orders</th>
+          <th>Status</th>
+        </tr>
+      </thead>
 
-    <div id="favoritesBoard" class="favorites-grid">
-      <p class="loading-text">Loading favorites...</p>
-    </div>
-  </section>
+      <tbody id="mostOrderedBoard">
+        <tr>
+          <td colspan="4">Loading most ordered foods...</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
 
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
@@ -51,7 +64,7 @@
   </script>
 
   <script src="dining-navbar.js"></script>
-  <script src="favorites.js"></script>
+  <script src="mostordered.js"></script>
 
 </body>
 </html>

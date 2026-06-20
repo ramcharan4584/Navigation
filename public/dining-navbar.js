@@ -26,11 +26,11 @@ diningNavbar.innerHTML = `
       <a href="dashboard.html">Dashboard</a>
       <a href="#">Weekly Menu</a>
       <a href="my-orders.html">Your Orders</a>
-      <a href="favorites.html">⭐ Favorites</a>
+      <a href="#>Favorites</a>
       <a href="#">Order History</a>
       <a href="#">Wallet</a>
       <a href="#">Offers & Coupons</a>
-      <a href="#">Most Ordered</a>
+      <a href="mostordered.html">Most Ordered</a>
       <a href="#">Live Queue</a>
 
       <a href="javascript:void(0)" id="notificationLink" onclick="enableNotifications()">

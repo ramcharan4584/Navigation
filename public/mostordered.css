@@ -1,0 +1,101 @@
+body {
+  margin: 0;
+  font-family: "Segoe UI", Arial, sans-serif;
+  background: #f3f6fb;
+  color: #1f2937;
+}
+
+.most-header {
+  background: linear-gradient(135deg, #1e3a8a, #2563eb);
+  color: white;
+  padding: 50px 20px;
+  text-align: center;
+}
+
+.most-header h1 {
+  font-size: 38px;
+  margin-bottom: 10px;
+}
+
+.most-header p {
+  color: #dbeafe;
+  font-size: 17px;
+}
+
+.most-section {
+  max-width: 1100px;
+  margin: 35px auto;
+  padding: 0 20px;
+}
+
+.section-heading h2 {
+  color: #1e3a8a;
+  font-size: 28px;
+}
+
+.section-heading p {
+  color: #64748b;
+  margin-top: 6px;
+  margin-bottom: 22px;
+}
+
+.most-table-card {
+  background: white;
+  border-radius: 18px;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+  overflow: hidden;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+thead {
+  background: #eff6ff;
+}
+
+th {
+  text-align: left;
+  padding: 18px;
+  color: #1e3a8a;
+  font-size: 15px;
+}
+
+td {
+  padding: 18px;
+  border-top: 1px solid #e5e7eb;
+  color: #334155;
+}
+
+.rank-badge {
+  background: #2563eb;
+  color: white;
+  padding: 7px 12px;
+  border-radius: 50%;
+  font-weight: bold;
+}
+
+.trend-badge {
+  background: #dbeafe;
+  color: #1e40af;
+  padding: 7px 14px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+tbody tr:hover {
+  background: #f8fbff;
+}
+
+@media (max-width: 700px) {
+  .most-header h1 {
+    font-size: 28px;
+  }
+
+  th, td {
+    padding: 14px 10px;
+    font-size: 14px;
+  }
+}

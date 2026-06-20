@@ -518,25 +518,30 @@ app.get("/api/test-daily-report", async (req, res) => {
   res.json({ success: true, message: "Daily report test triggered" });
 });
 
-app.get("/api/favorite-foods", async (req, res) => {
+app.get("/api/most-ordered-foods", async (req, res) => {
   try {
     const result = await pool.query(`
-      SELECT food_name, COUNT(*) AS total_orders
+      SELECT 
+        food_name,
+        COUNT(*) AS total_orders
       FROM canteen_orders
-      WHERE status != 'Cancelled'
+      WHERE 
+        status != 'Cancelled'
+        AND food_name IS NOT NULL
+        AND TRIM(food_name) != ''
+        AND food_name != 'null'
       GROUP BY food_name
       ORDER BY total_orders DESC
-      LIMIT 6
+      LIMIT 10
     `);
 
     res.json(result.rows);
 
   } catch (error) {
-    console.error("Favorite foods error:", error);
-
+    console.error("Most ordered foods error:", error);
     res.status(500).json({
       success: false,
-      message: "Cannot fetch favorite foods"
+      message: "Cannot fetch most ordered foods"
     });
   }
 });
