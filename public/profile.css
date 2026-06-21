@@ -1,13 +1,36 @@
+:root {
+  --primary: #2563eb;
+  --secondary: #1e3a8a;
+  --dark: #172554;
+  --cyan: #06b6d4;
+  --purple: #6c4ccf;
+
+  --text-dark: #0f172a;
+  --text-muted: #64748b;
+
+  --glass-bg: rgba(255,255,255,0.36);
+  --glass-strong: rgba(255,255,255,0.62);
+  --glass-border: rgba(255,255,255,0.55);
+
+  --shadow-soft: 0 18px 45px rgba(30,58,138,0.14);
+  --shadow-strong: 0 25px 60px rgba(30,58,138,0.22);
+}
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
   font-family: Arial, sans-serif;
+  -webkit-tap-highlight-color: transparent;
 }
 
 body {
   min-height: 100vh;
-  background: #f4f6fb;
+  background:
+    radial-gradient(circle at top left, rgba(37,99,235,0.25), transparent 34%),
+    radial-gradient(circle at bottom right, rgba(6,182,212,0.22), transparent 36%),
+    linear-gradient(135deg, #eff6ff, #f8fafc);
+  color: var(--text-dark);
 }
 
 .profile-page {
@@ -19,18 +42,19 @@ body {
   position: fixed;
   top: 18px;
   left: 18px;
-  z-index: 1000;
+  z-index: 4000;
 
   width: 46px;
   height: 46px;
 
-  border: none;
+  border: 1px solid rgba(255,255,255,0.28);
   border-radius: 14px;
 
-  background: rgba(255,255,255,0.75);
-  backdrop-filter: blur(12px);
+  background: rgba(37,99,235,0.18);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
 
-  color: #2563eb;
+  color: white;
   font-size: 18px;
   font-weight: 600;
 
@@ -41,29 +65,23 @@ body {
   justify-content: center;
 
   box-shadow:
-    0 4px 12px rgba(0,0,0,0.12);
+    0 10px 25px rgba(37,99,235,0.18),
+    inset 0 1px 0 rgba(255,255,255,0.35);
 
-  transition:
-    transform 0.25s ease,
-    background 0.25s ease,
-    box-shadow 0.25s ease;
+  transition: 0.25s ease;
 }
 
-/* HOVER */
+.back-btn i {
+  color: white !important;
+}
+
 .back-btn:hover {
-  background: white;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
   transform: scale(1.05);
 }
 
-/* ACTIVE */
 .back-btn:active {
-  transform: scale(0.95);
-}
-
-/* DARK MODE */
-body.dark-mode .back-btn {
-  background: rgba(17,24,39,0.85);
-  color: #60a5fa;
+  transform: scale(0.92);
 }
 
 /* HIDE IN DESKTOP */
@@ -73,13 +91,20 @@ body.dark-mode .back-btn {
   }
 }
 
+/* PROFILE CARD */
 .profile-card {
   max-width: 850px;
   margin: 85px auto 35px;
-  background: white;
+
+  background: var(--glass-bg);
+  backdrop-filter: blur(22px);
+  -webkit-backdrop-filter: blur(22px);
+
   padding: 35px;
-  border-radius: 22px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  border-radius: 24px;
+  border: 1px solid var(--glass-border);
+
+  box-shadow: var(--shadow-soft);
 }
 
 .profile-header {
@@ -89,41 +114,71 @@ body.dark-mode .back-btn {
 
 .profile-header h1 {
   font-size: 32px;
-  color: #222;
+  color: var(--secondary);
 }
 
 .profile-header p {
-  color: gray;
+  color: var(--text-muted);
   margin: 8px 0 20px;
 }
 
+.profile-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+/* AVATAR */
 .avatar {
   width: 95px;
   height: 95px;
   margin: 0 auto 18px;
-  background: linear-gradient(135deg, #7c3aed, #4f46e5);
+
+  background:
+    radial-gradient(circle at top right, rgba(255,255,255,0.35), transparent 35%),
+    linear-gradient(135deg, var(--primary), var(--purple));
+
   color: white;
   border-radius: 50%;
+
   display: flex;
   align-items: center;
   justify-content: center;
+
   font-size: 38px;
+
+  box-shadow: 0 16px 35px rgba(37,99,235,0.28);
 }
 
+/* BUTTONS */
 .upload-btn {
   display: inline-block;
-  background: #6c4ccf;
+
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
   color: white;
+
   padding: 11px 22px;
-  border-radius: 10px;
+  border-radius: 12px;
+
   cursor: pointer;
   font-size: 15px;
+  font-weight: 700;
+
+  box-shadow: 0 12px 25px rgba(37,99,235,0.25);
+  transition: 0.25s ease;
 }
 
 #profileUpload {
   display: none;
 }
 
+.upload-btn:hover,
+.upload-btn:active {
+  transform: translateY(-2px);
+}
+
+/* INFO */
 .profile-info {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -135,42 +190,68 @@ body.dark-mode .back-btn {
   font-weight: bold;
   margin-bottom: 7px;
   font-size: 15px;
+  color: var(--text-dark);
 }
 
 .info-box input {
   width: 100%;
+
   padding: 12px 14px;
-  border: 1px solid #ddd;
-  border-radius: 10px;
+
+  border: 1px solid rgba(203,213,225,0.85);
+  border-radius: 12px;
+
   font-size: 15px;
+
+  background: var(--glass-strong);
+  color: var(--text-dark);
 }
 
+.info-box input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 4px rgba(37,99,235,0.12);
+}
+
+/* SAVE BUTTON */
 .save-btn {
   display: block;
   width: 260px;
   margin: 32px auto 0;
+
   padding: 13px;
+
   border: none;
-  border-radius: 12px;
-  background: #6c4ccf;
+  border-radius: 14px;
+
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
   color: white;
+
   font-size: 17px;
+  font-weight: 700;
   cursor: pointer;
+
+  box-shadow: 0 14px 28px rgba(37,99,235,0.28);
+  transition: 0.25s ease;
 }
 
 .save-btn:hover,
-.upload-btn:hover {
-  background: #5b3fc0;
+.save-btn:active {
+  transform: translateY(-2px);
 }
 
 /* DARK MODE */
 body.dark-mode {
-  background: #111827;
+  background:
+    radial-gradient(circle at top left, rgba(37,99,235,0.22), transparent 35%),
+    radial-gradient(circle at bottom right, rgba(6,182,212,0.16), transparent 35%),
+    linear-gradient(135deg, #020617, #0f172a);
   color: white;
 }
 
 body.dark-mode .profile-card {
-  background: #1f2937;
+  background: rgba(15,23,42,0.72);
+  border-color: rgba(255,255,255,0.12);
+  box-shadow: 0 18px 45px rgba(0,0,0,0.35);
 }
 
 body.dark-mode .profile-header h1,
@@ -179,11 +260,11 @@ body.dark-mode .info-box label {
 }
 
 body.dark-mode .profile-header p {
-  color: #d1d5db;
+  color: #cbd5e1;
 }
 
 body.dark-mode .info-box input {
-  background: #111827;
+  background: rgba(15,23,42,0.85);
   color: white;
   border: 1px solid #374151;
 }
@@ -192,57 +273,49 @@ body.dark-mode .info-box input::placeholder {
   color: #9ca3af;
 }
 
-/* REMOVE BLUE TAP/COLOR EFFECT */
-*{
-  -webkit-tap-highlight-color: transparent;
+body.dark-mode .back-btn {
+  background: rgba(15,23,42,0.55);
+  color: #93c5fd;
+  border: 1px solid rgba(255,255,255,0.10);
 }
 
+/* REMOVE OUTLINES */
 button,
 a,
 input,
 textarea,
-select{
-  outline:none;
+select {
+  outline: none;
   -webkit-tap-highlight-color: transparent;
 }
 
 button:focus,
 a:focus,
-input:focus{
-  outline:none;
+input:focus {
+  outline: none;
 }
 
 button:active,
-a:active{
-  outline:none;
+a:active {
+  outline: none;
 }
 
+/* MOBILE */
 @media (max-width: 768px) {
   .profile-page {
     padding: 20px;
   }
+
   .profile-card {
-  padding: 25px;
-  margin-top: 75px;
+    padding: 25px;
+    margin-top: 75px;
   }
-  
+
   .profile-info {
     grid-template-columns: 1fr;
   }
+
   .save-btn {
     width: 100%;
   }
-
-  .back-btn {
-    width: 42px;
-    height: 42px;
-
-    top: 14px;
-    left: 14px;
-
-    border-radius: 12px;
-
-    font-size: 17px;
-  }
-
 }

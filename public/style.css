@@ -3,11 +3,32 @@
   padding: 0;
   box-sizing: border-box;
   font-family: Arial, sans-serif;
+  -webkit-tap-highlight-color: transparent;
+}
+
+:root {
+  --primary: #2563eb;
+  --secondary: #1e3a8a;
+  --dark: #172554;
+
+  --purple: #6c4ccf;
+  --deep-purple: #332db3;
+  --cyan: #06b6d4;
+
+  --text-dark: #0f172a;
+  --text-muted: #64748b;
+
+  --glass-bg: rgba(255, 255, 255, 0.32);
+  --glass-border: rgba(255, 255, 255, 0.55);
 }
 
 body {
   min-height: 100vh;
-  background: #f5f6fb;
+  background:
+    radial-gradient(circle at top left, rgba(37, 99, 235, 0.30), transparent 35%),
+    radial-gradient(circle at bottom right, rgba(6, 182, 212, 0.25), transparent 35%),
+    radial-gradient(circle at center, rgba(108, 76, 207, 0.18), transparent 40%),
+    linear-gradient(135deg, #eff6ff, #f8fafc);
 }
 
 /* MAIN CONTAINER */
@@ -19,7 +40,9 @@ body {
 /* LEFT SIDE */
 .left-section {
   width: 50%;
-  background: white;
+  background: rgba(255, 255, 255, 0.22);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -33,7 +56,7 @@ body {
   left: 45px;
   font-size: 30px;
   font-weight: bold;
-  color: #332db3;
+  color: var(--secondary);
 }
 
 /* LOGIN BOX */
@@ -41,9 +64,14 @@ body {
   width: 100%;
   max-width: 420px;
   padding: 35px;
-  background: white;
-  border-radius: 20px;
-  box-shadow: 0 15px 35px rgba(0,0,0,0.12);
+  background: var(--glass-bg);
+  backdrop-filter: blur(22px);
+  -webkit-backdrop-filter: blur(22px);
+  border-radius: 24px;
+  border: 1px solid var(--glass-border);
+  box-shadow:
+    0 25px 60px rgba(30, 58, 138, 0.20),
+    inset 0 1px 0 rgba(255, 255, 255, 0.55);
   opacity: 0;
   transform: translateY(40px);
   transition: all 0.8s ease;
@@ -54,15 +82,29 @@ label {
   font-weight: bold;
   margin-bottom: 8px;
   display: block;
+  color: var(--text-dark);
 }
 
 input {
   width: 100%;
   padding: 15px;
-  border: 1px solid #ddd;
-  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.60);
+  border-radius: 14px;
   margin-bottom: 20px;
   font-size: 16px;
+  color: var(--text-dark);
+  background: rgba(255, 255, 255, 0.50);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+input::placeholder {
+  color: rgba(15, 23, 42, 0.50);
+}
+
+input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.14);
 }
 
 .password-box {
@@ -73,7 +115,7 @@ input {
   position: absolute;
   right: 20px;
   top: 35%;
-  color: gray;
+  color: var(--primary);
   cursor: pointer;
 }
 
@@ -83,24 +125,28 @@ input {
 }
 
 .options a {
-  color: #6c4ccf;
+  color: var(--primary);
   text-decoration: none;
+  font-weight: 600;
 }
 
 .signin-btn {
   width: 100%;
-  background: #6c4ccf;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
   color: white;
   border: none;
   padding: 15px;
-  border-radius: 10px;
+  border-radius: 14px;
   font-size: 17px;
   cursor: pointer;
   margin-bottom: 15px;
+  box-shadow: 0 14px 28px rgba(37, 99, 235, 0.32);
+  transition: 0.3s ease;
 }
 
 .signin-btn:hover {
-  background: #5b3fc0;
+  transform: translateY(-2px);
+  box-shadow: 0 18px 35px rgba(37, 99, 235, 0.42);
 }
 
 .google-btn {
@@ -111,11 +157,20 @@ input {
   align-items: center;
   justify-content: center;
   gap: 10px;
-  border: 1px solid #111;
-  border-radius: 8px;
-  background: white;
+  border: 1px solid rgba(15, 23, 42, 0.18);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.52);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   cursor: pointer;
   font-size: 15px;
+  color: var(--text-dark);
+  transition: 0.3s ease;
+}
+
+.google-btn:hover {
+  background: rgba(255, 255, 255, 0.72);
+  transform: translateY(-2px);
 }
 
 .google-btn img {
@@ -126,11 +181,11 @@ input {
 .signup-text {
   text-align: center;
   margin-top: 20px;
-  color: gray;
+  color: var(--text-muted);
 }
 
 .signup-text a {
-  color: #6c4ccf;
+  color: var(--primary);
   text-decoration: none;
   font-weight: bold;
 }
@@ -142,17 +197,16 @@ input {
 .signup-box h2 {
   margin-bottom: 15px;
   text-align: center;
+  color: var(--text-dark);
 }
 
 /* RIGHT SIDE */
 .right-section {
   width: 50%;
-  background: linear-gradient(
-    135deg,
-    #6C4CCF 0%,
-    #4B2CB3 45%,
-    #2D1FA3 100%
-  );
+  background:
+    radial-gradient(circle at top right, rgba(255,255,255,0.25), transparent 30%),
+    radial-gradient(circle at bottom left, rgba(6,182,212,0.30), transparent 35%),
+    linear-gradient(135deg, #172554 0%, #1e3a8a 45%, #2563eb 100%);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -166,9 +220,10 @@ input {
   width: 520px;
   height: 520px;
   border-radius: 50%;
-  background: rgba(255,255,255,0.06);
+  background: rgba(255,255,255,0.10);
   top: -170px;
   right: -140px;
+  filter: blur(2px);
 }
 
 .right-section::after {
@@ -177,9 +232,10 @@ input {
   width: 350px;
   height: 350px;
   border-radius: 50%;
-  background: rgba(255,255,255,0.04);
+  background: rgba(255,255,255,0.08);
   bottom: -130px;
   left: -120px;
+  filter: blur(2px);
 }
 
 .right-content {
@@ -199,7 +255,6 @@ input {
   font-weight: 500;
 }
 
-/* IMPORTANT IMAGE FIX */
 .portal-image {
   width: 100%;
   max-width: 650px;
@@ -207,33 +262,32 @@ input {
   display: block;
   margin: 0 auto;
   object-fit: contain;
-  border-radius: 0;
-  box-shadow: none;
-}
-
-/* REMOVE BLUE TAP/COLOR EFFECT */
-*{
-  -webkit-tap-highlight-color: transparent;
+  border-radius: 28px;
+  background: rgba(255, 255, 255, 0.14);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  padding: 18px;
+  border: 1px solid rgba(255,255,255,0.28);
+  box-shadow: 0 25px 60px rgba(15, 23, 42, 0.35);
 }
 
 button,
 a,
 input,
 textarea,
-select{
-  outline:none;
-  -webkit-tap-highlight-color: transparent;
+select {
+  outline: none;
 }
 
 button:focus,
 a:focus,
-input:focus{
-  outline:none;
+input:focus {
+  outline: none;
 }
 
 button:active,
-a:active{
-  outline:none;
+a:active {
+  outline: none;
 }
 
 /* MOBILE RESPONSIVE */
@@ -241,6 +295,13 @@ a:active{
   html, body {
     width: 100%;
     overflow-x: hidden;
+  }
+
+  body {
+    background:
+      radial-gradient(circle at top, rgba(37, 99, 235, 0.30), transparent 35%),
+      radial-gradient(circle at bottom, rgba(6, 182, 212, 0.22), transparent 35%),
+      linear-gradient(135deg, #eff6ff, #f8fafc);
   }
 
   .container {
@@ -254,6 +315,7 @@ a:active{
     padding: 20px;
     display: flex;
     flex-direction: column;
+    background: transparent;
   }
 
   .right-section {

@@ -546,6 +546,54 @@ app.get("/api/most-ordered-foods", async (req, res) => {
   }
 });
 
+app.post("/api/students/save", async (req, res) => {
+  try {
+    const {
+      name,
+      roll_number,
+      branch,
+      year,
+      email,
+      phone
+    } = req.body;
+
+    if (!email) {
+      return res.status(400).json({
+        success: false,
+        message: "Email is required"
+      });
+    }
+
+    const result = await pool.query(
+      `INSERT INTO students 
+       (name, roll_number, branch, year, email, phone)
+       VALUES ($1, $2, $3, $4, $5, $6)
+       ON CONFLICT (email)
+       DO UPDATE SET
+         name = EXCLUDED.name,
+         roll_number = EXCLUDED.roll_number,
+         branch = EXCLUDED.branch,
+         year = EXCLUDED.year,
+         phone = EXCLUDED.phone
+       RETURNING *`,
+      [name, roll_number, branch, year, email, phone]
+    );
+
+    res.json({
+      success: true,
+      message: "Student profile saved",
+      student: result.rows[0]
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Failed to save student profile",
+      error: error.message
+    });
+  }
+});
+
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, "0.0.0.0", () => {

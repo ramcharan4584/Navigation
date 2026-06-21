@@ -1,34 +1,50 @@
 :root {
-  --blue-50: #E5F0FF;
-  --blue-100: #CCE0FF;
-  --blue-500: #0066FF;
-  --blue-600: #0052CC;
-  --blue-700: #003D99;
-  --blue-800: #002966;
-  --text: #001433;
-  --muted: #5C6B8A;
-  --white: #ffffff;
+  --primary: #2563eb;
+  --secondary: #1e3a8a;
+  --dark: #172554;
+  --cyan: #06b6d4;
+
+  --success: #16a34a;
+  --danger: #dc2626;
+
+  --text-dark: #0f172a;
+  --text-muted: #64748b;
+
+  --glass-bg: rgba(255,255,255,0.36);
+  --glass-strong: rgba(255,255,255,0.64);
+  --glass-border: rgba(255,255,255,0.55);
+
+  --shadow-soft: 0 18px 45px rgba(30,58,138,0.14);
+  --shadow-strong: 0 25px 60px rgba(30,58,138,0.22);
 }
 
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: "Segoe UI", Arial, sans-serif;
+  font-family: Arial, sans-serif;
   -webkit-tap-highlight-color: transparent;
 }
 
 body {
-  background: #f6f9ff;
-  color: var(--text);
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at top left, rgba(37,99,235,0.25), transparent 34%),
+    radial-gradient(circle at bottom right, rgba(6,182,212,0.22), transparent 36%),
+    linear-gradient(135deg, #eff6ff, #f8fafc);
+  color: var(--text-dark);
 }
 
 /* HEADER */
 .wallet-header {
-  background: linear-gradient(135deg, var(--blue-600), var(--blue-500));
+  background:
+    radial-gradient(circle at top right, rgba(255,255,255,0.22), transparent 30%),
+    radial-gradient(circle at bottom left, rgba(6,182,212,0.28), transparent 35%),
+    linear-gradient(135deg, var(--dark), var(--secondary), var(--primary));
   color: white;
   text-align: center;
-  padding: 38px 20px 32px;
+  padding: 42px 20px 36px;
+  box-shadow: var(--shadow-strong);
 }
 
 .wallet-header h1 {
@@ -48,12 +64,16 @@ body {
   padding: 0 18px;
 }
 
+/* BALANCE CARD */
 .balance-card {
-  background: linear-gradient(135deg, var(--blue-600), var(--blue-500));
+  background:
+    radial-gradient(circle at top right, rgba(255,255,255,0.22), transparent 35%),
+    linear-gradient(135deg, var(--secondary), var(--primary), var(--cyan));
   color: white;
-  padding: 28px;
-  border-radius: 22px;
-  box-shadow: 0 10px 28px rgba(0, 82, 204, 0.18);
+  padding: 30px;
+  border-radius: 26px;
+  border: 1px solid rgba(255,255,255,0.25);
+  box-shadow: var(--shadow-strong);
 }
 
 .balance-card p {
@@ -75,16 +95,18 @@ body {
 .add-money-card,
 .transactions-card {
   margin-top: 22px;
-  background: var(--white);
+  background: var(--glass-bg);
+  backdrop-filter: blur(22px);
+  -webkit-backdrop-filter: blur(22px);
   padding: 22px;
-  border-radius: 20px;
-  border: 1px solid var(--blue-100);
-  box-shadow: 0 8px 24px rgba(0, 82, 204, 0.08);
+  border-radius: 24px;
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--shadow-soft);
 }
 
 .add-money-card h3,
 .transactions-card h3 {
-  color: var(--blue-800);
+  color: var(--secondary);
   margin-bottom: 16px;
 }
 
@@ -98,23 +120,31 @@ body {
 .amount-buttons button,
 .custom-amount button {
   border: none;
-  background: var(--blue-500);
-  color: white;
   padding: 12px 18px;
   border-radius: 14px;
   font-weight: 700;
   cursor: pointer;
+  transition: 0.25s ease;
 }
 
 .amount-buttons button {
-  background: var(--blue-50);
-  color: var(--blue-600);
+  background: rgba(219,234,254,0.82);
+  color: var(--secondary);
+}
+
+.custom-amount button {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
 }
 
 .amount-buttons button:hover,
-.custom-amount button:hover {
-  background: var(--blue-600);
+.amount-buttons button:active,
+.custom-amount button:hover,
+.custom-amount button:active {
+  transform: translateY(-2px);
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
   color: white;
+  box-shadow: 0 12px 24px rgba(37,99,235,0.22);
 }
 
 /* CUSTOM AMOUNT */
@@ -127,17 +157,26 @@ body {
 .custom-amount input {
   flex: 1;
   padding: 12px 14px;
-  border: 1px solid var(--blue-100);
-  border-radius: 12px;
+  border: 1px solid rgba(203,213,225,0.9);
+  border-radius: 14px;
   font-size: 14px;
+  background: var(--glass-strong);
+  color: var(--text-dark);
+}
+
+.custom-amount input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 4px rgba(37,99,235,0.12);
+  outline: none;
 }
 
 /* TRANSACTIONS */
 .transaction {
   display: flex;
   justify-content: space-between;
-  padding: 13px 0;
-  border-bottom: 1px solid var(--blue-100);
+  gap: 16px;
+  padding: 14px 0;
+  border-bottom: 1px solid rgba(219,234,254,0.75);
   font-size: 14px;
 }
 
@@ -146,12 +185,12 @@ body {
 }
 
 .credit {
-  color: #16a34a;
+  color: var(--success);
   font-weight: 700;
 }
 
 .debit {
-  color: #dc2626;
+  color: var(--danger);
   font-weight: 700;
 }
 
@@ -159,7 +198,9 @@ body {
 .payment-sheet-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 20, 51, 0.55);
+  background: rgba(15,23,42,0.58);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   display: none;
   align-items: flex-end;
   justify-content: center;
@@ -173,9 +214,13 @@ body {
 .payment-sheet {
   width: 100%;
   max-width: 430px;
-  background: white;
-  border-radius: 26px 26px 0 0;
+  background: rgba(255,255,255,0.78);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border-radius: 28px 28px 0 0;
+  border: 1px solid var(--glass-border);
   padding: 16px 20px 28px;
+  box-shadow: 0 -20px 55px rgba(15,23,42,0.25);
   animation: slideUp 0.28s ease;
 }
 
@@ -204,7 +249,7 @@ body {
 }
 
 .sheet-header h3 {
-  color: var(--blue-800);
+  color: var(--secondary);
   font-size: 22px;
 }
 
@@ -213,35 +258,35 @@ body {
   height: 36px;
   border: none;
   border-radius: 50%;
-  background: var(--blue-50);
-  color: var(--blue-600);
+  background: rgba(219,234,254,0.82);
+  color: var(--secondary);
   font-size: 22px;
   cursor: pointer;
 }
 
+/* AMOUNT BOX */
 .amount-box {
   margin: 18px 0 12px;
   padding: 16px;
-  background: var(--blue-50);
+  background: rgba(239,246,255,0.88);
   border-radius: 16px;
-
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
 .amount-box span {
-  color: var(--muted);
+  color: var(--text-muted);
 }
 
 .amount-box strong {
-  color: var(--blue-600);
+  color: var(--secondary);
   font-size: 22px;
 }
 
 .fee-note {
-  background: #f1f7ff;
-  color: var(--blue-800);
+  background: rgba(239,246,255,0.88);
+  color: var(--secondary);
   padding: 12px;
   border-radius: 14px;
   font-size: 14px;
@@ -250,7 +295,7 @@ body {
 
 .payment-sheet h4 {
   margin: 16px 0 10px;
-  color: var(--text);
+  color: var(--text-dark);
 }
 
 /* UPI GRID */
@@ -263,24 +308,29 @@ body {
 .upi-grid button {
   height: 100px;
   padding: 10px;
-  border: 1px solid var(--blue-100);
-  background: white;
-  border-radius: 16px;
-
+  border: 1px solid rgba(219,234,254,0.95);
+  background: rgba(255,255,255,0.72);
+  border-radius: 18px;
   font-weight: 700;
-  color: var(--text);
+  color: var(--text-dark);
   cursor: pointer;
-
   display: flex;
   flex-direction: column;
   gap: 10px;
   align-items: center;
   justify-content: center;
+  transition: 0.25s ease;
+}
+
+.upi-grid button:hover,
+.upi-grid button:active {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 24px rgba(37,99,235,0.18);
 }
 
 .upi-grid i {
   font-size: 26px;
-  color: var(--blue-500);
+  color: var(--primary);
 }
 
 .upi-grid button img {
@@ -293,6 +343,7 @@ body {
   font-size: 13px;
   font-weight: 600;
 }
+
 /* OTHER PAYMENT OPTIONS */
 .payment-options {
   display: grid;
@@ -301,18 +352,23 @@ body {
 
 .payment-options button {
   width: 100%;
-  border: 1px solid var(--blue-100);
-  background: white;
-  border-radius: 16px;
+  border: 1px solid rgba(219,234,254,0.95);
+  background: rgba(255,255,255,0.72);
+  border-radius: 18px;
   padding: 16px;
-
   font-size: 15px;
-  color: var(--text);
+  color: var(--text-dark);
   cursor: pointer;
-
   display: flex;
   align-items: center;
   justify-content: space-between;
+  transition: 0.25s ease;
+}
+
+.payment-options button:hover,
+.payment-options button:active {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 24px rgba(37,99,235,0.16);
 }
 
 .payment-options span {
@@ -322,7 +378,7 @@ body {
 }
 
 .payment-options i {
-  color: var(--blue-500);
+  color: var(--primary);
 }
 
 /* DESKTOP */
@@ -335,11 +391,19 @@ body {
 /* MOBILE */
 @media (max-width: 768px) {
   .wallet-header {
-    padding: 32px 16px 26px;
+    padding: 34px 16px 28px;
   }
 
   .wallet-header h1 {
     font-size: 24px;
+  }
+
+  .wallet-section {
+    margin: 26px auto;
+  }
+
+  .balance-card {
+    padding: 26px;
   }
 
   .balance-card h2 {
@@ -352,5 +416,17 @@ body {
 
   .amount-buttons button {
     flex: 1;
+  }
+
+  .payment-sheet {
+    max-width: 100%;
+  }
+
+  .upi-grid {
+    gap: 10px;
+  }
+
+  .upi-grid button {
+    height: 92px;
   }
 }

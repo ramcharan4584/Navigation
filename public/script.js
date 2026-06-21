@@ -69,21 +69,12 @@ window.addEventListener("DOMContentLoaded", () => {
   window.location.href = "dashboard.html";
   })
 });
+})
 
-  // INPUT FOCUS EFFECT
-  const inputs = document.querySelectorAll("input");
-
-  inputs.forEach(input => {
-    input.addEventListener("focus", () => {
-      input.style.border = "2px solid #6c4ccf";
-      input.style.boxShadow = "0 0 10px rgba(108,76,207,0.3)";
-    });
-
-    input.addEventListener("blur", () => {
-      input.style.border = "1px solid #ddd";
-      input.style.boxShadow = "none";
-    });
-  });
+window.addEventListener("load", () => {
+  const box = document.querySelector(".login-box");
+  box.style.opacity = "1";
+  box.style.transform = "translateY(0px)";
 });
 
 // FADE-IN ANIMATION
