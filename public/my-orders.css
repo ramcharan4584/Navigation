@@ -4,42 +4,55 @@ body {
   font-family: Arial, sans-serif;
   color: #0f172a;
 }
-
+/* HEADER */
 .orders-top-header {
-  height: 54px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 0 16px;
-  background: #ffffff;
-  border-bottom: 1px solid #e5e7eb;
-  position: sticky;
+  position: fixed;
   top: 0;
-  z-index: 100;
-}
-
-
-.back-arrow {
-  border: none;
-  background: transparent;
-  font-size: 26px;
-  cursor: pointer;
-  color: #111827;
-  padding: 0;
-  width: 28px;
+  left: 0;
+  width: 100%;
+  z-index: 900;
+  background: linear-gradient(135deg, #0052CC, #0066FF);
+  padding: 28px 20px;
+  text-align: center;
+  color: white;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.12);
 }
 
 .orders-top-header h1 {
   margin: 0;
-  font-size: 24px;
-  font-weight: 600;
-  color: #111827;
+  font-size: 26px;
+  font-weight: 700;
+  color: white;
 }
 
 .orders-container {
-  padding: 10px 8px 20px;
-  height: calc(100vh - 54px);
-  overflow-y: auto;
+  padding: 118px 8px 20px;
+  min-height: 100vh;
+}
+
+/* REMOVE BLUE TAP/COLOR EFFECT */
+*{
+  -webkit-tap-highlight-color: transparent;
+}
+
+button,
+a,
+input,
+textarea,
+select{
+  outline:none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+button:focus,
+a:focus,
+input:focus{
+  outline:none;
+}
+
+button:active,
+a:active{
+  outline:none;
 }
 
 .order-card {
@@ -118,4 +131,48 @@ body {
 .status.Cancelled {
   background: #fee2e2;
   color: #991b1b;
+}
+
+/* HIDE BACK BUTTON IN DESKTOP */
+@media (min-width: 769px) {
+  .back-btn {
+    display: none;
+  }
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
+
+  .most-header,
+  .orders-top-header {
+    padding: 20px 16px;
+  }
+
+  .back-btn {
+    width: 42px;
+    height: 42px;
+
+    left: 14px;
+
+    font-size: 18px;
+    border-radius: 12px;
+  }
+
+  table {
+    table-layout: fixed;
+  }
+
+  th:nth-child(1),
+  td:nth-child(1) {
+    width: 52px;
+  }
+
+  th:nth-child(3),
+  td:nth-child(3) {
+    width: 120px;
+  }
+
+  td {
+    word-break: break-word;
+  }
 }

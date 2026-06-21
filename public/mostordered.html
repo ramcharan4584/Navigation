@@ -4,22 +4,22 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Student Favorites</title>
-
-  <link rel="stylesheet" href="dining-navbar.css">
   <link rel="stylesheet" href="mostordered.css">
+  <link rel="stylesheet" href="backbutton.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 
 <body>
-
   <header class="most-header">
+  <button class="back-btn" onclick="history.back()">
+  <i class="fa-solid fa-arrow-left"></i>
+  </button>
   <h1>Most Ordered Foods</h1>
-  <p>Trending food items based on student orders</p>
+  <p>Loved food items in campus</p>
 </header>
 
 <section class="most-section">
   <div class="section-heading">
-    <h2>🔥 Campus Food Trends</h2>
     <p>Live ranking from UniEats order history</p>
   </div>
 
@@ -29,41 +29,18 @@
         <tr>
           <th>Rank</th>
           <th>Food Item</th>
-          <th>Total Orders</th>
           <th>Status</th>
         </tr>
       </thead>
 
       <tbody id="mostOrderedBoard">
         <tr>
-          <td colspan="4">Loading most ordered foods...</td>
+          <td colspan="3">Loading most ordered foods...</td>
         </tr>
       </tbody>
     </table>
   </div>
 </section>
-
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-messaging.js"></script>
-
-  <script>
-    const firebaseConfig = {
-      apiKey: "AIzaSyD_7Cp155ILuZlzdVRk4-pdj9RGlztmkhM",
-      authDomain: "student-portal-1baed.firebaseapp.com",
-      projectId: "student-portal-1baed",
-      storageBucket: "student-portal-1baed.firebasestorage.app",
-      messagingSenderId: "1017420453175",
-      appId: "1:1017420453175:web:5c9c44f5a68a3e4d5476b2",
-      measurementId: "G-T8PCR4Q06B"
-    };
-
-    if (!firebase.apps.length) {
-      firebase.initializeApp(firebaseConfig);
-    }
-  </script>
-
-  <script src="dining-navbar.js"></script>
   <script src="mostordered.js"></script>
 
 </body>

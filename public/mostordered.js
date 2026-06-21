@@ -26,12 +26,9 @@ async function loadMostOrderedFoods() {
         <td>
           <strong>${food.food_name}</strong>
         </td>
-
-        <td>${food.total_orders}</td>
-
         <td>
           <span class="trend-badge">
-            ${index < 3 ? "Top Trending" : "Popular"}
+            ${index < 3 ? "Most Loved" : "Favorite"}
           </span>
         </td>
       </tr>
@@ -46,6 +43,10 @@ async function loadMostOrderedFoods() {
       </tr>
     `;
   }
+}
+
+function goBack() {
+  window.history.back();
 }
 
 loadMostOrderedFoods();

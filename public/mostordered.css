@@ -1,101 +1,218 @@
-body {
-  margin: 0;
-  font-family: "Segoe UI", Arial, sans-serif;
-  background: #f3f6fb;
-  color: #1f2937;
+:root {
+  --blue-50: #E5F0FF;
+  --blue-100: #CCE0FF;
+  --blue-200: #99C2FF;
+  --blue-300: #66A3FF;
+  --blue-400: #3385FF;
+  --blue-500: #0066FF;
+  --blue-600: #0052CC;
+  --blue-700: #003D99;
+  --blue-800: #002966;
+  --blue-900: #001433;
+  --blue-950: #000E24;
+
+  --white: #ffffff;
+  --text: #001433;
+  --muted: #5C6B8A;
 }
 
+/* RESET */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  background: #f6f9ff;
+  font-family: "Segoe UI", sans-serif;
+  overflow-x: hidden;
+}
+
+/* HEADER */
 .most-header {
-  background: linear-gradient(135deg, #1e3a8a, #2563eb);
+  position: relative;
+
+  background: linear-gradient(
+    135deg,
+    var(--blue-600),
+    var(--blue-500)
+  );
+
   color: white;
-  padding: 50px 20px;
   text-align: center;
+
+  padding: 34px 20px 30px;
 }
 
 .most-header h1 {
-  font-size: 38px;
+  font-size: 30px;
+  font-weight: 700;
   margin-bottom: 10px;
 }
 
 .most-header p {
   color: #dbeafe;
-  font-size: 17px;
+  font-size: 15px;
 }
 
+/* REMOVE BLUE TAP/COLOR EFFECT */
+*{
+  -webkit-tap-highlight-color: transparent;
+}
+
+button,
+a,
+input,
+textarea,
+select{
+  outline:none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+button:focus,
+a:focus,
+input:focus{
+  outline:none;
+}
+
+button:active,
+a:active{
+  outline:none;
+}
+
+/* MAIN SECTION */
 .most-section {
-  max-width: 1100px;
-  margin: 35px auto;
-  padding: 0 20px;
+  padding: 28px 18px;
 }
 
+/* SECTION HEADING */
 .section-heading h2 {
-  color: #1e3a8a;
-  font-size: 28px;
+  color: var(--blue-800);
+  font-size: 32px;
+  margin-bottom: 8px;
 }
 
 .section-heading p {
-  color: #64748b;
-  margin-top: 6px;
-  margin-bottom: 22px;
+  color: var(--muted);
+  margin-bottom: 24px;
 }
 
+/* TABLE CARD */
 .most-table-card {
-  background: white;
-  border-radius: 18px;
-  box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+  background: var(--white);
+
+  border-radius: 20px;
+  border: 1px solid var(--blue-100);
+
   overflow: hidden;
+
+  box-shadow:
+    0 8px 24px rgba(0, 82, 204, 0.08);
 }
 
+/* TABLE */
 table {
   width: 100%;
   border-collapse: collapse;
 }
 
 thead {
-  background: #eff6ff;
+  background: var(--blue-50);
 }
 
 th {
-  text-align: left;
   padding: 18px;
-  color: #1e3a8a;
-  font-size: 15px;
+  text-align: left;
+
+  color: var(--blue-800);
+  font-size: 14px;
+  font-weight: 700;
 }
 
 td {
   padding: 18px;
-  border-top: 1px solid #e5e7eb;
-  color: #334155;
+
+  border-top: 1px solid var(--blue-100);
+
+  color: var(--text);
+  font-size: 15px;
 }
 
-.rank-badge {
-  background: #2563eb;
-  color: white;
-  padding: 7px 12px;
-  border-radius: 50%;
-  font-weight: bold;
-}
-
-.trend-badge {
-  background: #dbeafe;
-  color: #1e40af;
-  padding: 7px 14px;
-  border-radius: 20px;
-  font-size: 14px;
-  font-weight: 600;
-}
-
+/* HOVER */
 tbody tr:hover {
   background: #f8fbff;
 }
 
-@media (max-width: 700px) {
-  .most-header h1 {
-    font-size: 28px;
+/* HIDE BACK BUTTON IN DESKTOP */
+@media (min-width: 769px) {
+  .back-btn {
+    display: none;
+  }
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
+  .most-header {
+    padding: 28px 16px 24px;
   }
 
-  th, td {
-    padding: 14px 10px;
+  .most-header h1 {
+    font-size: 22px;
+  }
+
+  .most-header p {
     font-size: 14px;
+  }
+
+  .section-heading h2 {
+    font-size: 22px;
+  }
+
+  table {
+    table-layout: fixed;
+  }
+
+  th,
+  td {
+    padding: 14px 8px;
+    font-size: 13px;
+  }
+
+  th:nth-child(1),
+  td:nth-child(1) {
+    width: 55px;
+    text-align: center;
+  }
+
+  th:nth-child(3),
+  td:nth-child(3) {
+    width: 85px;
+    text-align: center;
+  }
+
+  td {
+    word-break: break-word;
+  }
+
+  .trend-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    min-width: 60px;
+    padding: 7px 8px;
+
+    font-size: 11px;
+    white-space: nowrap;
+  }
+
+  .back-btn {
+    width: 42px;
+    height: 42px;
+    left: 14px;
+    font-size: 18px;
+    border-radius: 12px;
   }
 }

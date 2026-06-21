@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UniEats Wallet</title>
+
+  <link rel="stylesheet" href="wallet.css">
+  <link rel="stylesheet" href="backbutton.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+
+<body>
+
+<button class="back-btn" onclick="history.back()">
+  <i class="fa-solid fa-arrow-left"></i>
+</button>
+
+<header class="wallet-header">
+  <h1>UniEats Wallet</h1>
+  <p>Fast payments, instant recharges, refunds and spending history.</p>
+</header>
+
+<section class="wallet-section">
+
+  <div class="balance-card">
+    <p>Available Balance</p>
+    <h2 id="walletBalance">₹0</h2>
+    <span>Use wallet for quick canteen orders</span>
+  </div>
+
+  <div class="add-money-card">
+  <h3>Add Money</h3>
+
+  <div class="amount-buttons">
+    <button onclick="openUpiPopup(100)">+ ₹100</button>
+    <button onclick="openUpiPopup(200)">+ ₹200</button>
+    <button onclick="openUpiPopup(500)">+ ₹500</button>
+  </div>
+
+  <div class="custom-amount">
+    <input type="number" id="customAmount" placeholder="Enter custom amount">
+    <button onclick="openCustomUpiPopup()">Add Money</button>
+  </div>
+</div>
+
+<div class="payment-sheet-overlay" id="upiPopup" onclick="closeUpiPopup()">
+
+  <div class="payment-sheet" onclick="event.stopPropagation()">
+
+    <div class="sheet-handle"></div>
+
+    <div class="sheet-header">
+      <h3>Add Money</h3>
+      <button onclick="closeUpiPopup()">×</button>
+    </div>
+
+    <div class="amount-box">
+      <span>Amount</span>
+      <strong id="upiAmountText">₹0</strong>
+    </div>
+
+   <h4>Pay Via UPI</h4>
+
+<div class="upi-grid">
+
+  <button onclick="payWithUpi('any upi')">
+    <img src="images/upi.png" alt="UPI">
+    <span>UPI</span>
+  </button>
+
+  <button onclick="payWithUpi('gpay')">
+    <img src="images/gpay.png" alt="Google Pay">
+    <span>Google Pay</span>
+  </button>
+
+  <button onclick="payWithUpi('phonepe')">
+    <img src="images/phonepe.png" alt="PhonePe">
+    <span>PhonePe</span>
+  </button>
+
+</div>
+
+    <h4>Other Payment Options</h4>
+
+    <div class="payment-options">
+      <button onclick="payWithUpi('upi qr')">
+        <span><i class="fa-solid fa-qrcode"></i>Add by UPI QR</span>
+        <i class="fa-solid fa-chevron-right"></i>
+      </button>
+
+      <button>
+        <span><i class="fa-solid fa-credit-card"></i>Card</span>
+        <i class="fa-solid fa-chevron-right"></i>
+      </button>
+
+      <button>
+        <span><i class="fa-solid fa-building-columns"></i>Net Banking</span>
+        <i class="fa-solid fa-chevron-right"></i>
+      </button>
+
+    </div>
+
+  </div>
+</div>
+
+  <div class="transactions-card">
+    <h3>Recent Transactions</h3>
+    <div id="transactionsList"></div>
+  </div>
+
+</section>
+
+<script src="wallet.js"></script>
+</body>
+</html>

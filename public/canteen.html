@@ -30,48 +30,75 @@
 <section class="food-grid" id="foodGrid">
 
   <div class="food-card" data-category="breakfast">
-    <img src="images/dosa.jpg" alt="Dosa">
-    <div class="food-info">
-      <h3>Dosa</h3>
-      <p>Campus Special Breakfast</p>
-      <span class="rating">⭐ 4.5</span>
-      <div class="food-bottom">
-        <span>₹50</span>
-        <button onclick="openOrder(this)">Pre Order</button>
-        <button onclick="addToCart(this)">Add to Cart</button>
+  <img src="images/dosa.jpg" alt="Dosa">
+  <div class="food-info">
+    <div class="food-top">
+      <div>
+        <h3>Dosa</h3>
       </div>
+      <button class="fav-btn"
+        onclick="toggleFavorite(this, 'Dosa', 'Campus Special Breakfast', '₹50', 'images/dosa.jpg')">
+        <i class="fa-regular fa-heart"></i>
+      </button>
+    </div>
+    <span class="rating">4.5</span>
+    <div class="food-bottom">
+      <span>₹50</span>
+      <button onclick="openOrder(this)">Pre Order</button>
+      <button onclick="addToCart(this)">Add to Cart</button>
     </div>
   </div>
+</div>
 
   <div class="food-card" data-category="meals">
-    <img src="images/biryani.jpg" alt="Biryani">
-    <div class="food-info">
-      <h3>Chicken Biryani</h3>
-      <p>Special Meal</p>
-      <span class="rating">⭐ 4.8</span>
-      <div class="food-bottom">
-        <span>₹120</span>
-        <button onclick="openOrder(this)">Pre Order</button>
-        <button onclick="addToCart(this)">Add to Cart</button>
+  <img src="images/biryani.jpg" alt="Biryani">
+  <div class="food-info">
+    <div class="food-top">
+      <div>
+        <h3>Chicken Biryani</h3>
       </div>
+      <button class="fav-btn"
+        onclick="toggleFavorite(this,'Chicken Biryani','Special Meal','₹120','images/biryani.jpg')">
+        <i class="fa-regular fa-heart"></i>
+      </button>
+    </div>
+    <span class="rating">4.8</span>
+    <div class="food-bottom">
+      <span>₹120</span>
+      <button onclick="openOrder(this)">
+        Pre Order
+      </button>
+      <button onclick="addToCart(this)">
+        Add to Cart
+      </button>
     </div>
   </div>
+</div>
 
   <div class="food-card" data-category="snacks">
-    <img src="images/samosa.jpg" alt="Samosa">
-    <div class="food-info">
-      <h3>Samosa</h3>
-      <p>Hot Snack</p>
-      <span class="rating">⭐ 4.3</span>
-      <div class="food-bottom">
-        <span>₹20</span>
-        <button onclick="openOrder(this)">Pre Order</button>
-        <button onclick="addToCart(this)">Add to Cart</button>
+  <img src="images/samosa.jpg" alt="Samosa">
+  <div class="food-info">
+    <div class="food-top">
+      <div>
+        <h3>Samosa</h3>
       </div>
+      <button class="fav-btn"
+        onclick="toggleFavorite(this,'Samosa','Snack','₹20','images/samosa.jpg')">
+        <i class="fa-regular fa-heart"></i>
+      </button>
+    </div>
+    <span class="rating">4.8</span>
+    <div class="food-bottom">
+      <span>₹20</span>
+      <button onclick="openOrder(this)">
+        Pre Order
+      </button>
+      <button onclick="addToCart(this)">
+        Add to Cart
+      </button>
     </div>
   </div>
-
-</section>
+</div>
 
           <section class="cart-section">
           <h2>Your Cart</h2>

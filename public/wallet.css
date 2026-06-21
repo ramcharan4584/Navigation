@@ -1,0 +1,356 @@
+:root {
+  --blue-50: #E5F0FF;
+  --blue-100: #CCE0FF;
+  --blue-500: #0066FF;
+  --blue-600: #0052CC;
+  --blue-700: #003D99;
+  --blue-800: #002966;
+  --text: #001433;
+  --muted: #5C6B8A;
+  --white: #ffffff;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Segoe UI", Arial, sans-serif;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  background: #f6f9ff;
+  color: var(--text);
+}
+
+/* HEADER */
+.wallet-header {
+  background: linear-gradient(135deg, var(--blue-600), var(--blue-500));
+  color: white;
+  text-align: center;
+  padding: 38px 20px 32px;
+}
+
+.wallet-header h1 {
+  font-size: 32px;
+  margin-bottom: 8px;
+}
+
+.wallet-header p {
+  color: #dbeafe;
+  font-size: 15px;
+}
+
+/* MAIN */
+.wallet-section {
+  max-width: 900px;
+  margin: 32px auto;
+  padding: 0 18px;
+}
+
+.balance-card {
+  background: linear-gradient(135deg, var(--blue-600), var(--blue-500));
+  color: white;
+  padding: 28px;
+  border-radius: 22px;
+  box-shadow: 0 10px 28px rgba(0, 82, 204, 0.18);
+}
+
+.balance-card p {
+  font-size: 15px;
+  color: #dbeafe;
+}
+
+.balance-card h2 {
+  font-size: 42px;
+  margin: 10px 0;
+}
+
+.balance-card span {
+  font-size: 14px;
+  color: #e5f0ff;
+}
+
+/* CARDS */
+.add-money-card,
+.transactions-card {
+  margin-top: 22px;
+  background: var(--white);
+  padding: 22px;
+  border-radius: 20px;
+  border: 1px solid var(--blue-100);
+  box-shadow: 0 8px 24px rgba(0, 82, 204, 0.08);
+}
+
+.add-money-card h3,
+.transactions-card h3 {
+  color: var(--blue-800);
+  margin-bottom: 16px;
+}
+
+/* AMOUNT BUTTONS */
+.amount-buttons {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.amount-buttons button,
+.custom-amount button {
+  border: none;
+  background: var(--blue-500);
+  color: white;
+  padding: 12px 18px;
+  border-radius: 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.amount-buttons button {
+  background: var(--blue-50);
+  color: var(--blue-600);
+}
+
+.amount-buttons button:hover,
+.custom-amount button:hover {
+  background: var(--blue-600);
+  color: white;
+}
+
+/* CUSTOM AMOUNT */
+.custom-amount {
+  margin-top: 16px;
+  display: flex;
+  gap: 10px;
+}
+
+.custom-amount input {
+  flex: 1;
+  padding: 12px 14px;
+  border: 1px solid var(--blue-100);
+  border-radius: 12px;
+  font-size: 14px;
+}
+
+/* TRANSACTIONS */
+.transaction {
+  display: flex;
+  justify-content: space-between;
+  padding: 13px 0;
+  border-bottom: 1px solid var(--blue-100);
+  font-size: 14px;
+}
+
+.transaction:last-child {
+  border-bottom: none;
+}
+
+.credit {
+  color: #16a34a;
+  font-weight: 700;
+}
+
+.debit {
+  color: #dc2626;
+  font-weight: 700;
+}
+
+/* PAYMENT BOTTOM SHEET */
+.payment-sheet-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 20, 51, 0.55);
+  display: none;
+  align-items: flex-end;
+  justify-content: center;
+  z-index: 3000;
+}
+
+.payment-sheet-overlay.active {
+  display: flex;
+}
+
+.payment-sheet {
+  width: 100%;
+  max-width: 430px;
+  background: white;
+  border-radius: 26px 26px 0 0;
+  padding: 16px 20px 28px;
+  animation: slideUp 0.28s ease;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+  }
+
+  to {
+    transform: translateY(0);
+  }
+}
+
+.sheet-handle {
+  width: 46px;
+  height: 5px;
+  background: #cbd5e1;
+  border-radius: 20px;
+  margin: 0 auto 16px;
+}
+
+.sheet-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.sheet-header h3 {
+  color: var(--blue-800);
+  font-size: 22px;
+}
+
+.sheet-header button {
+  width: 36px;
+  height: 36px;
+  border: none;
+  border-radius: 50%;
+  background: var(--blue-50);
+  color: var(--blue-600);
+  font-size: 22px;
+  cursor: pointer;
+}
+
+.amount-box {
+  margin: 18px 0 12px;
+  padding: 16px;
+  background: var(--blue-50);
+  border-radius: 16px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.amount-box span {
+  color: var(--muted);
+}
+
+.amount-box strong {
+  color: var(--blue-600);
+  font-size: 22px;
+}
+
+.fee-note {
+  background: #f1f7ff;
+  color: var(--blue-800);
+  padding: 12px;
+  border-radius: 14px;
+  font-size: 14px;
+  margin-bottom: 16px;
+}
+
+.payment-sheet h4 {
+  margin: 16px 0 10px;
+  color: var(--text);
+}
+
+/* UPI GRID */
+.upi-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+
+.upi-grid button {
+  height: 100px;
+  padding: 10px;
+  border: 1px solid var(--blue-100);
+  background: white;
+  border-radius: 16px;
+
+  font-weight: 700;
+  color: var(--text);
+  cursor: pointer;
+
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+}
+
+.upi-grid i {
+  font-size: 26px;
+  color: var(--blue-500);
+}
+
+.upi-grid button img {
+  width: 34px;
+  height: 34px;
+  object-fit: contain;
+}
+
+.upi-grid button span {
+  font-size: 13px;
+  font-weight: 600;
+}
+/* OTHER PAYMENT OPTIONS */
+.payment-options {
+  display: grid;
+  gap: 12px;
+}
+
+.payment-options button {
+  width: 100%;
+  border: 1px solid var(--blue-100);
+  background: white;
+  border-radius: 16px;
+  padding: 16px;
+
+  font-size: 15px;
+  color: var(--text);
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.payment-options span {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.payment-options i {
+  color: var(--blue-500);
+}
+
+/* DESKTOP */
+@media (min-width: 769px) {
+  .back-btn {
+    display: none;
+  }
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
+  .wallet-header {
+    padding: 32px 16px 26px;
+  }
+
+  .wallet-header h1 {
+    font-size: 24px;
+  }
+
+  .balance-card h2 {
+    font-size: 36px;
+  }
+
+  .custom-amount {
+    flex-direction: column;
+  }
+
+  .amount-buttons button {
+    flex: 1;
+  }
+}

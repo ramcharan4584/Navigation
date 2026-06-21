@@ -14,22 +14,68 @@ body {
   padding: 30px;
 }
 
-.back-btn{
-  background:#6c4ccf;
-  color:white;
-  padding:12px 22px;
-  border-radius:14px;
-  text-decoration:none;
-  font-size:14px;
-  font-weight:bold;
-  display:inline-flex;
-  align-items:center;
-  gap:8px;
+/* BACK BUTTON */
+.back-btn {
+  position: fixed;
+  top: 18px;
+  left: 18px;
+  z-index: 1000;
+
+  width: 46px;
+  height: 46px;
+
+  border: none;
+  border-radius: 14px;
+
+  background: rgba(255,255,255,0.75);
+  backdrop-filter: blur(12px);
+
+  color: #2563eb;
+  font-size: 18px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  box-shadow:
+    0 4px 12px rgba(0,0,0,0.12);
+
+  transition:
+    transform 0.25s ease,
+    background 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+/* HOVER */
+.back-btn:hover {
+  background: white;
+  transform: scale(1.05);
+}
+
+/* ACTIVE */
+.back-btn:active {
+  transform: scale(0.95);
+}
+
+/* DARK MODE */
+body.dark-mode .back-btn {
+  background: rgba(17,24,39,0.85);
+  color: #60a5fa;
+}
+
+/* HIDE IN DESKTOP */
+@media (min-width: 769px) {
+  .back-btn {
+    display: none;
+  }
 }
 
 .profile-card {
   max-width: 850px;
-  margin: 35px auto;
+  margin: 85px auto 35px;
   background: white;
   padding: 35px;
   border-radius: 22px;
@@ -176,12 +222,27 @@ a:active{
     padding: 20px;
   }
   .profile-card {
-    padding: 25px;
+  padding: 25px;
+  margin-top: 75px;
   }
+  
   .profile-info {
     grid-template-columns: 1fr;
   }
   .save-btn {
     width: 100%;
   }
+
+  .back-btn {
+    width: 42px;
+    height: 42px;
+
+    top: 14px;
+    left: 14px;
+
+    border-radius: 12px;
+
+    font-size: 17px;
+  }
+
 }

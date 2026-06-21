@@ -490,3 +490,69 @@ function selectPayment(method) {
   document.getElementById("paymentMethod").value = method;
   showPaymentDetails();
 }
+
+function toggleFavorite(button, name, desc, price, image) {
+
+  let favorites =
+    JSON.parse(localStorage.getItem("favoriteFoods")) || [];
+
+  const exists = favorites.find(food => food.name === name);
+
+  if (exists) {
+
+    favorites =
+      favorites.filter(food => food.name !== name);
+
+    button.classList.remove("active");
+
+    button.innerHTML =
+      `<i class="fa-regular fa-heart"></i>`;
+
+  } else {
+
+    favorites.push({
+      name,
+      desc,
+      price,
+      image
+    });
+
+    button.classList.add("active");
+
+    button.innerHTML =
+      `<i class="fa-solid fa-heart"></i>`;
+  }
+
+  localStorage.setItem(
+    "favoriteFoods",
+    JSON.stringify(favorites)
+  );
+}
+
+function loadFavoriteStates() {
+  const favorites =
+    JSON.parse(localStorage.getItem("favoriteFoods")) || [];
+
+  document.querySelectorAll(".fav-btn").forEach(button => {
+    const foodCard = button.closest(".food-card");
+    const foodName = foodCard.querySelector("h3").innerText.trim();
+
+    const exists = favorites.some(food => food.name === foodName);
+
+    button.classList.toggle("active", exists);
+
+    button.innerHTML = exists
+      ? `<i class="fa-solid fa-heart"></i>`
+      : `<i class="fa-regular fa-heart"></i>`;
+  });
+}
+
+window.addEventListener("pageshow", () => {
+  loadFavoriteStates();
+});
+
+document.addEventListener("visibilitychange", () => {
+  if (!document.hidden) {
+    loadFavoriteStates();
+  }
+});

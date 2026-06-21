@@ -116,11 +116,6 @@ body.popup-open{
   transition:0.3s;
 }
 
-.food-card:hover{
-  transform:translateY(-8px);
-  box-shadow:0 12px 25px rgba(0,0,0,0.15);
-}
-
 .food-card img{
   width:100%;
   height:220px;
@@ -573,6 +568,43 @@ body.popup-open{
   width:34px;
   height:34px;
   object-fit:contain;
+}
+
+.food-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.fav-btn {
+  width: 42px;
+  height: 42px;
+
+  border: none;
+  border-radius: 50%;
+
+  background: #f1f5ff;
+  color: #2563eb;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+
+  font-size: 18px;
+
+  transition: 0.25s ease;
+}
+
+.fav-btn:hover {
+  background: #dbeafe;
+  transform: scale(1.08);
+}
+
+.fav-btn.active {
+  background: #fee2e2;
+  color: #ef4444;
 }
 
 /* MOBILE */

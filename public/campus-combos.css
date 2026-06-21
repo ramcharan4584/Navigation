@@ -1,0 +1,172 @@
+:root {
+  --blue-50: #E5F0FF;
+  --blue-100: #CCE0FF;
+  --blue-500: #0066FF;
+  --blue-600: #0052CC;
+  --blue-800: #002966;
+  --text: #001433;
+  --muted: #5C6B8A;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Segoe UI", Arial, sans-serif;
+}
+
+body {
+  background: #f6f9ff;
+  color: var(--text);
+}
+
+/* BACK BUTTON */
+.back-btn {
+  position: fixed;
+  top: 18px;
+  left: 18px;
+  z-index: 1000;
+
+  width: 46px;
+  height: 46px;
+
+  border: none;
+  border-radius: 14px;
+
+  background: rgba(255,255,255,0.75);
+  backdrop-filter: blur(12px);
+
+  color: var(--blue-500);
+  font-size: 18px;
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+}
+
+.combo-header {
+  background: linear-gradient(135deg, var(--blue-600), var(--blue-500));
+  color: white;
+  text-align: center;
+  padding: 38px 20px 32px;
+}
+
+.combo-header h1 {
+  font-size: 32px;
+  margin-bottom: 8px;
+}
+
+.combo-header p {
+  color: #dbeafe;
+  font-size: 15px;
+}
+
+.combo-section {
+  max-width: 1100px;
+  margin: 35px auto;
+  padding: 0 20px;
+
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.combo-card {
+  background: white;
+  border-radius: 20px;
+  overflow: hidden;
+  border: 1px solid var(--blue-100);
+  box-shadow: 0 8px 24px rgba(0,82,204,0.08);
+  transition: 0.25s ease;
+}
+
+.combo-card:hover {
+  transform: translateY(-5px);
+}
+
+.combo-card img {
+  width: 100%;
+  height: 190px;
+  object-fit: cover;
+}
+
+.combo-info {
+  padding: 18px;
+}
+
+.combo-info h3 {
+  color: var(--blue-800);
+  font-size: 20px;
+  margin-bottom: 8px;
+}
+
+.combo-info p {
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.combo-bottom {
+  margin-top: 18px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.combo-bottom span {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--blue-600);
+}
+
+.combo-bottom button {
+  border: none;
+  background: var(--blue-500);
+  color: white;
+
+  padding: 10px 16px;
+  border-radius: 12px;
+
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.combo-bottom button:hover {
+  background: var(--blue-600);
+}
+
+@media (min-width: 769px) {
+  .back-btn {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .combo-header {
+    padding: 32px 16px 26px;
+  }
+
+  .combo-header h1 {
+    font-size: 24px;
+  }
+
+  .combo-section {
+    grid-template-columns: 1fr;
+    margin-top: 25px;
+  }
+
+  .combo-card img {
+    height: 180px;
+  }
+
+  .back-btn {
+    top: 14px;
+    left: 14px;
+    width: 42px;
+    height: 42px;
+  }
+}

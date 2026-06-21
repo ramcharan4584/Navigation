@@ -24,20 +24,15 @@ diningNavbar.innerHTML = `
 
     <div class="sidebar-links">
       <a href="dashboard.html">Dashboard</a>
-      <a href="#">Weekly Menu</a>
+      <a href="campus-combos.html">Campus Combos</a>
       <a href="my-orders.html">Your Orders</a>
-      <a href="#>Favorites</a>
-      <a href="#">Order History</a>
-      <a href="#">Wallet</a>
+      <a href="favorites.html">Favorites</a>
+      <a href="wallet.html">Wallet</a>
       <a href="#">Offers & Coupons</a>
-      <a href="mostordered.html">Most Ordered</a>
+      <a href="mostordered.html">Top Picks</a>
       <a href="#">Live Queue</a>
-
-      <a href="javascript:void(0)" id="notificationLink" onclick="enableNotifications()">
-        Enable Order Notifications
-      </a>
-
-      <a href="#">Contact Canteen</a>
+      <a href="javascript:void(0)" id="notificationLink" onclick="enableNotifications()">Enable Order Notifications</a>
+      <a href="tel:+917993610936">Contact Canteen</a>
       <a href="index.html">Logout</a>
     </div>
   </div>
