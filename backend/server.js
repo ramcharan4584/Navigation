@@ -163,7 +163,12 @@ app.post("/api/orders", async (req, res) => {
   [studentEmail]
 );
 
+console.log("WhatsApp order email:", studentEmail);
+console.log("WhatsApp phone DB result:", studentPhoneResult.rows);
+
 const studentPhone = studentPhoneResult.rows[0]?.phone;
+
+console.log("WhatsApp final phone:", studentPhone);
 
 if (studentPhone) {
   await sendWhatsAppMessage(
@@ -382,10 +387,12 @@ async function sendWhatsAppMessage(phone, message) {
 
     console.log("WhatsApp sent:", response.data);
     return response.data;
-
-  } catch (error) {
-    console.error("WhatsApp error:", error.response?.data || error.message);
-  }
+  }catch (error) {
+      console.error(
+        "WhatsApp error:",
+        JSON.stringify(error.response?.data || error.message, null, 2)
+      );
+}
 }
 
 app.put("/api/owner/orders/:id/status", async (req, res) => {
