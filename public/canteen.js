@@ -636,8 +636,6 @@ async function placeOrderAfterPayment(orderData, tokenHTML) {
       cart = [];
       displayCart();
     }
-
-    alert("Payment successful and order placed");
   } else {
     alert("Order failed after payment");
   }

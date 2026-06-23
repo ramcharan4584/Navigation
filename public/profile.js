@@ -6,6 +6,9 @@ window.addEventListener("DOMContentLoaded", () => {
   loadStudentProfile();
   loadProfileImage();
   setupProfileImageUpload();
+
+  showSlide(currentSlide);
+  startAutoSlider();
 });
 
 function loadTheme() {
@@ -17,13 +20,26 @@ function loadTheme() {
 }
 
 async function saveStudentProfile() {
+  let phone = document.getElementById("studentPhone").value.trim();
+
+  phone = phone.replace(/\D/g, "");
+
+  if (phone.length === 10) {
+    phone = "91" + phone;
+  }
+
+  if (phone.length !== 12 || !phone.startsWith("91")) {
+    alert("Enter a valid 10-digit Indian phone number");
+    return;
+  }
+
   const student = {
     name: document.getElementById("studentName").value.trim(),
     roll_number: document.getElementById("studentRoll").value.trim(),
     branch: document.getElementById("studentBranch").value.trim(),
     year: document.getElementById("studentYear").value.trim(),
     email: document.getElementById("studentEmail").value.trim(),
-    phone: document.getElementById("studentPhone").value.trim()
+    phone: phone
   };
 
   if (!student.name || !student.email || !student.phone) {

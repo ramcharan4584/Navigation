@@ -50,13 +50,12 @@ async function enableNotifications() {
   }
 }
 
-enableNotifications();
-
 /* LOGIN PROTECTION */
 onAuthStateChanged(auth, (user) => {
   if (!user) {
-    window.location.href = "index.html";
+    window.location.replace("index.html");
   } else {
+    localStorage.setItem("studentEmail", user.email);
     localStorage.setItem("loginEmail", user.email);
   }
 });
