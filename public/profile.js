@@ -42,6 +42,9 @@ async function saveStudentProfile() {
 
     const data = await response.json();
 
+    console.log("Profile request sent:", student);
+    console.log("Profile backend response:", data);
+
     if (data.success) {
       saveProfileToLocalStorage(student);
       alert("Profile saved successfully");

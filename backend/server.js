@@ -730,6 +730,227 @@ You will receive:
   res.send("College Portal WhatsApp test sent");
 });
 
+async function getStudentPhone(email) {
+  const result = await pool.query(
+    `SELECT phone FROM students
+     WHERE LOWER(email) = LOWER($1)
+     LIMIT 1`,
+    [email]
+  );
+
+  return result.rows[0]?.phone;
+}
+
+const phone = await getStudentPhone(email);
+
+if (phone) {
+  await sendWhatsAppMessage(
+    phone,
+    `🎓 College Portal
+
+💰 Wallet Credited
+
+₹${amount} has been added to your wallet.
+
+Available Balance: ₹${newBalance}
+
+Thank you for using College Portal.`
+  );
+}
+
+const phone = await getStudentPhone(email);
+
+if (phone) {
+  await sendWhatsAppMessage(
+    phone,
+    `🎓 College Portal
+
+💳 Wallet Debited
+
+₹${amount} has been debited from your wallet.
+
+Purpose: ${purpose}
+Available Balance: ₹${newBalance}`
+  );
+}
+
+app.post("/api/whatsapp/event", async (req, res) => {
+  try {
+    const { email, eventTitle, eventDate, eventTime, venue } = req.body;
+
+    const phone = await getStudentPhone(email);
+
+    if (!phone) {
+      return res.status(404).json({
+        success: false,
+        message: "Student phone not found"
+      });
+    }
+
+    await sendWhatsAppMessage(
+      phone,
+      `🎓 College Portal
+
+📅 Event Reminder
+
+${eventTitle}
+
+Date: ${eventDate}
+Time: ${eventTime}
+Venue: ${venue}
+
+Don't miss it!`
+    );
+
+    res.json({
+      success: true,
+      message: "Event WhatsApp notification sent"
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Event notification failed",
+      error: error.message
+    });
+  }
+});
+
+app.post("/api/whatsapp/exam", async (req, res) => {
+  try {
+    const { email, subject, examDate, examTime, room } = req.body;
+
+    const phone = await getStudentPhone(email);
+
+    if (!phone) {
+      return res.status(404).json({
+        success: false,
+        message: "Student phone not found"
+      });
+    }
+
+    await sendWhatsAppMessage(
+      phone,
+      `🎓 College Portal
+
+📝 Exam Notification
+
+Subject: ${subject}
+Date: ${examDate}
+Time: ${examTime}
+Room: ${room}
+
+All the best!`
+    );
+
+    res.json({
+      success: true,
+      message: "Exam WhatsApp notification sent"
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Exam notification failed",
+      error: error.message
+    });
+  }
+});
+
+app.post("/api/wallet/add-money", async (req, res) => {
+  try {
+    const { email, amount } = req.body;
+
+    const result = await pool.query(
+      `UPDATE students
+       SET wallet_balance =
+       COALESCE(wallet_balance, 0) + $1
+       WHERE LOWER(email) = LOWER($2)
+       RETURNING wallet_balance`,
+      [amount, email]
+    );
+
+    const newBalance =
+      result.rows[0].wallet_balance;
+
+    const phone = await getStudentPhone(email);
+
+    if (phone) {
+      await sendWhatsAppMessage(
+        phone,
+        `🎓 College Portal
+
+💰 Wallet Credited
+
+₹${amount} has been added to your wallet.
+
+Available Balance: ₹${newBalance}
+
+Thank you for Choosing College Portal.`
+      );
+    }
+
+    res.json({
+      success: true,
+      balance: newBalance
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Wallet recharge failed",
+      error: error.message
+    });
+  }
+});
+
+app.post("/api/wallet/debit", async (req, res) => {
+  try {
+    const { email, amount, purpose } = req.body;
+
+    const result = await pool.query(
+      `UPDATE students
+       SET wallet_balance =
+       COALESCE(wallet_balance, 0) - $1
+       WHERE LOWER(email) = LOWER($2)
+       RETURNING wallet_balance`,
+      [amount, email]
+    );
+
+    const newBalance =
+      result.rows[0].wallet_balance;
+
+    const phone = await getStudentPhone(email);
+
+    if (phone) {
+      await sendWhatsAppMessage(
+        phone,
+        `🎓 College Portal
+
+💳 Wallet Debited
+
+₹${amount} has been debited from your wallet.
+
+Purpose: ${purpose}
+
+Available Balance: ₹${newBalance}`
+      );
+    }
+
+    res.json({
+      success: true,
+      balance: newBalance
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Wallet debit failed",
+      error: error.message
+    });
+  }
+});
+
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, "0.0.0.0", () => {
