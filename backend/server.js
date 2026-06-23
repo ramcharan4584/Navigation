@@ -716,7 +716,6 @@ app.post("/api/students/save", async (req, res) => {
 });
 
 app.get("/api/test-whatsapp", async (req, res) => {
-  app.get("/api/test-whatsapp", async (req, res) => {
   await sendWhatsAppMessage("917993610936");
   res.send("WhatsApp hello_world test triggered");
 });
@@ -734,7 +733,6 @@ app.get("/api/test-whatsapp", async (req, res) => {
 //   );
 
 //   res.send("College Portal WhatsApp test sent");
-});
 
 async function getStudentPhone(email) {
   const result = await pool.query(
