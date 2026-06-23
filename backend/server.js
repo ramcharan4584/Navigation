@@ -187,7 +187,7 @@ Pickup Time: ${pickupTime || pickup_time}
 Payment: ${paymentMethod}
 Counter: ${counter || receiverPlace}
 
-Thank you for using College Portal.`
+Thank you for Choosing College Portal.`
   );
 } else {
   console.log("No phone number found for:", studentEmail);
@@ -363,7 +363,7 @@ app.post("/api/test-notification", async (req, res) => {
   }
 });
 
-async function sendWhatsAppMessage(phone, message) {
+async function sendWhatsAppMessage(phone, title, message, status) {
   try {
     const cleanPhone = phone.replace(/\D/g, "");
 
@@ -374,10 +374,20 @@ async function sendWhatsAppMessage(phone, message) {
         to: cleanPhone,
         type: "template",
         template: {
-          name: "college_portal_update",
+          name: "college_portal_updates",
           language: {
-            code: "en_US"
-          }
+            code: "en"
+          },
+          components: [
+            {
+              type: "body",
+              parameters: [
+                { type: "text", text: title },
+                { type: "text", text: message },
+                { type: "text", text: status }
+              ]
+            }
+          ]
         }
       },
       {
@@ -495,17 +505,15 @@ app.put("/api/owner/orders/:id/status", async (req, res) => {
         studentPhoneResult.rows[0]?.phone;
 
       if (studentPhone) {
-        await sendWhatsAppMessage(
-          studentPhone,
-          `🎓 College Portal
-
-🍽 UniEats Order Update
-
-${notificationMessage}
+       await sendWhatsAppMessage(
+  studentPhone,
+  "UniEats Order Update",
+  `${notificationMessage}
 
 Token No: ${updatedOrder.token_no}
-Counter: ${updatedOrder.counter_name}`
-        );
+Counter: ${updatedOrder.counter_name}`,
+  status
+);
       } else {
         console.log(
           "No WhatsApp phone number found for:",
