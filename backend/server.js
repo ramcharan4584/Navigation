@@ -88,9 +88,27 @@ async function sendFCMNotification(email, title, body) {
     console.log("Notification sent to token:", userToken);
     console.log("Firebase response:", response);
 
-  } catch (err) {
-    console.error("FCM send failed:", err.message);
+ } catch (err) {
+
+  console.error(
+    "FCM send failed:",
+    err.code || err.message
+  );
+
+  if (
+    err.code === "messaging/registration-token-not-registered" ||
+    err.message.includes("NotRegistered")
+  ) {
+
+    await pool.query(
+      `DELETE FROM student_fcm_tokens
+       WHERE fcm_token = $1`,
+      [userToken]
+    );
+
+    console.log("Expired FCM token removed");
   }
+}
 }
 
 app.get("/", (req, res) => {

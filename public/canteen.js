@@ -604,6 +604,12 @@ async function payAndPlaceOrder(orderData, tokenHTML) {
     };
 
     const razorpayPopup = new Razorpay(options);
+
+    razorpayPopup.on("payment.failed", function (response) {
+      console.error("Razorpay payment failed:", response.error);
+      alert(response.error.description || "Payment failed");
+    });
+
     razorpayPopup.open();
 
   } catch (error) {
