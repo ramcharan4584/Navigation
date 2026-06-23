@@ -372,9 +372,12 @@ async function sendWhatsAppMessage(phone, message) {
       {
         messaging_product: "whatsapp",
         to: cleanPhone,
-        type: "text",
-        text: {
-          body: message
+        type: "template",
+        template: {
+          name: "hello_world",
+          language: {
+            code: "en_US"
+          }
         }
       },
       {
@@ -387,12 +390,13 @@ async function sendWhatsAppMessage(phone, message) {
 
     console.log("WhatsApp sent:", response.data);
     return response.data;
-  }catch (error) {
-      console.error(
-        "WhatsApp error:",
-        JSON.stringify(error.response?.data || error.message, null, 2)
-      );
-}
+
+  } catch (error) {
+    console.error(
+      "WhatsApp error:",
+      JSON.stringify(error.response?.data || error.message, null, 2)
+    );
+  }
 }
 
 app.put("/api/owner/orders/:id/status", async (req, res) => {
