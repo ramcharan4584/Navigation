@@ -993,6 +993,96 @@ Payment Method: ${paymentMethod}`,
   }
 });
 
+const crypto = require("crypto");
+
+const ownerOtpStore = new Map();
+
+const OWNER_ID = process.env.OWNER_ID || "Ramm";
+const OWNER_PASSWORD = process.env.OWNER_PASSWORD || "Ramm@1116";
+const OWNER_PHONE = process.env.OWNER_PHONE || "917993610936";
+
+app.post("/api/owner/send-otp", async (req, res) => {
+  try {
+    const { ownerId, password } = req.body;
+
+    if (ownerId !== OWNER_ID || password !== OWNER_PASSWORD) {
+      return res.status(401).json({
+        success: false,
+        message: "Invalid owner credentials"
+      });
+    }
+
+    const otp = crypto.randomInt(100000, 999999).toString();
+
+    ownerOtpStore.set(ownerId, {
+      otp,
+      expiresAt: Date.now() + 5 * 60 * 1000
+    });
+
+    console.log("OWNER OTP:", otp);
+
+    // Later we can connect this with WhatsApp/SMS API
+    // For now OTP will appear in Render logs
+
+    res.json({
+      success: true,
+      message: "OTP sent successfully"
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Failed to send OTP",
+      error: error.message
+    });
+  }
+});
+
+app.post("/api/owner/verify-otp", (req, res) => {
+  try {
+    const { ownerId, otp } = req.body;
+
+    const savedOtp = ownerOtpStore.get(ownerId);
+
+    if (!savedOtp) {
+      return res.status(400).json({
+        success: false,
+        message: "OTP not found or expired"
+      });
+    }
+
+    if (Date.now() > savedOtp.expiresAt) {
+      ownerOtpStore.delete(ownerId);
+
+      return res.status(400).json({
+        success: false,
+        message: "OTP expired"
+      });
+    }
+
+    if (savedOtp.otp !== otp) {
+      return res.status(401).json({
+        success: false,
+        message: "Invalid OTP"
+      });
+    }
+
+    ownerOtpStore.delete(ownerId);
+
+    res.json({
+      success: true,
+      message: "Owner verified successfully"
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "OTP verification failed",
+      error: error.message
+    });
+  }
+});
+
 app.listen(PORT, "0.0.0.0", () => {
   console.log(`Server running on port ${PORT}`);
 });

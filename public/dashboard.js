@@ -53,7 +53,7 @@ async function enableNotifications() {
 /* LOGIN PROTECTION */
 onAuthStateChanged(auth, (user) => {
   if (!user) {
-    window.location.replace("index.html");
+    window.location.replace("student-index.html");
   } else {
     localStorage.setItem("studentEmail", user.email);
     localStorage.setItem("loginEmail", user.email);

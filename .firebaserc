@@ -1,0 +1,9 @@
+{
+  "projects": {
+    "default": "student-portal-1baed",
+    "owner": "owner-panel-1baed",
+    "student": "student-portal-1baed"
+  },
+  "targets": {},
+  "etags": {}
+}
