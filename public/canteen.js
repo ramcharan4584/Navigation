@@ -556,3 +556,96 @@ document.addEventListener("visibilitychange", () => {
     loadFavoriteStates();
   }
 });
+
+async function payAndPlaceOrder(orderData) {
+  try {
+    const orderResponse = await fetch(
+      "https://student-portal-backend-uo7y.onrender.com/api/payments/create-order",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          amount: orderData.totalAmount
+        })
+      }
+    );
+
+    const orderResult = await orderResponse.json();
+
+    if (!orderResult.success) {
+      alert("Unable to start payment");
+      return;
+    }
+
+    const options = {
+      key: orderResult.key,
+      amount: orderResult.order.amount,
+      currency: "INR",
+      name: "UniEats",
+      description: "Campus Food Order",
+      order_id: orderResult.order.id,
+
+      handler: async function (paymentResponse) {
+        const verifyResponse = await fetch(
+          "https://student-portal-backend-uo7y.onrender.com/api/payments/verify",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify(paymentResponse)
+          }
+        );
+
+        const verifyResult = await verifyResponse.json();
+
+        if (!verifyResult.success) {
+          alert("Payment verification failed");
+          return;
+        }
+
+        await placeOrderAfterPayment(orderData);
+      },
+
+      prefill: {
+        name: orderData.studentName,
+        email: orderData.studentEmail,
+        contact: localStorage.getItem("studentPhone") || ""
+      },
+
+      theme: {
+        color: "#2563eb"
+      }
+    };
+
+    const razorpayPopup = new Razorpay(options);
+    razorpayPopup.open();
+
+  } catch (error) {
+    console.error(error);
+    alert("Payment failed to start");
+  }
+}
+
+async function placeOrderAfterPayment(orderData) {
+  const response = await fetch(
+    "https://student-portal-backend-uo7y.onrender.com/api/orders",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(orderData)
+    }
+  );
+
+  const data = await response.json();
+
+  if (data.success) {
+    alert("Payment successful and order placed");
+  } else {
+    alert("Order failed after payment");
+  }
+}
