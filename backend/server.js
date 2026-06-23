@@ -594,6 +594,55 @@ app.post("/api/students/save", async (req, res) => {
   }
 });
 
+const axios = require("axios");
+
+async function sendWhatsAppMessage(phone, message) {
+  try {
+    const cleanPhone = phone.replace(/\D/g, "");
+
+    const response = await axios.post(
+      `https://graph.facebook.com/${process.env.WHATSAPP_API_VERSION}/${process.env.WHATSAPP_PHONE_NUMBER_ID}/messages`,
+      {
+        messaging_product: "whatsapp",
+        to: cleanPhone,
+        type: "text",
+        text: {
+          body: message
+        }
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${process.env.WHATSAPP_TOKEN}`,
+          "Content-Type": "application/json"
+        }
+      }
+    );
+
+    console.log("WhatsApp sent:", response.data);
+    return response.data;
+
+  } catch (error) {
+    console.error("WhatsApp error:", error.response?.data || error.message);
+  }
+}
+
+app.get("/api/test-whatsapp", async (req, res) => {
+  await sendWhatsAppMessage(
+    "917993610936",
+    `🎓 College Portal
+
+✅ WhatsApp notification system is active.
+
+You will receive:
+🍽 Canteen order updates
+📅 Event reminders
+📝 Exam notifications
+💰 Wallet alerts`
+  );
+
+  res.send("College Portal WhatsApp test sent");
+});
+
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, "0.0.0.0", () => {
