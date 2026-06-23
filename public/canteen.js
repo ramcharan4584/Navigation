@@ -227,6 +227,7 @@ async function confirmOrder() {
     alert("Student email not found. Please login again.");
     return;
   }
+
   let orderData;
   let tokenHTML;
 
@@ -249,7 +250,7 @@ async function confirmOrder() {
       ownerNote: ownerNote
     };
 
-      tokenHTML = `
+    tokenHTML = `
       <div class="token-items">
         <strong>Items:</strong><br>
         ${selectedItem} × ${quantity}
@@ -301,50 +302,26 @@ async function confirmOrder() {
     };
 
     tokenHTML = `
-  <div class="token-items">
-    <strong>Items:</strong><br>
-    ${itemList}
-  </div>
+      <div class="token-items">
+        <strong>Items:</strong><br>
+        ${itemList}
+      </div>
 
-  <div class="token-summary">
-    <strong>Total Quantity:</strong> ${totalQuantity}<br>
-    <strong>Total:</strong> ₹${total}<br>
-    <strong>Token No:</strong> ${tokenNumber}<br>
-    <strong>Pickup Time:</strong> ${pickupTime}<br>
-    <strong>Payment:</strong> ${payment}<br>
-    <strong>Status:</strong> Preparing<br>
-    <strong>Counter:</strong> ${receiverPlace}
-  </div>
-`;
+      <div class="token-summary">
+        <strong>Total Quantity:</strong> ${totalQuantity}<br>
+        <strong>Total:</strong> ₹${total}<br>
+        <strong>Token No:</strong> ${tokenNumber}<br>
+        <strong>Pickup Time:</strong> ${pickupTime}<br>
+        <strong>Payment:</strong> ${payment}<br>
+        <strong>Status:</strong> Preparing<br>
+        <strong>Counter:</strong> ${receiverPlace}
+      </div>
+    `;
   }
 
-  console.log("Sending order:", orderData);
+  console.log("Sending order through Razorpay:", orderData);
 
-  const response = await fetch("https://student-portal-backend-uo7y.onrender.com/api/orders", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(orderData)
-  });
-
-  const result = await response.json();
-  console.log("Backend response:", result);
-
- if (!result.success) {
-  alert(result.message || "Order failed");
-  return;
-}
-
-  document.getElementById("tokenDetails").innerHTML = tokenHTML;
-  document.getElementById("orderPopup").style.display = "none";
-  document.body.classList.remove("popup-open");
-  document.getElementById("tokenBox").style.display = "block";
-
-  if (orderMode === "cart") {
-    cart = [];
-    displayCart();
-  }
+  await payAndPlaceOrder(orderData, tokenHTML);
 }
 
 function closeToken() {
@@ -557,7 +534,7 @@ document.addEventListener("visibilitychange", () => {
   }
 });
 
-async function payAndPlaceOrder(orderData) {
+async function payAndPlaceOrder(orderData, tokenHTML) {
   try {
     const orderResponse = await fetch(
       "https://student-portal-backend-uo7y.onrender.com/api/payments/create-order",
@@ -606,13 +583,19 @@ async function payAndPlaceOrder(orderData) {
           return;
         }
 
-        await placeOrderAfterPayment(orderData);
+        await placeOrderAfterPayment(orderData, tokenHTML);
       },
 
       prefill: {
         name: orderData.studentName,
         email: orderData.studentEmail,
         contact: localStorage.getItem("studentPhone") || ""
+      },
+
+      notes: {
+        tokenNo: orderData.tokenNo,
+        pickupTime: orderData.pickupTime,
+        counter: orderData.counter
       },
 
       theme: {
@@ -629,7 +612,7 @@ async function payAndPlaceOrder(orderData) {
   }
 }
 
-async function placeOrderAfterPayment(orderData) {
+async function placeOrderAfterPayment(orderData, tokenHTML) {
   const response = await fetch(
     "https://student-portal-backend-uo7y.onrender.com/api/orders",
     {
@@ -644,8 +627,41 @@ async function placeOrderAfterPayment(orderData) {
   const data = await response.json();
 
   if (data.success) {
+    document.getElementById("tokenDetails").innerHTML = tokenHTML;
+    document.getElementById("orderPopup").style.display = "none";
+    document.body.classList.remove("popup-open");
+    document.getElementById("tokenBox").style.display = "block";
+
+    if (orderMode === "cart") {
+      cart = [];
+      displayCart();
+    }
+
     alert("Payment successful and order placed");
   } else {
     alert("Order failed after payment");
+  }
+}
+
+async function sendPaymentReceipt(orderData) {
+  try {
+    await fetch(
+      "https://student-portal-backend-uo7y.onrender.com/api/whatsapp/payment-receipt",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          email: orderData.studentEmail,
+          amount: orderData.totalAmount,
+          tokenNo: orderData.tokenNo,
+          paymentMethod: "Razorpay",
+          purpose: "UniEats Food Order"
+        })
+      }
+    );
+  } catch (error) {
+    console.error("Payment receipt WhatsApp failed:", error);
   }
 }

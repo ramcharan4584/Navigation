@@ -932,6 +932,49 @@ const razorpay = new Razorpay({
 
 const PORT = process.env.PORT || 5000;
 
+app.post("/api/whatsapp/payment-receipt", async (req, res) => {
+  try {
+    const {
+      email,
+      amount,
+      tokenNo,
+      paymentMethod,
+      purpose
+    } = req.body;
+
+    const phone = await getStudentPhone(email);
+
+    if (!phone) {
+      return res.status(404).json({
+        success: false,
+        message: "Student phone not found"
+      });
+    }
+
+    await sendWhatsAppMessage(
+      phone,
+      "💳 Payment Receipt",
+      `Amount: ₹${amount}
+Purpose: ${purpose}
+Token No: ${tokenNo}
+Payment Method: ${paymentMethod}`,
+      "Paid"
+    );
+
+    res.json({
+      success: true,
+      message: "Payment receipt sent"
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Payment receipt failed",
+      error: error.message
+    });
+  }
+});
+
 app.listen(PORT, "0.0.0.0", () => {
   console.log(`Server running on port ${PORT}`);
 });
