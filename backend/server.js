@@ -741,39 +741,6 @@ async function getStudentPhone(email) {
   return result.rows[0]?.phone;
 }
 
-const phone = await getStudentPhone(email);
-
-if (phone) {
-  await sendWhatsAppMessage(
-    phone,
-    `🎓 College Portal
-
-💰 Wallet Credited
-
-₹${amount} has been added to your wallet.
-
-Available Balance: ₹${newBalance}
-
-Thank you for using College Portal.`
-  );
-}
-
-const phone = await getStudentPhone(email);
-
-if (phone) {
-  await sendWhatsAppMessage(
-    phone,
-    `🎓 College Portal
-
-💳 Wallet Debited
-
-₹${amount} has been debited from your wallet.
-
-Purpose: ${purpose}
-Available Balance: ₹${newBalance}`
-  );
-}
-
 app.post("/api/whatsapp/event", async (req, res) => {
   try {
     const { email, eventTitle, eventDate, eventTime, venue } = req.body;
