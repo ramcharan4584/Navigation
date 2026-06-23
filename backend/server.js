@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require("cors");
 require("dotenv").config();
 const pool = require("./db");
+const axios = require("axios");
 
 const { initializeApp, cert } = require("firebase-admin/app");
 const { getMessaging } = require("firebase-admin/messaging");
@@ -154,6 +155,38 @@ app.post("/api/orders", async (req, res) => {
       "UniEats Order Confirmed",
       `Food: ${foodName}\nQuantity: ${quantity}\nTotal: ₹${totalAmount}\nToken No: ${tokenNo}\nPickup Time: ${pickupTime || pickup_time}\nPayment: ${paymentMethod}\nCounter: ${counter || receiverPlace}`
     );
+
+    const studentPhoneResult = await pool.query(
+  `SELECT phone FROM students 
+   WHERE LOWER(email) = LOWER($1)
+   LIMIT 1`,
+  [studentEmail]
+);
+
+const studentPhone = studentPhoneResult.rows[0]?.phone;
+
+if (studentPhone) {
+  await sendWhatsAppMessage(
+    studentPhone,
+    `🎓 College Portal
+
+🍽 UniEats Order Confirmed
+
+Your food order has been placed successfully.
+
+Food: ${foodName}
+Quantity: ${quantity}
+Total: ₹${totalAmount}
+Token No: ${tokenNo}
+Pickup Time: ${pickupTime || pickup_time}
+Payment: ${paymentMethod}
+Counter: ${counter || receiverPlace}
+
+Thank you for using College Portal.`
+  );
+} else {
+  console.log("No phone number found for:", studentEmail);
+}
 
     res.json({ success: true, order: savedOrder });
 
@@ -325,10 +358,45 @@ app.post("/api/test-notification", async (req, res) => {
   }
 });
 
+async function sendWhatsAppMessage(phone, message) {
+  try {
+    const cleanPhone = phone.replace(/\D/g, "");
+
+    const response = await axios.post(
+      `https://graph.facebook.com/${process.env.WHATSAPP_API_VERSION}/${process.env.WHATSAPP_PHONE_NUMBER_ID}/messages`,
+      {
+        messaging_product: "whatsapp",
+        to: cleanPhone,
+        type: "text",
+        text: {
+          body: message
+        }
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${process.env.WHATSAPP_TOKEN}`,
+          "Content-Type": "application/json"
+        }
+      }
+    );
+
+    console.log("WhatsApp sent:", response.data);
+    return response.data;
+
+  } catch (error) {
+    console.error("WhatsApp error:", error.response?.data || error.message);
+  }
+}
+
 app.put("/api/owner/orders/:id/status", async (req, res) => {
   try {
     const { id } = req.params;
-    const { status, deliveryPerson, deliveryPersonId, cancelReason} = req.body;
+    const {
+      status,
+      deliveryPerson,
+      deliveryPersonId,
+      cancelReason
+    } = req.body;
 
     let finalCancelReason = cancelReason || null;
 
@@ -346,31 +414,34 @@ app.put("/api/owner/orders/:id/status", async (req, res) => {
     }
 
     const result = await pool.query(
-  `UPDATE canteen_orders
-   SET 
-     status = $1,
-     delivery_person = COALESCE($2, delivery_person),
-     delivery_person_id = COALESCE($3, delivery_person_id),
-     cancel_reason = COALESCE($4, cancel_reason),
-     status_updated_at = CURRENT_TIMESTAMP,
-     delivered_at = CASE 
-       WHEN $6 = 'Delivered' THEN CURRENT_TIMESTAMP 
-       ELSE delivered_at 
-     END
-   WHERE id = $5
-   RETURNING *`,
-  [
-    status,
-    deliveryPerson || null,
-    deliveryPersonId || null,
-    finalCancelReason,
-    id,
-    status
-  ]
-);
+      `UPDATE canteen_orders
+       SET 
+         status = $1,
+         delivery_person = COALESCE($2, delivery_person),
+         delivery_person_id = COALESCE($3, delivery_person_id),
+         cancel_reason = COALESCE($4, cancel_reason),
+         status_updated_at = CURRENT_TIMESTAMP,
+         delivered_at = CASE 
+           WHEN $6 = 'Delivered' THEN CURRENT_TIMESTAMP 
+           ELSE delivered_at 
+         END
+       WHERE id = $5
+       RETURNING *`,
+      [
+        status,
+        deliveryPerson || null,
+        deliveryPersonId || null,
+        finalCancelReason,
+        id,
+        status
+      ]
+    );
 
     if (result.rows.length === 0) {
-      return res.status(404).json({ success: false, message: "Order not found" });
+      return res.status(404).json({
+        success: false,
+        message: "Order not found"
+      });
     }
 
     const updatedOrder = result.rows[0];
@@ -378,15 +449,20 @@ app.put("/api/owner/orders/:id/status", async (req, res) => {
     let notificationMessage = "";
 
     if (status === "Ready") {
-      notificationMessage = `Your order is ready for pickup at ${updatedOrder.counter_name}. Please collect it within 5 minutes.`;
+      notificationMessage =
+        `Your order is ready for pickup at ${updatedOrder.counter_name}. Please collect it within 5 minutes.`;
     } else if (status === "Delivered") {
-      notificationMessage = "Your order has been delivered successfully. Thank You for Choosing UniEats!";
+      notificationMessage =
+        "Your order has been delivered successfully. Thank You for Choosing UniEats!";
     } else if (status === "Cancelled") {
-      notificationMessage = `Your order has been cancelled. Reason: ${finalCancelReason}`;
+      notificationMessage =
+        `Your order has been cancelled. Reason: ${finalCancelReason}`;
     }
 
     await pool.query(
-      `UPDATE canteen_orders SET notification_message = $1 WHERE id = $2`,
+      `UPDATE canteen_orders 
+       SET notification_message = $1 
+       WHERE id = $2`,
       [notificationMessage, id]
     );
 
@@ -396,15 +472,51 @@ app.put("/api/owner/orders/:id/status", async (req, res) => {
         "UniEats Order Update",
         notificationMessage
       );
+
+      const studentPhoneResult = await pool.query(
+        `SELECT phone FROM students
+         WHERE LOWER(email) = LOWER($1)
+         LIMIT 1`,
+        [updatedOrder.student_email]
+      );
+
+      const studentPhone =
+        studentPhoneResult.rows[0]?.phone;
+
+      if (studentPhone) {
+        await sendWhatsAppMessage(
+          studentPhone,
+          `🎓 College Portal
+
+🍽 UniEats Order Update
+
+${notificationMessage}
+
+Token No: ${updatedOrder.token_no}
+Counter: ${updatedOrder.counter_name}`
+        );
+      } else {
+        console.log(
+          "No WhatsApp phone number found for:",
+          updatedOrder.student_email
+        );
+      }
     }
 
     res.json({
       success: true,
-      order: { ...updatedOrder, notification_message: notificationMessage }
+      order: {
+        ...updatedOrder,
+        notification_message: notificationMessage
+      }
     });
 
   } catch (error) {
-    console.error("PUT /api/owner/orders/:id/status error:", error.message);
+    console.error(
+      "PUT /api/owner/orders/:id/status error:",
+      error.message
+    );
+
     res.status(500).json({
       success: false,
       message: "Status not updated",
@@ -593,38 +705,6 @@ app.post("/api/students/save", async (req, res) => {
     });
   }
 });
-
-const axios = require("axios");
-
-async function sendWhatsAppMessage(phone, message) {
-  try {
-    const cleanPhone = phone.replace(/\D/g, "");
-
-    const response = await axios.post(
-      `https://graph.facebook.com/${process.env.WHATSAPP_API_VERSION}/${process.env.WHATSAPP_PHONE_NUMBER_ID}/messages`,
-      {
-        messaging_product: "whatsapp",
-        to: cleanPhone,
-        type: "text",
-        text: {
-          body: message
-        }
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${process.env.WHATSAPP_TOKEN}`,
-          "Content-Type": "application/json"
-        }
-      }
-    );
-
-    console.log("WhatsApp sent:", response.data);
-    return response.data;
-
-  } catch (error) {
-    console.error("WhatsApp error:", error.response?.data || error.message);
-  }
-}
 
 app.get("/api/test-whatsapp", async (req, res) => {
   await sendWhatsAppMessage(
