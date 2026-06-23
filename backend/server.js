@@ -1001,12 +1001,12 @@ const OWNER_PHONE = process.env.OWNER_PHONE || "917993610936";
 
 app.post("/api/owner/send-otp", async (req, res) => {
   try {
-    const { ownerId, password } = req.body;
+    const { ownerId } = req.body;
 
-    if (ownerId !== OWNER_ID || password !== OWNER_PASSWORD) {
+    if (ownerId !== OWNER_ID) {
       return res.status(401).json({
         success: false,
-        message: "Invalid owner credentials"
+        message: "Invalid owner ID"
       });
     }
 
@@ -1017,10 +1017,23 @@ app.post("/api/owner/send-otp", async (req, res) => {
       expiresAt: Date.now() + 5 * 60 * 1000
     });
 
-    console.log("OWNER OTP:", otp);
+    const fast2smsResponse = await axios.post(
+      "https://www.fast2sms.com/dev/bulkV2",
+      {
+        route: "otp",
+        variables_values: otp,
+        numbers: process.env.OWNER_PHONE
+      },
+      {
+        headers: {
+          authorization: process.env.FAST2SMS_API_KEY,
+          "Content-Type": "application/json"
+        }
+      }
+    );
 
-    // Later we can connect this with WhatsApp/SMS API
-    // For now OTP will appear in Render logs
+    console.log("OTP sent:", otp);
+    console.log("Fast2SMS Response:", fast2smsResponse.data);
 
     res.json({
       success: true,
@@ -1028,10 +1041,12 @@ app.post("/api/owner/send-otp", async (req, res) => {
     });
 
   } catch (error) {
+    console.log("OTP SMS ERROR:", error.response?.data || error.message);
+
     res.status(500).json({
       success: false,
       message: "Failed to send OTP",
-      error: error.message
+      error: error.response?.data || error.message
     });
   }
 });
