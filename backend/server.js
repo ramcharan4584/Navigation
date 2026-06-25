@@ -189,25 +189,24 @@ const studentPhone = studentPhoneResult.rows[0]?.phone;
 console.log("WhatsApp final phone:", studentPhone);
 
 if (studentPhone) {
-  await sendWhatsAppMessage(studentPhone);
-//   await sendWhatsAppMessage(
-//     studentPhone,
-//     `🎓 College Portal
+  await sendWhatsAppMessage(
+    studentPhone,
+    `🎓 College Portal
 
-// 🍽 UniEats Order Confirmed
+🍽 UniEats Order Confirmed
 
-// Your food order has been placed successfully.
+Your food order has been placed successfully.
 
-// Food: ${foodName}
-// Quantity: ${quantity}
-// Total: ₹${totalAmount}
-// Token No: ${tokenNo}
-// Pickup Time: ${pickupTime || pickup_time}
-// Payment: ${paymentMethod}
-// Counter: ${counter || receiverPlace}
+Food: ${foodName}
+Quantity: ${quantity}
+Total: ₹${totalAmount}
+Token No: ${tokenNo}
+Pickup Time: ${pickupTime || pickup_time}
+Payment: ${paymentMethod}
+Counter: ${counter || receiverPlace}
 
-// Thank you for Choosing College Portal.`
-//   );
+Thank you for Choosing College Portal.`
+  );
 } else {
   console.log("No phone number found for:", studentEmail);
 }
@@ -382,9 +381,13 @@ app.post("/api/test-notification", async (req, res) => {
   }
 });
 
-async function sendWhatsAppMessage(phone) {
+async function sendWhatsAppMessage(phone, title, message, status) {
   try {
-    const cleanPhone = phone.replace(/\D/g, "");
+    let cleanPhone = phone.replace(/\D/g, "");
+
+    if (cleanPhone.length === 10) {
+      cleanPhone = "91" + cleanPhone;
+    }
 
     const response = await axios.post(
       `https://graph.facebook.com/${process.env.WHATSAPP_API_VERSION}/${process.env.WHATSAPP_PHONE_NUMBER_ID}/messages`,
@@ -393,10 +396,29 @@ async function sendWhatsAppMessage(phone) {
         to: cleanPhone,
         type: "template",
         template: {
-          name: "hello_world",
+          name: "college_portal_updates",
           language: {
-            code: "en_US"
-          }
+            code: "en"
+          },
+          components: [
+            {
+              type: "body",
+              parameters: [
+                {
+                  type: "text",
+                  text: title
+                },
+                {
+                  type: "text",
+                  text: message
+                },
+                {
+                  type: "text",
+                  text: status
+                }
+              ]
+            }
+          ]
         }
       },
       {
@@ -733,24 +755,21 @@ app.post("/api/students/save", async (req, res) => {
   }
 });
 
-app.get("/api/test-whatsapp", async (req, res) => {
-  await sendWhatsAppMessage("917993610936");
-  res.send("WhatsApp hello_world test triggered");
-});
-//   await sendWhatsAppMessage(
-//     "917993610936",
-//     `🎓 College Portal
+app.get("/api/test-whatsapp", async (req, res) => 
+  await sendWhatsAppMessage(
+    "917993610936",
+    `🎓 College Portal
 
-// ✅ WhatsApp notification system is active.
+✅ WhatsApp notification system is active.
 
-// You will receive:
-// 🍽 Canteen order updates
-// 📅 Event reminders
-// 📝 Exam notifications
-// 💰 Wallet alerts`
-//   );
+You will receive:
+🍽 Canteen order updates
+📅 Event reminders
+📝 Exam notifications
+💰 Wallet alerts`
+ ) );
 
-//   res.send("College Portal WhatsApp test sent");
+  res.send("College Portal WhatsApp test sent");
 
 async function getStudentPhone(email) {
   const result = await pool.query(
@@ -922,7 +941,9 @@ app.post("/api/wallet/debit", async (req, res) => {
 
 Purpose: ${purpose}
 
-Available Balance: ₹${newBalance}`
+Available Balance: ₹${newBalance}
+
+Thank you for Choosing College Portal.`
       );
     }
 
@@ -975,7 +996,9 @@ app.post("/api/whatsapp/payment-receipt", async (req, res) => {
       `Amount: ₹${amount}
 Purpose: ${purpose}
 Token No: ${tokenNo}
-Payment Method: ${paymentMethod}`,
+Payment Method: ${paymentMethod}
+
+Thank you for Choosing College Portal.`,
       "Paid"
     );
 

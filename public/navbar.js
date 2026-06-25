@@ -116,7 +116,7 @@ function logout() {
   localStorage.removeItem("studentName");
   localStorage.removeItem("profileImage");
 
-  window.location.href = "student-index.html";
+  window.location.href = "index.html";
 }
 window.logout = logout;
 

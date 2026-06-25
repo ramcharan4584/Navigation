@@ -53,7 +53,7 @@ async function enableNotifications() {
 /* LOGIN PROTECTION */
 onAuthStateChanged(auth, (user) => {
   if (!user) {
-    window.location.replace("student-index.html");
+    window.location.replace("index.html");
   } else {
     localStorage.setItem("studentEmail", user.email);
     localStorage.setItem("loginEmail", user.email);
@@ -128,7 +128,10 @@ let autoSlideInterval;
 function startAutoSlider() {
   stopAutoSlider();
 
-  autoSlideInterval = setInterval(function () {
+  const slides = document.querySelectorAll(".slide");
+  if (slides.length <= 1) return;
+
+  autoSlideInterval = setInterval(() => {
     changeSlide(1);
   }, 3000);
 }
@@ -160,5 +163,10 @@ function closeEmergencyBox(event){
   ){
     emergencyBox.classList.remove("active");
   }
-
 }
+
+/* START SLIDER AFTER PAGE LOAD */
+document.addEventListener("DOMContentLoaded", () => {
+  showSlide(currentSlide);
+  startAutoSlider();
+});

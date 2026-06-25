@@ -33,7 +33,7 @@ diningNavbar.innerHTML = `
       <a href="#">Live Queue</a>
       <a href="javascript:void(0)" id="notificationLink" onclick="enableNotifications()">Enable Order Notifications</a>
       <a href="tel:+917993610936">Contact Canteen</a>
-      <a href="student-index.html">Logout</a>
+      <a href="index.html">Logout</a>
     </div>
   </div>
 `;
