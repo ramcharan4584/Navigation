@@ -755,21 +755,22 @@ app.post("/api/students/save", async (req, res) => {
   }
 });
 
-app.get("/api/test-whatsapp", async (req, res) => 
+app.get("/api/test-whatsapp", async (req, res) => {
   await sendWhatsAppMessage(
     "917993610936",
-    `🎓 College Portal
-
-✅ WhatsApp notification system is active.
+    "✅ WhatsApp Test",
+    `WhatsApp notification system is active.
 
 You will receive:
 🍽 Canteen order updates
 📅 Event reminders
 📝 Exam notifications
-💰 Wallet alerts`
- ) );
+💰 Wallet alerts`,
+    "Active"
+  );
 
   res.send("College Portal WhatsApp test sent");
+});
 
 async function getStudentPhone(email) {
   const result = await pool.query(
