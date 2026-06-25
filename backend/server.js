@@ -189,24 +189,13 @@ const studentPhone = studentPhoneResult.rows[0]?.phone;
 console.log("WhatsApp final phone:", studentPhone);
 
 if (studentPhone) {
+
   await sendWhatsAppMessage(
-    studentPhone,
-    `🎓 College Portal
-
-🍽 UniEats Order Confirmed
-
-Your food order has been placed successfully.
-
-Food: ${foodName}
-Quantity: ${quantity}
-Total: ₹${totalAmount}
-Token No: ${tokenNo}
-Pickup Time: ${pickupTime || pickup_time}
-Payment: ${paymentMethod}
-Counter: ${counter || receiverPlace}
-
-Thank you for Choosing College Portal.`
-  );
+  studentPhone,
+  "UniEats Order Confirmed",
+  `Your food order has been placed successfully. Food: ${foodName}. Quantity: ${quantity}. Total: ₹${totalAmount}. Token No: ${tokenNo}. Pickup Time: ${pickupTime || pickup_time}. Payment: ${paymentMethod}. Counter: ${counter || receiverPlace}.`,
+  "Order Confirmed"
+);
 } else {
   console.log("No phone number found for:", studentEmail);
 }
@@ -538,10 +527,7 @@ app.put("/api/owner/orders/:id/status", async (req, res) => {
        await sendWhatsAppMessage(
   studentPhone,
   "UniEats Order Update",
-  `${notificationMessage}
-
-Token No: ${updatedOrder.token_no}
-Counter: ${updatedOrder.counter_name}`,
+  `${notificationMessage}. Token No: ${updatedOrder.token_no}. Counter: ${updatedOrder.counter_name}. Thank you for Choosing College Portal!!!`,
   status
 );
       } else {
@@ -757,17 +743,11 @@ app.post("/api/students/save", async (req, res) => {
 
 app.get("/api/test-whatsapp", async (req, res) => {
   await sendWhatsAppMessage(
-    "917993610936",
-    "✅ WhatsApp Test",
-    `WhatsApp notification system is active.
-
-You will receive:
-🍽 Canteen order updates
-📅 Event reminders
-📝 Exam notifications
-💰 Wallet alerts`,
-    "Active"
-  );
+  "917993610936",
+  "WhatsApp Test",
+  "WhatsApp notification system is active. You will receive canteen order updates, event reminders, exam notifications and wallet alerts.",
+  "Active"
+);
 
   res.send("College Portal WhatsApp test sent");
 });
@@ -797,19 +777,11 @@ app.post("/api/whatsapp/event", async (req, res) => {
     }
 
     await sendWhatsAppMessage(
-      phone,
-      `🎓 College Portal
-
-📅 Event Reminder
-
-${eventTitle}
-
-Date: ${eventDate}
-Time: ${eventTime}
-Venue: ${venue}
-
-Don't miss it!`
-    );
+  phone,
+  "Event Reminder",
+  `Event: ${eventTitle}. Date: ${eventDate}. Time: ${eventTime}. Venue: ${venue}. Don't miss it!`,
+  "Upcoming Event"
+);
 
     res.json({
       success: true,
@@ -839,18 +811,11 @@ app.post("/api/whatsapp/exam", async (req, res) => {
     }
 
     await sendWhatsAppMessage(
-      phone,
-      `🎓 College Portal
-
-📝 Exam Notification
-
-Subject: ${subject}
-Date: ${examDate}
-Time: ${examTime}
-Room: ${room}
-
-All the best!`
-    );
+  phone,
+  "Exam Notification",
+  `Subject: ${subject}. Date: ${examDate}. Time: ${examTime}. Room: ${room}. All the best!`,
+  "Upcoming Exam"
+);
 
     res.json({
       success: true,
@@ -886,17 +851,11 @@ app.post("/api/wallet/add-money", async (req, res) => {
 
     if (phone) {
       await sendWhatsAppMessage(
-        phone,
-        `🎓 College Portal
-
-💰 Wallet Credited
-
-₹${amount} has been added to your wallet.
-
-Available Balance: ₹${newBalance}
-
-Thank you for Choosing College Portal.`
-      );
+  phone,
+  "Wallet Credited",
+  `₹${amount} has been added to your wallet successfully. Available Balance: ₹${newBalance}. Thank you for Choosing College Portal.`,
+  "Wallet Credit"
+);
     }
 
     res.json({
@@ -933,19 +892,11 @@ app.post("/api/wallet/debit", async (req, res) => {
 
     if (phone) {
       await sendWhatsAppMessage(
-        phone,
-        `🎓 College Portal
-
-💳 Wallet Debited
-
-₹${amount} has been debited from your wallet.
-
-Purpose: ${purpose}
-
-Available Balance: ₹${newBalance}
-
-Thank you for Choosing College Portal.`
-      );
+  phone,
+  "Wallet Debited",
+  `₹${amount} has been debited from your wallet. Purpose: ${purpose}. Available Balance: ₹${newBalance}. Thank you for Choosing College Portal.`,
+  "Wallet Debit"
+);
     }
 
     res.json({
@@ -991,17 +942,12 @@ app.post("/api/whatsapp/payment-receipt", async (req, res) => {
       });
     }
 
-    await sendWhatsAppMessage(
-      phone,
-      "💳 Payment Receipt",
-      `Amount: ₹${amount}
-Purpose: ${purpose}
-Token No: ${tokenNo}
-Payment Method: ${paymentMethod}
-
-Thank you for Choosing College Portal.`,
-      "Paid"
-    );
+   await sendWhatsAppMessage(
+  phone,
+  "Payment Receipt",
+  `Amount: ₹${amount}. Purpose: ${purpose}. Token No: ${tokenNo}. Payment Method: ${paymentMethod}. Thank you for Choosing College Portal.`,
+  "Payment Successful"
+);
 
     res.json({
       success: true,
