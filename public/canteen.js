@@ -321,7 +321,10 @@ async function confirmOrder() {
 
   console.log("Sending order through Razorpay:", orderData);
 
-  await payAndPlaceOrder(orderData, tokenHTML);
+document.getElementById("orderPopup").style.display = "none";
+document.body.classList.remove("popup-open");
+
+await payAndPlaceOrder(orderData, tokenHTML);
 }
 
 function closeToken() {
@@ -534,6 +537,26 @@ document.addEventListener("visibilitychange", () => {
   }
 });
 
+function showOrderLoading(title, text) {
+  const loading = document.getElementById("orderLoading");
+  const loadingTitle = document.getElementById("loadingTitle");
+  const loadingText = document.getElementById("loadingText");
+
+  if (!loading || !loadingTitle || !loadingText) {
+    console.error("Loading HTML missing in canteen.html");
+    return;
+  }
+
+  loading.style.display = "flex";
+  loadingTitle.innerText = title;
+  loadingText.innerText = text;
+}
+
+function hideOrderLoading() {
+
+  document.getElementById("orderLoading").style.display = "none";
+}
+
 async function payAndPlaceOrder(orderData, tokenHTML) {
   try {
     const orderResponse = await fetch(
@@ -583,7 +606,12 @@ async function payAndPlaceOrder(orderData, tokenHTML) {
           return;
         }
 
-        await placeOrderAfterPayment(orderData, tokenHTML);
+        showOrderLoading(
+  "Confirming Your Order...",
+  "Please wait while we generate your pickup token."
+);
+
+await placeOrderAfterPayment(orderData, tokenHTML);
       },
 
       prefill: {
@@ -606,44 +634,74 @@ async function payAndPlaceOrder(orderData, tokenHTML) {
     const razorpayPopup = new Razorpay(options);
 
     razorpayPopup.on("payment.failed", function (response) {
-      console.error("Razorpay payment failed:", response.error);
-      alert(response.error.description || "Payment failed");
-    });
+
+    hideOrderLoading();
+
+    console.error("Razorpay payment failed:", response.error);
+
+    alert(response.error.description || "Payment failed");
+  });
 
     razorpayPopup.open();
 
-  } catch (error) {
-    console.error(error);
-    alert("Payment failed to start");
-  }
+} catch (error) {
+  console.error(error);
+
+  document.getElementById("orderPopup").style.display = "flex";
+  document.body.classList.add("popup-open");
+
+  alert("Payment failed to start");
+}
 }
 
 async function placeOrderAfterPayment(orderData, tokenHTML) {
-  const response = await fetch(
-    "https://student-portal-backend-uo7y.onrender.com/api/orders",
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(orderData)
+
+  try {
+
+    const response = await fetch(
+      "https://student-portal-backend-uo7y.onrender.com/api/orders",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(orderData)
+      }
+    );
+
+    const data = await response.json();
+
+    if (data.success) {
+
+      hideOrderLoading();
+
+      document.getElementById("tokenDetails").innerHTML = tokenHTML;
+
+      document.getElementById("orderPopup").style.display = "none";
+
+      document.body.classList.remove("popup-open");
+
+      document.getElementById("tokenBox").style.display = "block";
+
+      if (orderMode === "cart") {
+        cart = [];
+        displayCart();
+      }
+
+    } else {
+
+      hideOrderLoading();
+
+      alert("Order failed after payment");
     }
-  );
 
-  const data = await response.json();
+  } catch (error) {
 
-  if (data.success) {
-    document.getElementById("tokenDetails").innerHTML = tokenHTML;
-    document.getElementById("orderPopup").style.display = "none";
-    document.body.classList.remove("popup-open");
-    document.getElementById("tokenBox").style.display = "block";
+    console.error(error);
 
-    if (orderMode === "cart") {
-      cart = [];
-      displayCart();
-    }
-  } else {
-    alert("Order failed after payment");
+    hideOrderLoading();
+
+    alert("Server error while placing order");
   }
 }
 

@@ -193,7 +193,7 @@ if (studentPhone) {
   await sendWhatsAppMessage(
   studentPhone,
   "UniEats Order Confirmed",
-  `Your food order has been placed successfully. Food: ${foodName}. Quantity: ${quantity}. Total: ₹${totalAmount}. Token No: ${tokenNo}. Pickup Time: ${pickupTime || pickup_time}. Payment: ${paymentMethod}. Counter: ${counter || receiverPlace}.`,
+  `Your food order has been placed successfully.Food: ${foodName}. Quantity: ${quantity}. Total: ₹${totalAmount}. Token No: ${tokenNo}. Pickup Time: ${pickupTime || pickup_time}. Payment: ${paymentMethod}. Counter: ${counter || receiverPlace}.`,
   "Order Confirmed"
 );
 } else {
@@ -431,12 +431,7 @@ async function sendWhatsAppMessage(phone, title, message, status) {
 app.put("/api/owner/orders/:id/status", async (req, res) => {
   try {
     const { id } = req.params;
-    const {
-      status,
-      deliveryPerson,
-      deliveryPersonId,
-      cancelReason
-    } = req.body;
+    const { status, deliveryPerson, deliveryPersonId, cancelReason } = req.body;
 
     let finalCancelReason = cancelReason || null;
 
@@ -489,14 +484,11 @@ app.put("/api/owner/orders/:id/status", async (req, res) => {
     let notificationMessage = "";
 
     if (status === "Ready") {
-      notificationMessage =
-        `Your order is ready for pickup at ${updatedOrder.counter_name}. Please collect it within 5 minutes.`;
+      notificationMessage = `Your order is ready for pickup at ${updatedOrder.counter_name}. Please collect it within 5 minutes.`;
     } else if (status === "Delivered") {
-      notificationMessage =
-        "Your order has been delivered successfully. Thank You for Choosing UniEats!";
+      notificationMessage = "Your order has been delivered successfully. Thank you for choosing UniEats!";
     } else if (status === "Cancelled") {
-      notificationMessage =
-        `Your order has been cancelled. Reason: ${finalCancelReason}`;
+      notificationMessage = `Your order has been cancelled. Reason: ${finalCancelReason}`;
     }
 
     await pool.query(
@@ -520,16 +512,42 @@ app.put("/api/owner/orders/:id/status", async (req, res) => {
         [updatedOrder.student_email]
       );
 
-      const studentPhone =
-        studentPhoneResult.rows[0]?.phone;
+      const studentPhone = studentPhoneResult.rows[0]?.phone;
 
       if (studentPhone) {
-       await sendWhatsAppMessage(
-  studentPhone,
-  "UniEats Order Update",
-  `${notificationMessage}. Token No: ${updatedOrder.token_no}. Counter: ${updatedOrder.counter_name}. Thank you for Choosing College Portal!!!`,
-  status
-);
+        let whatsappTitle = "";
+        let whatsappMessage = "";
+
+        if (status === "Ready") {
+          whatsappTitle = "Order Ready";
+          whatsappMessage =
+            `Hi ${updatedOrder.student_name || "Student"}, your order is ready for pickup.\n\n` +
+            `Token: ${updatedOrder.token_no}\n` +
+            `Counter: ${updatedOrder.counter_name}\n\n` +
+            `Please collect your order from the counter.`;
+        } else if (status === "Delivered") {
+          whatsappTitle = "Order Delivered";
+          whatsappMessage =
+            `Your order has been successfully delivered.\n\n` +
+            `Token: ${updatedOrder.token_no}\n` +
+            `Food: ${updatedOrder.food_name}\n\n` +
+            `Thank you for choosing UniEats.`;
+        } else if (status === "Cancelled") {
+          whatsappTitle = "Order Cancelled";
+          whatsappMessage =
+            `We regret to inform you that your order has been cancelled.\n\n` +
+            `Token: ${updatedOrder.token_no}\n` +
+            `Counter: ${updatedOrder.counter_name}\n` +
+            `Reason: ${finalCancelReason}\n\n` +
+            `Amount will be refunded if payment was completed.`;
+        }
+
+        await sendWhatsAppMessage(
+          studentPhone,
+          whatsappTitle,
+          whatsappMessage,
+          status
+        );
       } else {
         console.log(
           "No WhatsApp phone number found for:",
@@ -547,10 +565,7 @@ app.put("/api/owner/orders/:id/status", async (req, res) => {
     });
 
   } catch (error) {
-    console.error(
-      "PUT /api/owner/orders/:id/status error:",
-      error.message
-    );
+    console.error("PUT /api/owner/orders/:id/status error:", error.message);
 
     res.status(500).json({
       success: false,
