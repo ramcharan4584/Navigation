@@ -7,39 +7,106 @@ const blocks = {
 
   library: {
     name: "Library Block",
-    route: ["cp1", "cp2", "cp3", "cp4", "cp5", "cp6", "cp7", "cp8", "cp9", "cp10", "cp11", "cp12"],
+    route: ["cp1", "cp2", "cp3", "cp4", "cp5", "cp40", "cp6", "cp8","cp11", "cp12"],
     info: "Go straight through Admin Block road and continue to Library Block."
+  },
+
+  block1: {
+    name: "Academic Block 1",
+    route: ["cp1", "cp2", "cp3", "cp45", "cp41", "cp44", "cp46", "cp47", "cp48", "cp49"],
+    info: "Take the left-side road and reach Academic Block 1."
   },
 
   block2: {
     name: "Academic Block 2",
-    route: ["cp1", "cp2", "cp3", "cp19", "cp20", "cp21", "cp22", "cp23", "cp24", "cp25", "cp26", "cp27"],
+    route: ["cp1", "cp2", "cp3", "cp19", "cp20", "cp22", "cp26", "cp27", "cp28", "cp17", "cp16"],
     info: "Take the right-side road and reach Academic Block 2."
   },
 
   biotech: {
     name: "Biotech Block",
-    route: ["cp1", "cp2", "cp3", "cp19", "cp20", "cp21", "cp22", "cp23", "cp24", "cp25", "cp26"],
+    route: ["cp1", "cp2", "cp3", "cp19", "cp20", "cp22", "cp26", "cp27" ,"cp24"],
     info: "Take the right-side road and reach Biotech Block."
   },
 
   cet3: {
     name: "CET 3",
-    route: ["cp1", "cp2", "cp3", "cp19", "cp20", "cp21", "cp22", "cp23", "cp24", "cp25", "cp26", "cp27", "cp28", "cp29", "cp30", "cp31", "cp32", "cp33", "cp34", "cp35"],
+    route: ["cp1", "cp2", "cp3", "cp19", "cp20", "cp22", "cp26", "cp27", "cp28", "cp31", "cp34", "cp35", "cp29"],
     info: "Take the right-side academic road and reach CET 3."
   },
 
   classrooms: {
     name: "Classrooms",
-    route: ["cp1", "cp2", "cp3", "cp19", "cp20", "cp21", "cp22", "cp23", "cp24", "cp25", "cp26", "cp27", "cp28", "cp29", "cp30", "cp31", "cp32"],
+    route: ["cp1", "cp2", "cp3", "cp19", "cp20", "cp22","cp26", "cp27", "cp28", "cp31", "cp34", "cp25"],
     info: "Take the right-side academic road and reach Classrooms."
+  },
+
+  cricketground: {
+    name: "Cricket Ground",
+    route: ["cp1", "cp2", "cp3", "cp19", "cp20", "cp22", "cp26", "cp27", "cp28", "cp31", "cp32", "cp33"],
+    info: "Take the right-side road from Main Gate and reach Cricket Ground."
   },
 
   canteen: {
     name: "Canteen",
-    route: ["cp1", "cp2", "cp3", "cp19", "cp20", "cp21", "cp22", "cp23"],
+    route: ["cp1", "cp2", "cp3", "cp19", "cp20", "cp21"],
     info: "Take the right-side road from Main Gate and reach Canteen."
-  }
+  },
+
+  firstyear: {
+    name: "First Year Block",
+    route: ["cp1", "cp2", "cp3", "cp19", "cp20", "cp22", "cp26", "cp27", "cp28", "cp23"],
+    info: "Take the right-side road from Main Gate and reach First Year Block."
+  },
+
+  cet12: {
+    name: "CET 1 & 2",
+    route: ["cp1", "cp2", "cp3", "cp19", "cp20", "cp22", "cp26", "cp27", "cp28", "cp31", "cp34", "cp35", "cp37"],
+    info: "Take the right-side road from Main Gate and reach CET 1 & 2."
+  },
+
+  mechanical: {
+    name: "Mechanical Lab - 1",
+    route: ["cp1", "cp2", "cp3", "cp19", "cp20", "cp22", "cp26", "cp27", "cp28", "cp31", "cp34", "cp36"],
+    info: "Take the right-side road from Main Gate and reach Mechanical Lab - 1."
+  },
+
+  lab: {
+    name: "Mechanical Lab - 2",
+    route: ["cp1", "cp2", "cp3", "cp19", "cp20", "cp22", "cp26", "cp27", "cp28", "cp31", "cp34", "cp52"],
+    info: "Take the right-side road from Main Gate and reach Mechanical Lab - 2."
+  },
+
+  cafeteria: {
+    name: "Cafeteria",
+    route: ["cp1", "cp2", "cp3", "cp19", "cp20", "cp22", "cp26", "cp27", "cp28", "cp31", "cp38", "cp39"],
+    info: "Take the right-side road from Main Gate and reach the Cafeteria."
+  },
+
+  stationery: {
+    name: "Stationery",
+    route: ["cp1", "cp2", "cp3", "cp4", "cp5", "cp40", "cp6", "cp8","cp11", "cp42", "cp43"],
+    info: "Go straight through Admin Block road and continue to reach Stationery."
+  },
+
+  university : {
+    name: "University Block",
+    route: ["cp1", "cp2", "cp3", "cp45", "cp41", "cp44", "cp46", "cp47", "cp10", "cp51"],
+    info: "Take the left-side road from Main Gate and reach the University Block."
+  },
+
+  volleyball: {
+    name: "Volleyball Court",
+    route: ["cp1", "cp2", "cp3", "cp45", "cp41", "cp44", "cp46", "cp47","cp53"],
+    info: "Take the left-side road from Main Gate and reach the Volleyball Court."
+  },
+
+  football: {
+    name: "Football Ground",
+    route: ["cp1", "cp2", "cp3", "cp54"],
+    info: "Take the left-side road from Main Gate and reach the Football Ground."
+  },
+
 };
 
 function navigateToBlock() {

@@ -24,28 +24,41 @@
   <select id="blockSelect" onchange="navigateToBlock()">
     <option value="">Select destination block</option>
 
-    <option value="admin">Admin Block</option>
-    <option value="library">Library Block</option>
-    <option value="university">Sreenidhi University</option>
-    <option value="block1">Academic Block 1</option>
-    <option value="block2">Academic Block 2</option>
-    <option value="canteen">Canteen</option>
-    <option value="cafeteria">Cafeteria</option>
-    <option value="stationery">Stationery</option>
+      <optgroup label="Main Campus Facilities">
+        <option value="admin">Admin Block</option>
+        <option value="library">Library Block</option>
+        <option value="stationery">Stationery</option>
+      </optgroup>
 
-    <option value="mechanical">Mechanical Lab</option>
-    <option value="lab">Lab</option>
-    <option value="cet12">CET 1 & 2</option>
-    <option value="cet3">CET 3</option>
-    <option value="classrooms">Classrooms</option>
-    <option value="construction">Construction Area</option>
-    <option value="biotech">Biotech Block</option>
+      <optgroup label="Academic Blocks">
+        <option value="block1">Academic Block 1</option>
+        <option value="block2">Academic Block 2</option>
+        <option value="firstyear">First Year Block</option>
+        <option value="biotech">Biotech Block</option>
+      </optgroup>
 
-    <option value="volleyball">Volley Ball Ground</option>
-    <option value="cricketground">Cricket Ground</option>
-    <option value="football">Football Ground</option>
-    <option value="busparking">Bus Parking</option>
-    <option value="bikeparking">Bike Parking</option>
+      <optgroup label="University Block">
+        <option value="university">Sreenidhi University</option>
+      </optgroup>
+
+      <optgroup label="Labs & CET">
+        <option value="mechanical">Mechanical Lab 1</option>
+        <option value="lab">Mechanical Lab 2</option>
+        <option value="cet12">CET 1 & 2</option>
+        <option value="cet3">CET 3</option>
+        <option value="classrooms">CET Classrooms</option>
+      </optgroup>
+
+      <optgroup label="Food & Refreshments">
+        <option value="canteen">Canteen</option>
+        <option value="cafeteria">Cafeteria</option>
+      </optgroup>
+
+      <optgroup label="Sports & Grounds">
+        <option value="volleyball">Volley Ball Court</option>
+        <option value="cricketground">Cricket Ground</option>
+        <option value="football">Football Ground</option>
+      </optgroup>
   </select>
 </div>
 
@@ -54,23 +67,33 @@
     <img src="images/campus-map1.jpeg" class="campus-map" alt="Campus Map">
 
     <svg class="route-layer" viewBox="0 0 100 100" preserveAspectRatio="none">
-      <polyline id="routeLine" points=""></polyline>
-    </svg>
+
+    <defs>
+      <linearGradient id="routeGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+        <stop offset="0%" stop-color="#2563eb"/>
+        <stop offset="50%" stop-color="#3b82f6"/>
+        <stop offset="100%" stop-color="#06b6d4"/>
+      </linearGradient>
+    </defs>
+
+    <polyline id="routeLine" points=""></polyline>
+
+  </svg>
 
     <div id="checkpointLayer"></div>
 
-    <div class="marker main-gate active" style="left:45.5%; top:92%;">Main Gate</div>
+    <div class="marker main-gate active" style="left:45.7%; top:92%;">Main Gate</div>
 
-    <div class="marker" id="admin" style="left:45.5%; top:65%;">Admin Block</div>
+    <div class="marker" id="admin" style="left:45.9%; top:65%;">Admin Block</div>
     <div class="marker" id="library" style="left:45.8%; top:24%;">Library Block</div>
-    <div class="marker" id="university" style="left:15.8%; top:15%;">University</div>
+    <div class="marker" id="university" style="left:15.8%; top:15%;">Sreenidhi University</div>
     <div class="marker" id="block1" style="left:27.2%; top:40%;">Academic Block 1</div>
     <div class="marker" id="block2" style="left:65.2%; top:39%;">Academic Block 2</div>
     <div class="marker" id="firstyear" style="left:83.5%; top:43%;">First Year Block</div>
     <div class="marker" id="canteen" style="left:66%; top:78.5%;">Canteen</div>
-    <div class="marker" id="volleyball" style="left:10%; top:47%;">Volley Ball Ground</div>
+    <div class="marker" id="volleyball" style="left:10%; top:47%;">Volley Ball Court</div>
     <div class="marker" id="football" style="left:30%; top:80%;">Football Ground</div>
-    <div class="marker" id="busparking" style="left:8%; top:73%;">Bus Parking</div>
+    <div class="marker" id="busparking" style="left:8%; top:63%;">Bus Parking</div>
     <div class="marker" id="bikeparking" style="left:20.5%; top:75%;">Bike Parking</div>
     <div class="marker" id="cet12" style="left:61.8%; top:3.5%;">CET 1 & 2</div>
     <div class="marker" id="lab" style="left:61.8%; top:8.5%;">Mechanical Lab 2</div>
@@ -78,49 +101,64 @@
     <div class="marker" id="stationery" style="left:50.8%; top:18.5%;">Stationery</div>
     <div class="marker" id="mechanical" style="left:61.8%; top:12.5%;">Mechanical Lab 1</div>
     <div class="marker" id="cet3" style="left:76.5%; top:3.5%;">CET 3</div>
-    <div class="marker" id="classrooms" style="left:77.1%; top:10.5%;">Classrooms</div>
+    <div class="marker" id="classrooms" style="left:77.1%; top:10.5%;">CET Classrooms</div>
     <div class="marker" id="cricketground" style="left:80.1%; top:22.5%;">Cricket Ground</div>
-    <div class="marker" id="construction" style="left:33.2%; top:22.8%;">Construction Area</div>
-    <div class="marker" id="biotech" style="left:79.6%; top:59.5%;">Biotech Block</div>
+    <div class="marker" id="biotech" style="left:79.6%; top:58%;">Biotech Block</div>
 
-    <div class="checkpoint-point" id="cp1" style="left:45.5%; top:95%;"></div>
-    <div class="checkpoint-point" id="cp2" style="left:45.5%; top:89%;"></div>
-    <div class="checkpoint-point" id="cp3" style="left:45.5%; top:82%;"></div>
-    <div class="checkpoint-point" id="cp4" style="left:45.5%; top:74%;"></div>
-    <div class="checkpoint-point" id="cp5" style="left:45.5%; top:69%;"></div>
-    <div class="checkpoint-point" id="cp6" style="left:45.5%; top:63%;"></div>
-
-    <div class="checkpoint-point" id="cp7" style="left:45.5%; top:56%;"></div>
-    <div class="checkpoint-point" id="cp8" style="left:45.5%; top:50%;"></div>
-    <div class="checkpoint-point" id="cp9" style="left:45.5%; top:44%;"></div>
-    <div class="checkpoint-point" id="cp10" style="left:45.5%; top:38%;"></div>
-    <div class="checkpoint-point" id="cp11" style="left:45.5%; top:32%;"></div>
-    <div class="checkpoint-point" id="cp12" style="left:45.5%; top:26%;"></div>
-
+    <div class="checkpoint-point" id="cp1" style="left:45.7%; top:92%;"></div>
+    <div class="checkpoint-point" id="cp2" style="left:45.7%; top:89%;"></div>
+    <div class="checkpoint-point" id="cp3" style="left:45.7%; top:85%;"></div>
+    <div class="checkpoint-point" id="cp4" style="left:45.8%; top:74%;"></div>
+    <div class="checkpoint-point" id="cp5" style="left:45.8%; top:69%;"></div>
+    <div class="checkpoint-point" id="cp7" style="left:40%; top:56%;"></div>
+    <div class="checkpoint-point" id="cp6" style="left:45.8%; top:63%;"></div>
+    <div class="checkpoint-point" id="cp8" style="left:45.8%; top:50%;"></div>
+    <div class="checkpoint-point" id="cp10" style="left:19.8%; top:32%;"></div>
+    <div class="checkpoint-point" id="cp11" style="left:45.8%; top:32%;"></div>
+    <div class="checkpoint-point" id="cp12" style="left:45.8%; top:26%;"></div>
     <div class="checkpoint-point" id="cp13" style="left:52%; top:56%;"></div>
-    <div class="checkpoint-point" id="cp14" style="left:56%; top:54%;"></div>
-    <div class="checkpoint-point" id="cp15" style="left:60%; top:53%;"></div>
-    <div class="checkpoint-point" id="cp16" style="left:64%; top:52%;"></div>
-    <div class="checkpoint-point" id="cp17" style="left:68%; top:50%;"></div>
-    <div class="checkpoint-point" id="cp18" style="left:72%; top:48%;"></div>
+    <div class="checkpoint-point" id="cp14" style="left:40%; top:32%;"></div>
+    <div class="checkpoint-point" id="cp15" style="left:60%; top:51%;"></div>
+    <div class="checkpoint-point" id="cp16" style="left:65.2%; top:39%;"></div>
+    <div class="checkpoint-point" id="cp17" style="left:65.2%; top:51%;"></div>
+    <div class="checkpoint-point" id="cp18" style="left:60%; top:31.3%;"></div>
+    <div class="checkpoint-point" id="cp19" style="left:52%; top:80.4%;"></div>
+    <div class="checkpoint-point" id="cp20" style="left:62%; top:72.8%;"></div>
+    <div class="checkpoint-point" id="cp21" style="left:66%; top:78.5%;"></div>
+    <div class="checkpoint-point" id="cp22" style="left:70%; top:66.2%;"></div>
+    <div class="checkpoint-point" id="cp23" style="left:83.5%; top:51%;"></div>
+    <div class="checkpoint-point" id="cp24" style="left:79.6%; top:59.5%;"></div>
+    <div class="checkpoint-point" id="cp25" style="left:77.1%; top:10.5%;"></div>
+    <div class="checkpoint-point" id="cp26" style="left:74%; top:62%;"></div>
+    <div class="checkpoint-point" id="cp27" style="left:75%; top:59%;"></div>
+    <div class="checkpoint-point" id="cp28" style="left:74.4%; top:51%;"></div>
+    <div class="checkpoint-point" id="cp29" style="left:76.5%; top:3.5%;"></div>
+    <div class="checkpoint-point" id="cp30" style="left:71%; top:31.3%;"></div>
+    <div class="checkpoint-point" id="cp31" style="left:72.4%; top:32.8%;"></div>
+    <div class="checkpoint-point" id="cp32" style="left:76%; top:32.8%;"></div>
+    <div class="checkpoint-point" id="cp33" style="left:80.1%; top:22.5%;"></div>
+    <div class="checkpoint-point" id="cp34" style="left:69.5%; top:14%;"></div>
+    <div class="checkpoint-point" id="cp35" style="left:69.2%; top:8%;"></div>
+    <div class="checkpoint-point" id="cp36" style="left:61.8%; top:12.5%;"></div>
+    <div class="checkpoint-point" id="cp37" style="left:61.8%; top:3.5%;"></div>
+    <div class="checkpoint-point" id="cp38" style="left:69.9%; top:17.5%;"></div>
+    <div class="checkpoint-point" id="cp39" style="left:61.8%; top:16.5%;"></div>
+    <div class="checkpoint-point" id="cp40" style="left:45.8%; top:56%;"></div>
+    <div class="checkpoint-point" id="cp41" style="left:25.6%; top:66.8%;"></div>
+    <div class="checkpoint-point" id="cp42" style="left:52%; top:32%;"></div>
+    <div class="checkpoint-point" id="cp43" style="left:50.8%; top:18.5%;"></div>
+    <div class="checkpoint-point" id="cp44" style="left:19%; top:61.5%;"></div>
+    <div class="checkpoint-point" id="cp45" style="left:41%; top:79.4%;"></div>
+    <div class="checkpoint-point" id="cp46" style="left:17%; top:59%;"></div>
+    <div class="checkpoint-point" id="cp47" style="left:17.8%; top:50.8%;"></div>
+    <div class="checkpoint-point" id="cp48" style="left:26.8%; top:50.8%;"></div>
+    <div class="checkpoint-point" id="cp49" style="left:27.2%; top:40%;"></div>
+    <div class="checkpoint-point" id="cp50" style="left:33%; top:52%;"></div>
+    <div class="checkpoint-point" id="cp51" style="left:15.8%; top:15%;"></div>
+    <div class="checkpoint-point" id="cp52" style="left:61.2%; top:8%;"></div>
+    <div class="checkpoint-point" id="cp53" style="left:10%; top:47%;"></div>
+    <div class="checkpoint-point" id="cp54" style="left:30%; top:80%;"></div>
 
-    <div class="checkpoint-point" id="cp19" style="left:58%; top:74%;"></div>
-    <div class="checkpoint-point" id="cp20" style="left:62%; top:78%;"></div>
-    <div class="checkpoint-point" id="cp21" style="left:66%; top:82%;"></div>
-    <div class="checkpoint-point" id="cp22" style="left:70%; top:84%;"></div>
-    <div class="checkpoint-point" id="cp23" style="left:74%; top:80%;"></div>
-    <div class="checkpoint-point" id="cp24" style="left:76%; top:74%;"></div>
-    <div class="checkpoint-point" id="cp25" style="left:76%; top:68%;"></div>
-    <div class="checkpoint-point" id="cp26" style="left:76%; top:62%;"></div>
-    <div class="checkpoint-point" id="cp27" style="left:76%; top:56%;"></div>
-    <div class="checkpoint-point" id="cp28" style="left:76%; top:50%;"></div>
-    <div class="checkpoint-point" id="cp29" style="left:76%; top:44%;"></div>
-    <div class="checkpoint-point" id="cp30" style="left:76%; top:38%;"></div>
-    <div class="checkpoint-point" id="cp31" style="left:76%; top:32%;"></div>
-    <div class="checkpoint-point" id="cp32" style="left:76%; top:26%;"></div>
-    <div class="checkpoint-point" id="cp33" style="left:76%; top:20%;"></div>
-    <div class="checkpoint-point" id="cp34" style="left:76%; top:14%;"></div>
-    <div class="checkpoint-point" id="cp35" style="left:76%; top:8%;"></div>
       </div>
     </div>
 
