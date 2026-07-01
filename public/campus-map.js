@@ -195,3 +195,34 @@ function showCheckpoints(points) {
     layer.appendChild(cp);
   });
 }
+
+let currentZoom = 1;
+
+function applyZoom() {
+  const mapWrapper = document.querySelector(".map-wrapper");
+  const zoomValue = document.getElementById("zoomValue");
+
+  mapWrapper.style.transform = `scale(${currentZoom})`;
+  mapWrapper.style.transformOrigin = "top center";
+
+  zoomValue.innerText = `${Math.round(currentZoom * 100)}%`;
+}
+
+function zoomIn() {
+  if (currentZoom < 1.8) {
+    currentZoom += 0.1;
+    applyZoom();
+  }
+}
+
+function zoomOut() {
+  if (currentZoom > 0.4) {
+    currentZoom -= 0.1;
+    applyZoom();
+  }
+}
+
+function resetZoom() {
+  currentZoom = 1;
+  applyZoom();
+}

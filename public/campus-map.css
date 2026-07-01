@@ -298,6 +298,30 @@ body {
   transform: translateY(-2px);
 }
 
+.zoom-controls {
+  max-width: 420px;
+  margin: 0 auto 16px;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.zoom-controls button,
+.zoom-controls span {
+  background: rgba(255, 255, 255, 0.48);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255,255,255,0.55);
+  color: #1e3a8a;
+  padding: 9px 14px;
+  border-radius: 14px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.zoom-controls span {
+  cursor: default;
+}
+
 @media (max-width: 768px) {
   .navigator-page {
     padding: 14px;
